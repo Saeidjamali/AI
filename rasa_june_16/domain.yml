@@ -1,0 +1,329 @@
+version: '3.0'
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
+intents:
+- greet
+- goodbye
+- measurement_name
+- medical_condition_intent
+- name_intent
+- inform
+- inform_gender
+- inform_eating
+- inform_userGoal
+- change_weight
+- change_eating
+- change_stressLevel
+- change_height
+- change_age
+- change_measuringUnit
+- change_foodieLevel
+- update_profile
+- list_questions
+- identity
+- viki_meaning
+- gender_check
+- intellithing_meaning
+- viki_creator
+- answer_method
+entities:
+- NUMBER
+- unit
+- name
+- measurement
+- disease
+- gender
+- eating
+- userGoal
+- PERSON
+- QUANTITY
+- CARDINAL
+- ORG
+
+slots:
+  height1:
+    type: float
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      intent: inform
+      entity: NUMBER
+      conditions:
+      - active_loop: simple_user_form
+        requested_slot: height1
+
+  inches:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        intent: inform
+        entity: unit
+
+  height2:
+    type: float
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      intent: inform
+      entity: NUMBER
+      role: height2
+  weight:
+    type: float
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      intent: inform
+      entity: NUMBER
+      conditions:
+        - active_loop: simple_user_form
+          requested_slot: weight
+  age:
+    type: float
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        intent: inform
+        entity: NUMBER
+        conditions:
+          - active_loop: simple_user_form
+            requested_slot: age
+
+
+  gender:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        intent:
+          - inform
+          - inform_gender
+        conditions:
+        - active_loop: simple_user_form
+          requested_slot: gender
+
+  stressLevel:
+    type: float
+    influence_conversation: true
+    min_value: 1
+    max_value: 5
+    mappings:
+      - type: from_entity
+        intent: inform
+        entity: NUMBER
+        conditions:
+          - active_loop: simple_user_form
+            requested_slot: stressLevel
+
+  userGoal:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        intent:
+          - inform
+          - inform_userGoal
+        conditions:
+        - active_loop: simple_user_form
+          requested_slot: userGoal
+  eating:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        intent:
+          - inform
+          - inform_eating
+        conditions:
+        - active_loop: simple_user_form
+          requested_slot: eating
+
+  name:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        intent: name_intent
+        conditions:
+          - active_loop: simple_user_form
+            requested_slot: name
+  measuringUnit:
+    type: text
+    influence_conversation: true
+    mappings:
+      - type: from_entity
+        entity: measurement
+        intent: measurement_name
+        conditions:
+          - active_loop: simple_user_form
+            requested_slot: measuringUnit
+
+
+
+
+  likeFood:
+    type: float
+    influence_conversation: true
+    min_value: 1
+    max_value: 5
+    mappings:
+      - type: from_entity
+        intent: inform
+        entity: NUMBER
+        conditions:
+          - active_loop: simple_user_form
+            requested_slot: likeFood
+
+
+  today_stressLevel:
+    type: float
+    influence_conversation: true
+    min_value: 1
+    max_value: 5
+    mappings:
+      - type: from_entity
+        intent: inform
+        entity: NUMBER
+  today_waterIntake:
+    type: float
+    influence_conversation: true
+    min_value: 1
+    max_value: 20
+    mappings:
+      - type: from_entity
+        entity: NUMBER
+  diseases:
+    type: list
+    influence_conversation: true
+    mappings:
+      - type: from_text
+        entity: disease
+        intent: medical_condition_intent
+        conditions:
+        - active_loop: simple_user_form
+          requested_slot: diseases
+
+
+
+forms:
+  simple_user_form:
+    required_slots:
+      - name
+      - measuringUnit
+      - height1
+      - height2
+      - weight
+      - age
+      - gender
+      - stressLevel
+      - userGoal
+      - eating
+      - likeFood
+      - diseases
+
+
+responses:
+  utter_welcome:
+  - text: Hi, your profile is incomplete let’s set up your profile so I can help you further.
+  utter_greet:
+  - text: Hey! How are you?
+  utter_cheer_up:
+  - text: 'Here is something to cheer you up:'
+    image: https://i.imgur.com/nGF1K8f.jpg
+  utter_did_that_help:
+  - text: Did that help you?
+  utter_happy:
+  - text: Great, carry on!
+  utter_goodbye:
+  - text: Bye
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_ask_diseases:
+  - text: Do you have any diseases?
+  utter_ask_likeFood:
+  - text: On the scale of 1-5, how much foodie are you?.
+  utter_ask_stressLevel:
+  - text: On the scale of 1-5, how do you rate your average stress level.
+  utter_ask_eating:
+  - text: What are your diet restrictions?, i.e. Are you 1) Vegan, 2) vegetarian or 3) Non-vegetarian.
+  utter_ask_userGoal:
+  - text: Do you have any goal, i.e. Do you want to 1) Lose weight, 2) Maintain weight, 3) Gain weight, or 4) Other.
+  utter_ask_measuringUnit:
+  - text: What is your preferred measurement unit, 1) Imperial or 2) Metric.
+  utter_ask_name:
+  - text: "Hey, What's your name?"
+  utter_ask_height:
+  - text: how tall are you?
+  utter_ask_gender:
+  - text: what is your gender? 1) Male or 2) Female.
+  utter_ask_age:
+  - text: how old are you?
+  utter_all_set:
+  - text: we are all set, I will be monitoring your body performance through your smartwatch to give you bespoke advance by turning your data into meanings
+  utter_submit:
+  - text: Thanks for entering the information!
+  utter_user_slots:
+  - text: "we are all set {name}. \n\n Your height is: {height1}. \n\n you weighs: {weight}. You are {age} years old.
+             \n\n Your gender is: {gender} \n\n On average your stress level is: {stressLevel} \n\n
+             Your goal regarding weight is: {userGoal} \n\n {eating} {likeFood} \n\n
+             You have {diseases}\n\n
+             OK, you are all set. Ask me questions or update your details."
+  utter_ask_height1:
+    - condition:
+      - type: slot
+        name: measuringUnit
+        value: "imperial"
+      text: What is your height? Type in format':' xx feet xx inches.
+
+    - text: What is your height? Type in format':' xx cm or xxx cm.
+  utter_ask_height2:
+  - text: What is your height?
+  utter_ask_weight:
+    - condition:
+      - type: slot
+        name: measuringUnit
+        value: "imperial"
+      text: How much do you weight? Type in format':' xx pound.
+
+    - text: How much do you weight? Type in format':' xx kg.
+  utter_update_profile:
+    - text: you can update your profile by saying things like “update my weight to xx”.
+  utter_list_questions:
+    - text: "You can ask me questions about the quality of your body functions for example:\n
+              How is the quality of my sleep?\n
+              How is the quality of my diet? (How is the quality of my meal)\n
+              How is my overall activity level?\n
+              How is the quality of my metabolism?\n
+              Or\n
+              Ask me to predict your weight.\n
+              If you are not achieving your goal ask me questions such as:\n
+              Why am I not losing weight?\n
+              Why am I not gaining weight?\n
+              I will then troubleshoot it for you."
+  utter_identity:
+    - text: "My name is Viki, your virtual health and fitness assistant."
+  utter_viki_meaning:
+    - text: "Viki is short for Virtual Interactive Kinetic Intelligence. I am an MVP in beta testing."
+  utter_gender_check:
+    - text: "Does it really matter? I’m here to assist you with your health and fitness regardless."
+  utter_intellithing_meaning:
+    - text: "intellithing is a fast growing tech startup that created me."
+  utter_viki_creator:
+    - text: "I am created by intellithing, a Uk based tech startup."
+  utter_answer_method:
+    - text: "I analyze the stream of your data as well as your historical data from smart devices. "
+  utter_quote:
+    - text: This quote by Theodore Roosevelt might help ':' Do what you can, with what you have, where you are.”, and I would suggest find the little things around you that makes you feel good.
+actions:
+- utter_submit
+- utter_user_slots
+- validate_simple_user_form
+- action_change_weight
+- action_change_eating
+- action_change_stressLevel
+- action_change_height
+- action_change_age
+- action_change_measuringUnit
+- action_change_foodieLevel
+- action_store_db

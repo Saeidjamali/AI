@@ -1,0 +1,91 @@
+version: "3.0"
+
+stories:
+
+#  - story: Mood not right
+#    steps:
+#      - intent: mood_unhappy
+#      - action: utter_cheer_up
+#      - action: utter_did_that_help
+#      - intent: affirm
+#
+#  - story: Mood not right deny
+#    steps:
+#      - intent: mood_unhappy
+#      - action: utter_cheer_up
+#      - action: utter_did_that_help
+#      - intent: deny
+#      - action: utter_quote
+
+# - story: first time
+#   steps:
+#   - intent: greet
+#   - action: utter_welcome
+#   - intent: affirm
+#   - action: utter_ask_purpose
+#   - intent: losing_weight
+#   - action: utter_ask_measuring_unit
+#   - intent: measurement_name
+#   - action: utter_ask_height
+#   - intent: height
+#   - action: utter_ask_weight
+#   - intent: weight
+#   - action: utter_ask_gender
+#   - intent: gender
+#   - action: utter_ask_age
+#   - intent: age
+#   - action: utter_all_set
+
+
+# - story: happy path
+#   steps:
+#   - intent: greet
+#   - action: utter_greet
+#   - intent: mood_great
+#   - action: utter_happy
+
+# - story: sad path 1
+#   steps:
+#   - intent: greet
+#   - action: utter_greet
+#   - intent: mood_unhappy
+#   - action: utter_cheer_up
+#   - action: utter_did_that_help
+#   - intent: affirm
+#   - action: utter_happy
+
+# - story: sad path 2
+#   steps:
+#   - intent: greet
+#   - action: utter_greet
+#   - intent: mood_unhappy
+#   - action: utter_cheer_up
+#   - action: utter_did_that_help
+#   - intent: deny
+#   - action: utter_goodbye
+
+# - story: interactive_story_1
+#   steps:
+#   - intent: greet
+#   - action: utter_welcome
+#   - intent: affirm
+#   - action: utter_ask_purpose
+#   - intent: losing_weight
+#   - action: utter_ask_measuring_unit
+#   - intent: measurement_name
+#   - action: utter_ask_height
+#   - intent: height
+#     entities:
+#     - NUMBER: '5'
+#     - NUMBER: '3'
+#   - action: utter_ask_weight
+#   - intent: weight
+#     entities:
+#     - NUMBER: '180'
+#   - action: utter_ask_gender
+#   - intent: gender
+#   - action: utter_ask_age
+#   - intent: age
+#     entities:
+#     - '"entity"': '23'
+#   - action: utter_all_set

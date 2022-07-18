@@ -1,0 +1,614 @@
+version: "3.0"
+
+nlu:
+- intent: greet
+  examples: |
+    - hey
+    - hello
+    - hi
+    - hello there
+    - good morning
+    - good evening
+    - moin
+    - hey there
+    - let's go
+    - hey dude
+    - goodmorning
+    - goodevening
+    - good afternoon
+    - Hello Viki
+    - Hi Viki
+    - Hey Viki
+    - Greetings Viki
+
+
+- intent: goodbye
+  examples: |
+    - cu
+    - good by
+    - cee you later
+    - good night
+    - bye
+    - goodbye
+    - have a nice day
+    - see you around
+    - bye bye
+    - see you later
+#- intent: Number_value
+#  examples: |
+#    -
+- intent: measurement_name
+  examples: |
+    - [Imperial]{"entity":"measurement","value":"imperial"}
+    - [imperial]{"entity":"measurement","value":"imperial"}
+    - I use [imperial]{"entity":"measurement","value":"imperial"}
+    - I use [IMPERIAL]{"entity":"measurement","value":"imperial"} measurement system
+    - I use [Metric]{"entity":"measurement","value":"metric"} measurement system
+    - [metric]{"entity":"measurement","value":"metric"}
+    - [ImperialS]{"entity":"measurement","value":"imperial"} System
+    - [Metrics]{"entity":"measurement","value":"metric"} System
+    - Set it to [metrics]{"entity":"measurement","value":"metric"}
+    - Set it to [Imperial]{"entity":"measurement","value":"imperial"}
+    - Set as [METRIC]{"entity":"measurement","value":"metric"}
+    - Set as [Imperial]{"entity":"measurement","value":"imperial"}
+    - I choose [Metric]{"entity":"measurement","value":"metric"} measurement system
+    - I choose [imperial]{"entity":"measurement","value":"imperial"} measurement system
+    - Please set [Imperial]{"entity":"measurement","value":"imperial"} as the measurement system
+    - Please set [metric]{"entity":"measurement","value":"metric"} as the measurement system
+    - [imerial]{"entity":"measurement","value":"imperial"}
+    - [imperal]{"entity":"measurement","value":"imperial"}
+    - I use [imperil]{"entity":"measurement","value":"imperial"}
+    - I use [imperol]{"entity":"measurement","value":"imperial"} measurement system
+    - I use [Meric]{"entity":"measurement","value":"metric"} measurement system
+    - [matric]{"entity":"measurement","value":"metric"}
+    - I choose [Mytrik]{"entity":"measurement","value":"metric"} measurement system
+    - I choose [metrik]{"entity":"measurement","value":"metric"} measurement system
+    - my preferred measurement unit is [metrik]{"entity":"measurement","value":"metric"}
+    - my preferred measurement unit is [imperial]{"entity":"measurement","value":"imperial"}
+
+
+- intent: medical_condition_intent
+  examples: |
+    - I have [diabetes]{"entity":"disease"} and [high blood pressure]{"entity":"disease"}}
+    - I have [high cholestrol level]{"entity":"disease"}
+    - I have [fever]{"entity":"disease"}, [flu]{"entity":"disease"} and [diabetes]{"entity":"disease"}
+    - I have been having [diarrhea]{"entity":"disease"} lately
+    - I think I have [covid]{"entity":"disease"}
+    - I may have [diabetes]{"entity":"disease"}
+    - [No] {"entity":"disease"}
+    - [no] {"entity":"disease"}
+    - [NO] {"entity":"disease"}
+    - I have no diseases
+    - No
+- intent: name_intent
+  examples: |
+    - I am [Muneeba]{"entity":"name"}
+    - My name is [Ruman]{"entity":"name"}
+    - I am [Alisha]{"entity":"name"}
+    - It's [Noor]{"entity":"name"}
+    - My good name is [Abdul]{"entity":"name"}
+    - My name is [Dane]{"entity":"name"}
+    - My name is [Lucy]{"entity":"name"}
+    - This is [Joe]{"entity":"name"}
+    - I'm [Tasawar]{"entity":"name"}
+    - [Saad]{"entity":"name"} is my name
+    - [Brian]{"entity":"name"} is my last name
+    - [Lucy]{"entity":"name"}
+    - [Ruman]{"entity":"name"}
+    - [Hamza]{"entity":"name"}
+    - [saed]{"entity":"name"}
+- intent: inform
+  examples: |
+    - [170]{"entity":"NUMBER"} [cm]{"entity":"unit","value":"cm"}
+    - [182]{"entity":"NUMBER"} [centimeter]{"entity":"unit","value":"cm"}
+    - I am [95]{"entity":"NUMBER"} [centi meter]{"entity":"unit","value":"cm"}
+    - I am [250]{"entity":"NUMBER"} [centi-meter]{"entity":"unit","value":"cm"}
+    - I am [80]{"entity":"NUMBER"} [CM]{"entity":"unit","value":"cm"}
+    - My height is [120]{"entity":"NUMBER"} [cm]{"entity":"unit","value":"cm"}
+    - My height is [130]{"entity":"NUMBER"} [CENTIMETER]{"entity":"unit","value":"cm"}
+    - [5]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} [7]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
+    - [7]{"entity":"NUMBER"} [feets]{"entity":"unit","value":"feet"} [2]{"entity":"NUMBER", "role": "height2"} [INCHES]{"entity":"unit", "role": "inches","value":"inches"}
+    - [8]{"entity":"NUMBER"} [feets]{"entity":"unit","value":"feet"} [9]{"entity":"NUMBER", "role": "height2"} [INCHES]{"entity":"unit", "role": "inches","value":"inches"}
+    - [4]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} [10]{"entity":"NUMBER", "role": "height2"} [INCH]{"entity":"unit", "role": "inches","value":"inches"}
+    - [6]{"entity":"NUMBER"} [FT]{"entity":"unit","value":"feet"} [12]{"entity":"NUMBER", "role": "height2"} [inche]{"entity":"unit", "role": "inches","value":"inches"}
+    - [6]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} [3]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
+    - [5]{"entity":"NUMBER"} [FT]{"entity":"unit","value":"feet"} [4]{"entity":"NUMBER", "role": "height2"} [inche]{"entity":"unit", "role": "inches","value":"inches"}
+    - I am [7]{"entity":"NUMBER"} [FEETS]{"entity":"unit","value":"feet"} [1]{"entity":"NUMBER", "role": "height2"} [inch]{"entity":"unit", "role": "inches","value":"inches"}
+    - My height is [5]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} [6]{"entity":"NUMBER", "role": "height2"} [INCHE]{"entity":"unit", "role": "inches","value":"inches"}
+    - My height is [5]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} [1]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
+    - My height is [4]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} and [6]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
+    - I am [7]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} and [2]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
+    - I am [5]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} and [9]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
+    - [6]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} and [5]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
+    - [3]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} and [11]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
+    - [50]{"entity":"NUMBER"} [kg]{"entity":"unit","value":"kg"}
+    - [69]{"entity":"NUMBER"} [kilogram]{"entity":"unit","value":"kg"}
+    - [75]{"entity":"NUMBER"} [KiloGram]{"entity":"unit","value":"kg"}
+    - my weight is [100]{"entity":"NUMBER"} [KILOGRAM]{"entity":"unit","value":"kg"}
+    - its [105]{"entity":"NUMBER"} [KG]{"entity":"unit","value":"kg"}
+    - its [125]{"entity":"NUMBER"} [Kilo]{"entity":"unit","value":"kg"}
+    - [300]{"entity":"NUMBER"} [pounds]{"entity":"unit","value":"pound"}
+    - [80]{"entity":"NUMBER"} [lb]{"entity":"unit","value":"pound"}
+    - [90]{"entity":"NUMBER"} [LB]{"entity":"unit","value":"pound"}
+    - my weight is [135]{"entity":"NUMBER"} [Pounds]{"entity":"unit","value":"pound"}
+    - its [90]{"entity":"NUMBER"} [POUND]{"entity":"unit","value":"pound"}
+    - its [70]{"entity":"NUMBER"} [pound]{"entity":"unit","value":"pound"}
+    - My age is [28]{"entity":"NUMBER", "value":28} years old
+    - I am [20]{"entity":"NUMBER", "value":20} years of age
+    - [25]{"entity":"NUMBER", "value":25} years old
+    - I am [27]{"entity":"NUMBER", "value":27} years old
+    - [32]{"entity":"NUMBER", "value":32}
+    - [1]{"entity": "NUMBER", "value":1}
+    - [2]{"entity": "NUMBER", "value":2}
+    - [3]{"entity": "NUMBER", "value":3}
+    - [4]{"entity": "NUMBER", "value":4}
+    - [5]{"entity": "NUMBER", "value":5}
+
+- intent: inform_gender
+  examples: |
+    - [Male]{"entity":"gender", "value":"male"}
+    - I am a [male]{"entity":"gender", "value":"male"}
+    - I am a [guy]{"entity":"gender", "value":"male"}
+    - I am a [gentleman]{"entity":"gender", "value":"male"}
+    - [masculine]{"entity":"gender", "value":"male"}
+    - [man]{"entity":"gender", "value":"male"}
+    - I am a [man]{"entity":"gender", "value":"male"}
+    - [boy]{"entity":"gender", "value":"male"}
+    - I am a [boy]{"entity":"gender", "value":"male"}
+    - [Female]{"entity":"gender", "value":"female"}
+    - I am [female]{"entity":"gender", "value":"female"}
+    - [woman]{"entity":"gender", "value":"female"}
+    - I am a [woman]{"entity":"gender", "value":"female"}
+    - [gentlewoman]{"entity":"gender", "value":"female"}
+    - [feminine]{"entity":"gender", "value":"female"}
+    - [girl]{"entity":"gender", "value":"female"}
+    - I am a [girl]{"entity":"gender", "value":"female"}
+    - [lady]{"entity":"gender", "value":"female"}
+    - I am a [lady]{"entity":"gender", "value":"female"}
+    
+
+- intent: inform_eating
+  examples: |
+    - [Vegetarian]{"entity":"eating", "value":"vegetarian"}
+    - I am a [Vegetarian]{"entity":"eating", "value":"vegetarian"}
+    - I eat [Vegetarian]{"entity":"eating", "value":"vegetarian"}
+    - [vegetarian]{"entity":"eating", "value":"vegetarian"}
+    - I am a [vegetarian]{"entity":"eating", "value":"vegetarian"}
+    - I'm a [vegetarian]{"entity":"eating", "value":"vegetarian"}
+    - I eat [vegetarian]{"entity":"eating", "value":"vegetarian"}
+    - I only eat [veggies]{"entity":"eating", "value":"vegetarian"}
+    - I am a [herbivorous]{"entity":"eating", "value":"vegetarian"}
+    - I am a [fruitarian]{"entity":"eating", "value":"vegetarian"}
+    - I follow a [plant-based diet]{"entity":"eating", "value":"vegetarian"}
+    # - I am a [vegan]{"entity":"eating", "value":"vegetarian"}
+    - I only eat [non-animal]{"entity":"eating", "value":"vegetarian"} products 
+    - [vagetarian]{"entity":"eating", "value":"vegetarian"}
+    - I am a [vagetarian]{"entity":"eating", "value":"vegetarian"}
+    - I'm a [vegeterian]{"entity":"eating", "value":"vegetarian"}
+    - I eat [vagitarian]{"entity":"eating", "value":"vegetarian"}
+    - I only eat [vagies]{"entity":"eating", "value":"vegetarian"}
+    - I am a [harbevorous]{"entity":"eating", "value":"vegetarian"}
+    - I am a [frutarian]{"entity":"eating", "value":"vegetarian"}
+    - I only eat [non-anemal]{"entity":"eating", "value":"vegetarian"} products   
+    - [non vegetarian]{"entity":"eating", "value":"non-vegetarian"}
+    - I am a [non vegetarian]{"entity":"eating", "value":"non-vegetarian"}
+    - I'm a [non-vegetarian]{"entity":"eating", "value":"non-vegetarian"}
+    - I am an [omnivorous]{"entity":"eating", "value":"non-vegetarian"}
+    - I'm an [omnivorous]{"entity":"eating", "value":"non-vegetarian"}
+    - I eat [non-vegetarian]{"entity":"eating", "value":"non-vegetarian"}
+    - I only eat [non-vegetarian]{"entity":"eating", "value":"non-vegetarian"}
+    - [non vagetarian]{"entity":"eating", "value":"non-vegetarian"}
+    - I am a [non-vegaterian]{"entity":"eating", "value":"non-vegetarian"}
+    - I'm a [non vegatarian]{"entity":"eating", "value":"non-vegetarian"}
+    - I'm a [non-veg]{"entity":"eating", "value":"non-vegetarian"}
+    - I'm a [non veg]{"entity":"eating", "value":"non-vegetarian"}
+    - I am an [omnevorous]{"entity":"eating", "value":"non-vegetarian"}
+    - I'm an [omnivorus]{"entity":"eating", "value":"non-vegetarian"}
+    - I eat [non-vegetarian]{"entity":"eating","value":"non-vegetarian"}
+    - I only eat [non-vegetarian]{"entity":"eating", "value":"non-vegetarian"}
+    - [Vegan]{"entity":"eating", "value":"vegan"}
+    - I am a [Vegan]{"entity":"eating", "value":"vegan"}
+    - I eat [Vegan]{"entity":"eating", "value":"vegan"}
+    - [vegan]{"entity":"eating", "value":"vegan"}
+    - I am a [vegan]{"entity":"eating", "value":"vegan"}
+    - I'm a [vegan]{"entity":"eating", "value":"vegan"}
+    - I eat [vegan]{"entity":"eating", "value":"vegan"}
+    - I am a [vegen]{"entity":"eating", "value":"vegan"}
+    - [vegen]{"entity":"eating", "value":"vegan"}
+
+- intent: inform_userGoal
+  examples: |
+    - I have [no] {"entity":"userGoal","value":"other"}goal.
+    - [NO] {"entity":"userGoal","value":"other"}goals. 
+    - Have [not specified] {"entity":"userGoal","value":"other"} any goal at the moment.
+    - [gain]{"entity":"userGoal","value":"gain"} weight
+    - [Gain]{"entity":"userGoal","value":"gain"} weight
+    - I want to [Gain]{"entity":"userGoal","value":"gain"} weight
+    - I want to [gain]{"entity":"userGoal","value":"gain"} weight
+    - I want to [Gain]{"entity":"userGoal","value":"gain"} muscle
+    - I want to [improve]{"entity":"userGoal", "value":"gain"} my muscle 
+    - I want to [improve]{"entity":"userGoal", "value":"gain"} my body weight
+    - I have to [Gain]{"entity":"userGoal","value":"gain"} weight
+    - I want to [increase]{"entity":"userGoal", "value":"gain"}  my weight
+    - [Gane]{"entity":"userGoal","value":"gain"} weight
+    - I want to [increse]{"entity":"userGoal","value":"gain"}  my weight
+    - [Lose]{"entity":"userGoal","value":"lose"} weight
+    - [lose]{"entity":"userGoal","value":"lose"} weight
+    - I want to [Lose]{"entity":"userGoal","value":"lose"}  my weight
+    - I want to [lose]{"entity":"userGoal","value":"lose"}  my weight
+    - I have to [Lose]{"entity":"userGoal","value":"lose"}  my weight
+    - I want to [decrease]{"entity":"userGoal", "value":"lose"} my body fat
+    - [Los]{"entity":"userGoal","value":"lose"} weight
+    - [loose]{"entity":"userGoal" ,"value":"lose"} weight
+    - [Loos]{"entity":"userGoal" ,"value":"lose"} weight
+    - I want to [decrese]{"entity":"userGoal","value":"lose"} my body fat
+    - [Maintain]{"entity":"userGoal","value":"maintain"} weight
+    - [maintain]{"entity":"userGoal","value":"maintain"} weight
+    - I want to [remain]{"entity":"userGoal", "value":"maintain"} like i am
+    - I have to [Maintain]{"entity":"userGoal","value":"maintain"} weight
+    - I have to [maintain]{"entity":"userGoal","value":"maintain"} weight
+    - I want to [maintain]{"entity":"userGoal","value":"maintain"} weight
+    - I want to [Maintain]{"entity":"userGoal","value":"maintain"} weight
+    - I have to [stay]{"entity":"userGoal"} ,"value":"maintain"} as i am
+    - [Meintain]{"entity":"userGoal", "value":"maintain"} weight
+    - [Mantain]{"entity":"userGoal","value":"maintain"} weight
+    - [Maintein]{"entity":"userGoal","value":"maintain"} weight
+    - I want to [remein]{"entity":"userGoal","value":"maintain"} like i am    
+
+- intent: change_weight
+  examples: |
+    - Change my weight from [35]{"entity":"NUMBER", "role": "weight1"} kg to [50]{"entity":"NUMBER", "role": "weight2"} kg
+    - I want to change my weight from [92]{"entity":"NUMBER", "role": "weight1"} kg to [123]{"entity":"NUMBER", "role": "weight2"} kg
+    - Please change my weight from [68]{"entity":"NUMBER", "role": "weight1"} kg to [74]{"entity":"NUMBER", "role": "weight2"} kg
+    - alter my weight from [88]{"entity":"NUMBER", "role": "weight1"} kg to [115]{"entity":"NUMBER", "role": "weight2"} kg
+    - I want to ammend my weight from [45]{"entity":"NUMBER", "role": "weight1"} kg to [55]{"entity":"NUMBER", "role": "weight2"} kg
+    - Please modify my weight from [50]{"entity":"NUMBER", "role": "weight1"} kg to [78]{"entity":"NUMBER", "role": "weight2"} kg
+    - I'd like to lose my weight from [158]{"entity":"NUMBER", "role": "weight1"} kg to [135]{"entity":"NUMBER", "role": "weight2"} kg
+    - I want to increase my weight from [65]{"entity":"NUMBER", "role": "weight1"} kg to [83]{"entity":"NUMBER", "role": "weight2"} kg
+    - I would like to go from [52]{"entity":"NUMBER", "role": "weight1"} kilogram to [65]{"entity":"NUMBER", "role": "weight2"} kilogram
+    - I need to reduce my weight from [120]{"entity":"NUMBER", "role": "weight1"} kilogram to [105]{"entity":"NUMBER", "role": "weight2"} kilogram
+    - Please alter my weight from [55]{"entity":"NUMBER", "role": "weight1"} pounds to [77]{"entity":"NUMBER", "role": "weight2"} pounds
+    - I would like to lose my weight from [125]{"entity":"NUMBER", "role": "weight1"} pounds to [105]{"entity":"NUMBER", "role": "weight2"} pounds
+    - I want to increase my weight from [40]{"entity":"NUMBER", "role": "weight1"} lb to [88]{"entity":"NUMBER", "role": "weight2"} lb   
+    - Modify my weight from [60]{"entity":"NUMBER", "role": "weight1"} lb to [95]{"entity":"NUMBER", "role": "weight2"} lb
+    - I want to ammend my weight from [145]{"entity":"NUMBER", "role": "weight1"} lb to [128]{"entity":"NUMBER", "role": "weight2"} lb
+    - I'd like to reduce my weight from [117]{"entity":"NUMBER", "role": "weight1"} pounds to [100]{"entity":"NUMBER", "role": "weight2"} pounds
+    - Change my weight from [40]{"entity":"NUMBER", "role": "weight1"} to [31]{"entity":"NUMBER", "role": "weight2"}
+    - I want to change my weight from [69]{"entity":"NUMBER", "role": "weight1"} to [83]{"entity":"NUMBER", "role": "weight2"}
+    - Please change my weight from [94]{"entity":"NUMBER", "role": "weight1"} to [127]{"entity":"NUMBER", "role": "weight2"}
+    - Please modify my weight from [85]{"entity":"NUMBER", "role": "weight1"} to [79]{"entity":"NUMBER", "role": "weight2"}
+    - Modify my weight from [107]{"entity":"NUMBER", "role": "weight1"} to [92]{"entity":"NUMBER", "role": "weight2"}
+    - Change my weight to [50]{"entity":"NUMBER", "role": "weight2"} kg
+    - I want to change my weight to [123]{"entity":"NUMBER", "role": "weight2"} kg
+    - Please change my weight to [74]{"entity":"NUMBER", "role": "weight2"} kg
+    - alter my weight to [115]{"entity":"NUMBER", "role": "weight2"} kg
+    - I want to ammend my weight to [85]{"entity":"NUMBER", "role": "weight2"} kg
+    - Please modify my weight to [98]{"entity":"NUMBER", "role": "weight2"} kg
+    - Change my weight to [62]{"entity":"NUMBER", "role": "weight2"} pounds
+    - I want to change my weight to [129]{"entity":"NUMBER", "role": "weight2"} pounds
+    - Please change my weight to [274]{"entity":"NUMBER", "role": "weight2"} pounds
+    - alter my weight to [93]{"entity":"NUMBER", "role": "weight2"} pounds
+    - I want to ammend my weight to [148]{"entity":"NUMBER", "role": "weight2"} pounds
+    - Please modify my weight to [167]{"entity":"NUMBER", "role": "weight2"} pounds
+    - Change my weight to [62]{"entity":"NUMBER", "role": "weight2"} lb
+    - I want to change my weight to [129]{"entity":"NUMBER", "role": "weight2"} lbs
+    - Please change my weight to [274]{"entity":"NUMBER", "role": "weight2"} lb
+    - alter my weight to [93]{"entity":"NUMBER", "role": "weight2"} lbs
+    - I want to ammend my weight to [148]{"entity":"NUMBER", "role": "weight2"} lbs
+    - Please modify my weight to [167]{"entity":"NUMBER", "role": "weight2"} lb
+
+- intent: change_stressLevel
+  examples: |
+    - Change my stress level from [1]{"entity":"NUMBER", "role": "stressLevel1"} to [3]{"entity":"NUMBER", "role": "stressLevel2"}
+    - I want to change my stress level from [3]{"entity":"NUMBER", "role": "stressLevel1"} to [5]{"entity":"NUMBER", "role": "stressLevel2"}
+    - Please change my stress level from [2]{"entity":"NUMBER", "role": "stressLevel1"} to [4]{"entity":"NUMBER", "role": "stressLevel2"}
+    - Modify my stress level from [1]{"entity":"NUMBER", "role": "stressLevel1"} to [2]{"entity":"NUMBER", "role": "stressLevel2"}
+    - I want to change my stress level from [2]{"entity":"NUMBER", "role": "stressLevel1"} to [3]{"entity":"NUMBER", "role": "stressLevel2"}
+    - Kindly alter my stress level from [3]{"entity":"NUMBER", "role": "stressLevel1"} to [1]{"entity":"NUMBER", "role": "stressLevel2"}
+    - I'd like to shift my stress level from [4]{"entity":"NUMBER", "role": "stressLevel1"} to [5]{"entity":"NUMBER", "role": "stressLevel2"}
+    - would you please reduce my stress level from [5]{"entity":"NUMBER", "role": "stressLevel1"} to [4]{"entity":"NUMBER", "role": "stressLevel2"}
+    - Please decrease my stress level from [4]{"entity":"NUMBER", "role": "stressLevel1"} to [3]{"entity":"NUMBER", "role": "stressLevel2"}
+    - if you could switch my stress level from [3]{"entity":"NUMBER", "role": "stressLevel1"} to [2]{"entity":"NUMBER", "role": "stressLevel2"}
+    - Kindly change my stress level from [1]{"entity":"NUMBER", "role": "stressLevel1"} to [4]{"entity":"NUMBER", "role": "stressLevel2"}
+    - i would like to modify my stress level from [2]{"entity":"NUMBER", "role": "stressLevel1"} to [1]{"entity":"NUMBER", "role": "stressLevel2"}
+    - will you please change my stress level from [1]{"entity":"NUMBER", "role": "stressLevel1"} to [5]{"entity":"NUMBER", "role": "stressLevel2"}
+    - Change my stress level to [3]{"entity":"NUMBER", "role": "stressLevel2"}
+    - I want to change my stress level to [5]{"entity":"NUMBER", "role": "stressLevel2"}
+    - Please change my stress level to [4]{"entity":"NUMBER", "role": "stressLevel2"}
+    - Modify my stress level to [2]{"entity":"NUMBER", "role": "stressLevel2"}
+    - I want to change my stress level to [3]{"entity":"NUMBER", "role": "stressLevel2"}
+    - Kindly alter my stress level to [1]{"entity":"NUMBER", "role": "stressLevel2"}
+   
+
+- intent: change_height
+  examples: |
+    - Change my height from [173]{"entity":"NUMBER", "role": "height1"} cm to [187]{"entity":"NUMBER", "role": "height2"} cm
+    - I want to change my height from [195]{"entity":"NUMBER", "role": "height1"} cm to [203]{"entity":"NUMBER", "role": "height2"} cm
+    - Please modify my height from [156]{"entity":"NUMBER", "role": "height1"} cm to [164]{"entity":"NUMBER", "role": "height2"} cm
+    - kindly alter my height from [133]{"entity":"NUMBER", "role": "height1"} cm to [178]{"entity":"NUMBER", "role": "height2"} cm
+    - I need to change my height from [98]{"entity":"NUMBER", "role": "height1"} cm to [128]{"entity":"NUMBER", "role": "height2"} cm
+    - I'd like to change my height from [5]{"entity":"NUMBER", "role": "height1"} ft to [6]{"entity":"NUMBER", "role": "height2"} ft
+    - I need to alter my height from [2]{"entity":"NUMBER", "role": "height1"} ft to [5]{"entity":"NUMBER", "role": "height2"} ft
+    - I'd like to change my height from [7.0]{"entity":"NUMBER", "role": "height1"} ft to [7.7]{"entity":"NUMBER", "role": "height2"} ft
+    - I need to alter my height from [6.6]{"entity":"NUMBER", "role": "height1"} ft to [7]{"entity":"NUMBER", "role": "height2"} ft
+    - Change my height from [5.2]{"entity":"NUMBER", "role": "height1"} ft to [5.8]{"entity":"NUMBER", "role": "height2"} ft
+    - I want to change my height from [6]{"entity":"NUMBER", "role": "height1"} ft to [7.2]{"entity":"NUMBER", "role": "height2"} ft
+    - Please modify my height from [4.9]{"entity":"NUMBER", "role": "height1"} ft to [5.0]{"entity":"NUMBER", "role": "height2"} ft
+    - kindly alter my height from [5.5]{"entity":"NUMBER", "role": "height1"} ft to [6]{"entity":"NUMBER", "role": "height2"} ft
+    - I need to change my height from [4]{"entity":"NUMBER", "role": "height1"} ft to [5.8]{"entity":"NUMBER", "role": "height2"} ft
+    - I'd like to change my height from [3]{"entity":"NUMBER", "role": "height1" } ft [3]{"entity":"NUMBER", "role": "inches" } inches to [6]{"entity":"NUMBER", "role": "height2" } ft [2]{"entity":"NUMBER", "role": "inches2" } inches
+    - I need to alter my height from [5]{"entity":"NUMBER", "role": "height1" } ft [6]{"entity":"NUMBER", "role": "inches" } inches to [5]{"entity":"NUMBER", "role": "height2" } ft [9]{"entity":"NUMBER", "role": "inches2" } inches
+    - I'd like to change my height from [6]{"entity":"NUMBER", "role": "height1" } ft [10]{"entity":"NUMBER", "role": "inches" } inches to [8]{"entity":"NUMBER", "role": "height2" } ft [8]{"entity":"NUMBER", "role": "inches2" } inches
+    - I need to alter my height from [7]{"entity":"NUMBER", "role": "height1" } ft [11]{"entity":"NUMBER", "role": "inches" } inches to [7]{"entity":"NUMBER", "role": "height2" } ft [7]{"entity":"NUMBER", "role": "inches2" } inches
+    - Change my height from [5]{"entity":"NUMBER", "role": "height1" } ft [5]{"entity":"NUMBER", "role": "inches" } inches to [4]{"entity":"NUMBER", "role": "height2" } ft [4]{"entity":"NUMBER", "role": "inches2" } inches
+    - I want to change my height from [8]{"entity":"NUMBER", "role": "height1" } ft [4]{"entity":"NUMBER", "role": "inches" } inches to [5]{"entity":"NUMBER", "role": "height2" } ft [1]{"entity":"NUMBER", "role": "inches2" } inches
+    - Please modify my height from [5]{"entity":"NUMBER", "role": "height1" } ft [5]{"entity":"NUMBER", "role": "inches" } inches to [6]{"entity":"NUMBER", "role": "height2" } ft [0]{"entity":"NUMBER", "role": "inches2" } inches
+    - kindly alter my height from [4]{"entity":"NUMBER", "role": "height1" } ft [8]{"entity":"NUMBER", "role": "inches" } inches to [3]{"entity":"NUMBER", "role": "height2" } ft [11]{"entity":"NUMBER", "role": "inches2" } inches
+    - I need to change my height from [6]{"entity":"NUMBER", "role": "height1" } ft [3]{"entity":"NUMBER", "role": "inches" } inches to [4]{"entity":"NUMBER", "role": "height2" } ft [4]{"entity":"NUMBER", "role": "inches2" } inches
+    - Change my height from [140]{"entity":"NUMBER", "role": "height1"} to [161]{"entity":"NUMBER", "role": "height2"}
+    - I want to change my height from [190]{"entity":"NUMBER", "role": "height1"} to [174]{"entity":"NUMBER", "role": "height2"}
+    - Please change my height from [210]{"entity":"NUMBER", "role": "height1"} to [197]{"entity":"NUMBER", "role": "height2"}
+    - Please modify my height from [203]{"entity":"NUMBER", "role": "height1"} to [189]{"entity":"NUMBER", "role": "height2"}
+    - Modify my height from [123]{"entity":"NUMBER", "role": "height1"} to [135]{"entity":"NUMBER", "role": "height2"}
+    - Change my height from [3]{"entity":"NUMBER", "role": "height1"} to [4]{"entity":"NUMBER", "role": "height2"}
+    - Please change my height from [6]{"entity":"NUMBER", "role": "height1"} to [5]{"entity":"NUMBER", "role": "height2"}
+    - Change my height to [187]{"entity":"NUMBER", "role": "height2"} cm
+    - I want to change my height to [203]{"entity":"NUMBER", "role": "height2"} cm
+    - Please modify my height to [164]{"entity":"NUMBER", "role": "height2"} cm
+    - kindly alter my height to [178]{"entity":"NUMBER", "role": "height2"} cm
+    - I need to change my height to [128]{"entity":"NUMBER", "role": "height2"} cm
+    - I'd like to change my height to [6]{"entity":"NUMBER", "role": "height2"} ft
+    - I need to alter my height to [5]{"entity":"NUMBER", "role": "height2"} ft
+    - I'd like to change my height to [7.7]{"entity":"NUMBER", "role": "height2"} ft
+    - I need to alter my height to [7]{"entity":"NUMBER", "role": "height2"} ft
+    - Change my height from to [5.8]{"entity":"NUMBER", "role": "height2"} ft
+    - I want to change my height to [7.2]{"entity":"NUMBER", "role": "height2"} ft
+    - Please modify my height to [5.0]{"entity":"NUMBER", "role": "height2"} ft
+    - kindly alter my height to [6]{"entity":"NUMBER", "role": "height2"} ft
+    - Change my height to [4]{"entity":"NUMBER", "role": "height2" } ft [4]{"entity":"NUMBER", "role": "inches2" } inches
+    - I want to change my height to [5]{"entity":"NUMBER", "role": "height2" } ft [1]{"entity":"NUMBER", "role": "inches2" } inches
+    - Please modify my height to [6]{"entity":"NUMBER", "role": "height2" } ft [0]{"entity":"NUMBER", "role": "inches2" } inches
+    - kindly alter my height to [3]{"entity":"NUMBER", "role": "height2" } ft [11]{"entity":"NUMBER", "role": "inches2" } inches
+    - I need to change my height to [7]{"entity":"NUMBER", "role": "height2" } ft [4]{"entity":"NUMBER", "role": "inches2" } inches
+
+- intent: change_age
+  examples: |
+    - Change my age from [18]{"entity":"NUMBER", "role": "age1"} years old to [22]{"entity":"NUMBER", "role": "age2"} years
+    - modify my age from [60]{"entity":"NUMBER", "role": "age1"} years old to [65]{"entity":"NUMBER", "role": "age2"} years
+    - alter my age from [22]{"entity":"NUMBER", "role": "age1"} years old to [30]{"entity":"NUMBER", "role": "age2"} years
+    - I want to change my age from [35]{"entity":"NUMBER", "role": "age1"} years old to [45]{"entity":"NUMBER", "role": "age2"} years old
+    - I want to alter my age from [41]{"entity":"NUMBER", "role": "age1"} years old to [48]{"entity":"NUMBER", "role": "age2"} years old
+    - I want to modify my age from [68]{"entity":"NUMBER", "role": "age1"} years old to [70]{"entity":"NUMBER", "role": "age2"} years old
+    - Please change my age from [30]{"entity":"NUMBER", "role": "age1"} years to [37]{"entity":"NUMBER", "role": "age2"} years
+    - Please modify my age from [21]{"entity":"NUMBER", "role": "age1"} years to [25]{"entity":"NUMBER", "role": "age2"} years
+    - Please alter my age from [19]{"entity":"NUMBER", "role": "age1"} years to [20]{"entity":"NUMBER", "role": "age2"} years
+    - I need to change my age from [31]{"entity":"NUMBER", "role": "age1"} years old to [37]{"entity":"NUMBER", "role": "age2"} years old
+    - I need to modify my age from [42]{"entity":"NUMBER", "role": "age1"} years old to [45]{"entity":"NUMBER", "role": "age2"} years old
+    - I need to alter my age from [45]{"entity":"NUMBER", "role": "age1"} years old to [50]{"entity":"NUMBER", "role": "age2"} years old
+    - I'd like to alter my age from [44]{"entity":"NUMBER", "role": "age1"} years old to [51]{"entity":"NUMBER", "role": "age2"} years old
+    - I'd like to modify my age from [52]{"entity":"NUMBER", "role": "age1"} years old to [63]{"entity":"NUMBER", "role": "age2"} years old
+    - I'd like to change my age from [54]{"entity":"NUMBER", "role": "age1"} years old to [60]{"entity":"NUMBER", "role": "age2"} years old
+    - I would like to alter my age from [17]{"entity":"NUMBER", "role": "age1"} years old to [19]{"entity":"NUMBER", "role": "age2"} years old
+    - I would like to modify my age from [27]{"entity":"NUMBER", "role": "age1"} years old to [31]{"entity":"NUMBER", "role": "age2"} years old
+    - I would like to change my age from [44]{"entity":"NUMBER", "role": "age1"} years old to [49]{"entity":"NUMBER", "role": "age2"} years old
+    - Change my age from [38]{"entity":"NUMBER", "role": "age1"} to [29]{"entity":"NUMBER", "role": "age2"} years
+    - modify my age from [27]{"entity":"NUMBER", "role": "age1"} to [35]{"entity":"NUMBER", "role": "age2"} years
+    - I want to change my age from [53]{"entity":"NUMBER", "role": "age1"} to [18]{"entity":"NUMBER", "role": "age2"} years old
+    - I want to increase my age from [69]{"entity":"NUMBER", "role": "age1"} to [83]{"entity":"NUMBER", "role": "age2"}
+    - I want to decrease my age from [39]{"entity":"NUMBER", "role": "age1"} to [23]{"entity":"NUMBER", "role": "age2"}
+    - I would like to decrease my age from [47]{"entity":"NUMBER", "role": "age1"} to [43]{"entity":"NUMBER", "role": "age2"}
+    - I would like to increase my age from [31]{"entity":"NUMBER", "role": "age1"} to [42]{"entity":"NUMBER", "role": "age2"}
+    - Change my age to [22]{"entity":"NUMBER", "role": "age2"} years
+    - modify my age to [65]{"entity":"NUMBER", "role": "age2"} years
+    - alter my age to [30]{"entity":"NUMBER", "role": "age2"} years
+    - I want to change my age to [45]{"entity":"NUMBER", "role": "age2"} years old
+    - I want to alter my age [48]{"entity":"NUMBER", "role": "age2"} years old
+    - I want to modify my age to [102]{"entity":"NUMBER", "role": "age2"} years old
+    - I want to modify my age to [70]{"entity":"NUMBER", "role": "age2"} years old
+  
+- intent: change_measuringUnit
+  examples: |
+    - Change my preferred measurement scale from [metric]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - modify my preferred measurement scale from [metric]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - alter my preferred measurement scale from [metric]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I want to change my preferred measurement scale from [Metrics]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [Imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I want to modify my preferred measurement scale from [Metrics]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [Imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I want to alter my preferred measurement scale from [Metrics]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [Imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I would like to change my preferred measurement scale from [metrics]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I would like to modify my preferred measurement scale from [metrics]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I would like to alter my preferred measurement scale from [metrics]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I need to change my preferred measurement scale from [Metric]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [Imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I need to alter my preferred measurement scale from [Metric]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [Imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I need to modify my preferred measurement scale from [Metric]{"entity":"measurement", "role": "measurement1", "value":"metric"} to [Imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}  
+    - Change my preferred measurement scale from [Imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [Metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - modify my preferred measurement scale from [Imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [Metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - alter my preferred measurement scale from [Imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [Metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I want to change my preferred measurement scale from [imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I want to modify my preferred measurement scale from [imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I want to alter my preferred measurement scale from [imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I would like to change my preferred measurement scale from [Imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [Metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I would like to modify my preferred measurement scale from [Imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [Metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I would like to alter my preferred measurement scale from [Imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [Metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I need to change my preferred measurement scale from [imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I need to alter my preferred measurement scale from [imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I need to modify my preferred measurement scale from [imperial]{"entity":"measurement", "role": "measurement1", "value":"imperial"} to [metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - Change my preferred measurement scale to [imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - modify my preferred measurement scale to [metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - alter my preferred measurement scale to [imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I want to change my preferred measurement scale to [Imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I want to modify my preferred measurement scale to [Imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I want to alter my preferred measurement scale to [Imperial]{"entity":"measurement", "role": "measurement2", "value":"imperial"}
+    - I would like to change my preferred measurement scale to [Metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I would like to modify my preferred measurement scale to [Metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+    - I would like to alter my preferred measurement scale to [Metric]{"entity":"measurement", "role": "measurement2", "value":"metric"}
+
+- intent: change_foodieLevel
+  examples: |
+    - Change my foodie level from [1]{"entity":"NUMBER", "role": "foodieLevel1"} to [2]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - modify my foodie level from [2]{"entity":"NUMBER", "role": "foodieLevel1"} to [3]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - alter my foodie level from [3]{"entity":"NUMBER", "role": "foodieLevel1"} to [4]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - I want to change my foodie level from [4]{"entity":"NUMBER", "role": "foodieLevel1"} to [5]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - I want to modify my foodie level from [5]{"entity":"NUMBER", "role": "foodieLevel1"} to [4]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - I want to alter my foodie level from [4]{"entity":"NUMBER", "role": "foodieLevel1"} to [3]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - Please change my foodie level from [3]{"entity":"NUMBER", "role": "foodieLevel1"} to [2]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - Please modify my foodie level from [2]{"entity":"NUMBER", "role": "foodieLevel1"} to [1]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - Please alter my foodie level from [1]{"entity":"NUMBER", "role": "foodieLevel1"} to [4]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - I'd like to change my foodie level from [2]{"entity":"NUMBER", "role": "foodieLevel1"} to [5]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - I'd like to modify my foodie level from [3]{"entity":"NUMBER", "role": "foodieLevel1"} to [1]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - I'd like to alter my foodie level from [5]{"entity":"NUMBER", "role": "foodieLevel1"} to [3]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - Change my foodie level to [2]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - modify my foodie level to [3]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - alter my foodie level to [4]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - I want to change my foodie level to [5]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - I want to modify my foodie level to [3]{"entity":"NUMBER", "role": "foodieLevel2"}
+    - I want to alter my foodie level to [1]{"entity":"NUMBER", "role": "foodieLevel2"}
+
+- intent: change_eating
+  examples:  |
+    - Change my eating style from [vegetarian]{"entity":"eating", "role": "eating1", "value":"vegetarian"} to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - modify my eating style from [vegan]{"entity":"eating", "role": "eating1", "value":"vegan"} to [non-vegetarian]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - alter my eating style from [non-vegetarian]{"entity":"eating", "role": "eating1", "value":"non-vegetarian"} to [vegetarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I want to change my eating style from [vegetarian]{"entity":"eating", "role": "eating1", "value":"vegetarian"} to [non-veg]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - I want to modify my eating style from [vegan]{"entity":"eating", "role": "eating1", "value":"vegan"} to [vegatarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I want to alter my eating style from [non-vegetarian]{"entity":"eating", "role": "eating1", "value":"non-vegetarian"} to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - I would like to change my eating category from [vegatarian]{"entity":"eating", "role": "eating1", "value":"vegetarian"} to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - I would like to modify my eating category from [vegan]{"entity":"eating", "role": "eating1", "value":"vegan"} to [non-vegetarian]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - I would like to alter my eating category from [non-veg]{"entity":"eating", "role": "eating1", "value":"non-vegetarian"} to [vegetarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I need to change my eating category from [vegetarian]{"entity":"eating", "role": "eating1", "value":"vegetarian"} to [non-veg]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - I need to alter my eating category from [vegan]{"entity":"eating", "role": "eating1", "value":"vegan"} to [vegatarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I need to modify my eating category from [non-vegatarian]{"entity":"eating", "role": "eating1", "value":"non-vegetarian"} to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - Change my eating style to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - modify my eating style to [non-vegetarian]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - please change my eating style to [vegetarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I want to change my eating style to [non-veg]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - I want to modify my eating style to [vegatarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I want to alter my eating style to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - I would like to change my eating category to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - I would like to modify my eating category to [non-vegetarian]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - I would like to alter my eating category to [vegetarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I need to change my eating category to [non-veg]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - I need to alter my eating category to [vegatarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I need to modify my eating category to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - Change my preferred eating style from [vegetarian]{"entity":"eating", "role": "eating1", "value":"vegetarian"} to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - modify my preferred eating style from [vegan]{"entity":"eating", "role": "eating1", "value":"vegan"} to [non-vegetarian]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - alter my preferred eating style from [non-vegatarian]{"entity":"eating", "role": "eating1", "value":"non-vegetarian"} to [vegetarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I want to change my preferred eating style from [vegetarian]{"entity":"eating", "role": "eating1", "value":"vegetarian"} to [non-veg]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - I want to modify my preferred eating style from [vegan]{"entity":"eating", "role": "eating1", "value":"vegan"} to [vegatarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I want to alter my preferred eating style from [non-vegatarian]{"entity":"eating", "role": "eating1", "value":"non-vegetarian"} to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - I would like to change my preferred eating category from [vegetarian]{"entity":"eating", "role": "eating1", "value":"vegetarian"} to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    - I would like to modify my preferred eating category from [vegan]{"entity":"eating", "role": "eating1", "value":"vegan"} to [non-vegetarian]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - I would like to alter my preferred eating category from [non-vegetarian]{"entity":"eating", "role": "eating1", "value":"non-vegetarian"} to [vegetarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I need to change my preferred eating category from [vegetarian]{"entity":"eating", "role": "eating1", "value":"vegetarian"} to [non-vegetarian]{"entity":"eating", "role": "eating2", "value":"non-vegetarian"}
+    - I need to alter my preferred eating category from [vegan]{"entity":"eating", "role": "eating1", "value":"vegan"} to [vegetarian]{"entity":"eating", "role": "eating2", "value":"vegetarian"}
+    - I need to modify my preferred eating category from [non-vegetarian]{"entity":"eating", "role": "eating1", "value":"non-vegetarian"} to [vegan]{"entity":"eating", "role": "eating2", "value":"vegan"}
+    
+- intent: update_profile
+  examples:  |
+    - How do I update my profile
+    - How can I update my profile
+    - How can my profile be updated
+    - How can I make changes to my profile
+    - How do I modify me profile
+    - Is there any way I can update my profile
+
+- intent: list_questions
+  examples: |
+    - what questions can you answer
+    - What questions are you able to answer?
+    - What kind of queries are you capable of answering?
+    - What queries can you respond to?
+    - What inquiries are you able to address?
+    - What kind of queries can you address?
+
+- intent: identity
+  examples: |
+    - Who are you
+    - May I know you
+    - Will you introduce yourself
+    - Can you tell me about yourself
+    - Can you identify yourself
+    - What exactly are you
+
+- intent: viki_meaning
+  examples: |
+    - what does Viki mean
+    - What exactly Viki is
+    - What is meant by Viki
+    - What Viki shows
+    - What does the term Viki mean
+    - What precisely is meant by the term Viki
+
+- intent: gender_check
+  examples: |
+    - are you a man or a woman
+    - Are you a male or female
+    - Which Gender are you
+    - Are you a boy or girl
+    - What gender do you identify as
+    - Whether you are a male or female
+
+- intent: intellithing_meaning
+  examples: |
+    - what is intellithing
+    - Can you describe intellithing
+    - What exactly intellithing is
+    - What does intellithing mean
+    - Will you tell me about intellithing
+    - Would you elaborate intellithing
+
+- intent: viki_creator
+  examples: |
+    - who created you
+    - Who designed you
+    - Who made you exactly
+    - Who built you
+    - How were you created
+    - Who developed you
+
+- intent: answer_method
+  examples: |
+    - How do you answer questions
+    - How do you predict
+    - How do you answer queries
+    - How do you respond to questions
+    - In what way do you respond to enquiries
+    - How do you reply to inquiries
+    - How would you answer to questions
+
+
+# - intent: height
+#   examples: |
+#     - [170]{"entity":"NUMBER", "value":170, "role": "height1"} cm
+#     - [182]{"entity":"NUMBER", "value":182, "role": "height1"} cm
+#     - I am [169]{"entity":"NUMBER", "value":169, "role": "height1"} cm
+#     - My height is [190]{"entity":"NUMBER", "value":190, "role": "height1"} cm
+#     - [5]{"entity":"NUMBER", "value":5, "role": "height1"} ft [6]{"entity":"NUMBER", "value":6, "role": "height2"} inches
+#     - [6]{"entity":"NUMBER", "value":6, "role": "height1"} ft [2]{"entity":"NUMBER", "value":2, "role": "height2"} inches
+#     - I am [5]{"entity":"NUMBER", "value":5, "role": "height1"} ft [11]{"entity":"NUMBER", "value":11, "role": "height2"} inches
+#     - My height is [5]{"entity":"NUMBER", "value":5, "role": "height1"} ft [6]{"entity":"NUMBER", "value":6, "role": "height2"} inches
+
+# - intent: weight
+#   examples: |
+#     - [92]{"entity":"NUMBER", "value":92, "role": "weight"} kg
+#     - [69]{"entity":"NUMBER", "value":69, "role": "weight"} Kg
+#     - [75]{"entity":"NUMBER", "value":75, "role": "weight"} kg
+#     - [150]{"entity":"NUMBER", "value":150, "role": "weight"} pounds
+#     - [275]{"entity":"NUMBER", "value":275, "role": "weight"} Pounds
+#     - [172]{"entity":"NUMBER", "value":172, "role": "weight"} lb
+
+# - intent: gender
+#   examples: |
+#     - I am male
+#     - Male
+#     - I am a man
+#     - Female
+#     - I am female
+#     - I am a woman
+
+# - intent: age
+#   examples: |
+#     - My age is [28]{"entity":"NUMBER", "value":28, "role":"age"} years old
+#     - I am [20]{"entity":"NUMBER", "value":20, "role":"age"} years of age
+#     - [25]{"entity":"NUMBER", "value":25, "role":"age"} years old
+#     - I am [27]{"entity":"NUMBER", "value":27, "role":"age"} years old
+#     - [32]{"entity":"NUMBER", "value":32, "role":"age"}
