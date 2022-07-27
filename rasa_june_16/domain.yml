@@ -27,6 +27,16 @@ intents:
 - intellithing_meaning
 - viki_creator
 - answer_method
+- QN1
+- QN2
+- QN3
+- QN4
+- QN5
+- QN6
+- QN7
+- QN8
+- QN9_10
+- QN11
 entities:
 - NUMBER
 - unit
@@ -42,6 +52,16 @@ entities:
 - ORG
 
 slots:
+  user_id:
+    type: float
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      intent: inform
+      entity: NUMBER
+      conditions:
+      - active_loop: simple_user_form
+        requested_slot: user_id
   height1:
     type: float
     influence_conversation: true
@@ -210,6 +230,7 @@ forms:
   simple_user_form:
     required_slots:
       - name
+      - user_id
       - measuringUnit
       - height1
       - height2
@@ -269,6 +290,8 @@ responses:
              Your goal regarding weight is: {userGoal} \n\n {eating} {likeFood} \n\n
              You have {diseases}\n\n
              OK, you are all set. Ask me questions or update your details."
+  utter_ask_user_id:
+  - text: what is your user id?
   utter_ask_height1:
     - condition:
       - type: slot
@@ -327,3 +350,4 @@ actions:
 - action_change_measuringUnit
 - action_change_foodieLevel
 - action_store_db
+- action_QN_response

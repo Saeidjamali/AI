@@ -143,6 +143,14 @@ nlu:
     - [3]{"entity": "NUMBER", "value":3}
     - [4]{"entity": "NUMBER", "value":4}
     - [5]{"entity": "NUMBER", "value":5}
+    - my user id is [1503960366]{"entity": "NUMBER", "value":1503960366}
+    - [1844505072]{"entity": "NUMBER", "value":1844505072}
+    - [2022484408]{"entity": "NUMBER", "value":2022484408} is my user id
+    - [6290855005]{"entity": "NUMBER", "value":6290855005}
+    - my user id is [8877689391]{"entity": "NUMBER", "value":8877689391}
+    - [162458008]{"entity": "NUMBER", "value":162458008} is my user id
+    - my user id is [11624580081]{"entity": "NUMBER", "value":11624580081}
+    - [3977333714]{"entity": "NUMBER", "value":3977333714}
 
 - intent: inform_gender
   examples: |
@@ -574,6 +582,100 @@ nlu:
     - In what way do you respond to enquiries
     - How do you reply to inquiries
     - How would you answer to questions
+
+
+- intent: QN1
+  examples: |
+    - Why am I gaining weight?
+    - What is causing my weight gain?
+    - Why am I acquiring weight gain?
+    - I am gaining weight, why?
+    - What causes me to acquire weight?
+    - why am I not losing weight?
+    - Why don't I lose weight?
+    - Why haven't I lost weight?
+    - Why don't I lose weight?
+    - How come I don't lose weight?
+
+- intent: QN2
+  examples: |
+    - Why am I not gaining weight?
+    - Why don't I gain weight?
+    - I'm not gaining weight, why?
+    - Why I am unable to acquire weight?
+    - Why I am not able to put on weight?
+    - Why am I losing weight?
+    - What is causing my weight lose?
+    - Why am I dropping weight?
+    - I am losing weight, why?
+    - What causes me to lose weight?
+    - How come I am losing weight?
+
+
+- intent: QN3
+  examples: |
+    - Why am I unable to maintain weight?
+    - Why am I unable to sustain my weight?
+    - Why am I not able to keep my weight?
+    - Why do I not maintain my weight?
+    - Why am I incapable of keeping my weight?
+
+- intent: QN4
+  examples: |
+    - How to gain weight?
+    - How can I put on weight?
+    - How can I acquire weight?
+    - How to build weight?
+    - How can I get weight?
+
+- intent: QN5
+  examples: |
+    - How to lose weight?
+    - How can I maintain weight?
+    - How to sustain weight?
+    - How to retain weight?
+    - How to hold the weight?
+
+- intent: QN6
+  examples: |
+    - How to maintain weight?
+    - How can I maintain weight?
+    - How to sustain weight?
+    - How to retain weight?
+    - How to hold the weight?
+
+- intent: QN7
+  examples: |
+    - What are bad habits in my life?
+    - What bad habits do I have in my life?
+    - What are the bad practices in my life?
+    - What are the bad habits in me?
+    - What are the poor habits of my life?
+
+- intent: QN8
+  examples: |
+    - Do I have a healthy lifestyle?
+    - Have I got a healthy lifestyle?
+    - Do I lead a healthy life?
+    - Am I healthy in my lifestyle?
+    - Am I part of a healthy lifestyle?
+
+- intent: QN9_10
+  examples: |
+    - Am I on track with my goal?
+    - Am I getting it right with my goal?
+    - Am I on the right path with my target?
+    - Am I on track for my objective?
+    - Am I doing well with my goal?
+    - Am I going the right way with my goal?
+
+- intent: QN11
+  examples: |
+    - Forecast my weight in the next [30]{"entity":"NUMBER", "role": "predict"} days
+    - Estimate my weight in the following [15]{"entity":"NUMBER", "role": "predict"} days
+    - What will be my weight in next [5]{"entity":"NUMBER", "role": "predict"} days
+    - Compute my weight in next [23]{"entity":"NUMBER", "role": "predict"} days
+    - Calculate my weight in the next [45]{"entity":"NUMBER", "role": "predict"} days
 
 
 # - intent: height

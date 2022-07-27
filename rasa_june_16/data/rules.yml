@@ -168,3 +168,53 @@ rules:
   steps:
   - intent: answer_method
   - action: utter_answer_method
+
+- rule: QN1path
+  steps:
+  - intent: QN1
+  - action: action_QN_response
+
+- rule: QN2path
+  steps:
+  - intent: QN2
+  - action: action_QN_response
+
+- rule: QN3path
+  steps:
+  - intent: QN3
+  - action: action_QN_response
+
+- rule: QN4path
+  steps:
+  - intent: QN4
+  - action: action_QN_response
+
+- rule: QN5path
+  steps:
+  - intent: QN5
+  - action: action_QN_response
+
+- rule: QN6path
+  steps:
+  - intent: QN6
+  - action: action_QN_response
+
+- rule: QN7path
+  steps:
+  - intent: QN7
+  - action: action_QN_response
+
+- rule: QN8path
+  steps:
+  - intent: QN8
+  - action: action_QN_response
+
+- rule: QN9_10path
+  steps:
+  - intent: QN9_10
+  - action: action_QN_response
+
+- rule: QN11path
+  steps:
+  - intent: QN11
+  - action: action_QN_response
