@@ -20,7 +20,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
     // Connect to RASA server
-    const socket = io("http://localhost:5005");
+    const socket = io("http://localhost:5005",{transports:["websocket","polling"]}); // first try websocket if websocket not available then try normal polling method.
     socket.on('connect', function () {
     console.log("Connected to Socket.io server");
 });
