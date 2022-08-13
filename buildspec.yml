@@ -1,0 +1,12 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+
+artifacts:
+  files:
+    - rasa_june_16/**/*
+    - requirements.txt
+  explude-paths:
+    - rasa_june_16/models_archive/
