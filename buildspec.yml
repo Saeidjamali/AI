@@ -3,10 +3,15 @@ version: 0.2
 phases:
   build:
     commands:
+  post_build:
+    commands:
+     - mkdir build
+     - cp -R rasa_june_16/* build/
+     - cp requirements.txt build/
 
 artifacts:
+  base-directory: build
   files:
-    - rasa_june_16/**/*
-    - requirements.txt
-  explude-paths:
-    - rasa_june_16/models_archive/
+    - '**/*'
+  exclude-paths:
+    - models_archive/*
