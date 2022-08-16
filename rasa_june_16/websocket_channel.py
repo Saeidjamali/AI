@@ -76,9 +76,10 @@ class WebSocket(InputChannel):
                 )
                 print("it came here")
                 print("Collector Message: ", collector.messages)
-                await ws.send(collector.messages[0]['text'])
-                data = collector.messages[0]['text']
-                print('Sending: ' + data)
+                for i in range(len(collector.messages)):
+                    await ws.send(collector.messages[i]['text'])
+                    data = collector.messages[i]['text']
+                    print('Sending: ' + data)
 
 
 
