@@ -1,7 +1,7 @@
 from typing import Text, List, Any, Dict
 
 from rasa_sdk import Tracker, FormValidationAction, Action
-from rasa_sdk.events import EventType, SlotSet
+from rasa_sdk.events import EventType, SlotSet, FollowupAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 import pymongo
@@ -18,6 +18,25 @@ pd.options.mode.chained_assignment = None
 # ALLOWED_PIZZA_SIZES = ["small", "medium", "large", "extra-large", "extra large", "s", "m", "l", "xl"]
 # ALLOWED_PIZZA_TYPES = ["mozzarella", "fungi", "veggie", "pepperoni", "hawaii"]
 #def weight_function():
+
+class action_validate_user(Action): 
+    def name(self) -> Text:
+        return "action_validate_user"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        sender_id = str((tracker.current_state())["sender_id"])
+        print(tracker.current_state())
+        user_information = pymongo.MongoClient("mongodb+srv://root:Password!23@cluster0.7ua3r.mongodb.net/?retryWrites=true&w=majority")
+        user_db = user_information['user_db']
+        records = user_db["users_records"] 
+        print(records.distinct('user_id'))
+        if sender_id not in records.distinct('user_id'):
+            print('not in')
+            return [FollowupAction("simple_user_form")]
+        else:
+            dispatcher.utter_message(text=f"Hi! How can I help? Ask me questions or ask me to list the questions I can answer. ")
+            print('here')
+            return {}
 
 class ValidateSimpleUserForm(FormValidationAction):
     def name(self) -> Text:
@@ -671,6 +690,7 @@ class action_store_db(Action): ## custom action function for storing user inform
         user_information = pymongo.MongoClient("mongodb+srv://root:Password!23@cluster0.7ua3r.mongodb.net/?retryWrites=true&w=majority")
         user_db = user_information['user_db']
         records = user_db["users_records"] 
+        print(str((tracker.current_state())["sender_id"]))
         print(tracker.get_slot('name'))
         print(tracker.get_slot('measuringUnit'))
         print(tracker.get_slot('age'))
@@ -682,7 +702,7 @@ class action_store_db(Action): ## custom action function for storing user inform
         print(tracker.get_slot('likeFood'))
         print(tracker.get_slot('userGoal'))
         dispatcher.utter_message(text = f"your data is stored in the database.")
-        mydict = { "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
+        mydict = { "user_id": str(tracker.current_state())["sender_id"], "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
                    "age": tracker.get_slot('age'), "gender": tracker.get_slot('gender'), 
                    "weight": tracker.get_slot('weight'), "height": tracker.get_slot('height1'), 
                    "eating": tracker.get_slot('eating'), "stressLevel": tracker.get_slot('stressLevel'),
@@ -1306,7 +1326,7 @@ class action_QN_response(Action):
     def name(self) -> Text:
         return "action_QN_response"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        user_id = int(tracker.get_slot('user_id'))
+        user_id = 1503960366
         days=30
         goal=0
         pipeline= Pipeline(user_id,days,goal)
@@ -1349,5 +1369,3 @@ class action_QN_response(Action):
             peaks_valleys,response = pipeline.Run(ques_id)
             print(response)
             dispatcher.utter_message(text = response)
-
-

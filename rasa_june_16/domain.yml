@@ -52,16 +52,6 @@ entities:
 - ORG
 
 slots:
-  user_id:
-    type: float
-    influence_conversation: true
-    mappings:
-    - type: from_entity
-      intent: inform
-      entity: NUMBER
-      conditions:
-      - active_loop: simple_user_form
-        requested_slot: user_id
   height1:
     type: float
     influence_conversation: true
@@ -230,7 +220,6 @@ forms:
   simple_user_form:
     required_slots:
       - name
-      - user_id
       - measuringUnit
       - height1
       - height2
@@ -290,8 +279,6 @@ responses:
              Your goal regarding weight is: {userGoal} \n\n {eating} {likeFood} \n\n
              You have {diseases}\n\n
              OK, you are all set. Ask me questions or update your details."
-  utter_ask_user_id:
-  - text: what is your user id?
   utter_ask_height1:
     - condition:
       - type: slot
@@ -342,6 +329,7 @@ actions:
 - utter_submit
 - utter_user_slots
 - validate_simple_user_form
+- action_validate_user
 - action_change_weight
 - action_change_eating
 - action_change_stressLevel

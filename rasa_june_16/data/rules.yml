@@ -12,8 +12,7 @@ rules:
 - rule: Activate User Form
   steps:
     - intent: greet
-    - action: simple_user_form
-    - active_loop: simple_user_form
+    - action: action_validate_user
 
 - rule: Submit User Form
   condition:

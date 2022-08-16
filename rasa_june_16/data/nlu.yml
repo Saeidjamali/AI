@@ -143,14 +143,6 @@ nlu:
     - [3]{"entity": "NUMBER", "value":3}
     - [4]{"entity": "NUMBER", "value":4}
     - [5]{"entity": "NUMBER", "value":5}
-    - my user id is [1503960366]{"entity": "NUMBER", "value":1503960366}
-    - [1844505072]{"entity": "NUMBER", "value":1844505072}
-    - [2022484408]{"entity": "NUMBER", "value":2022484408} is my user id
-    - [6290855005]{"entity": "NUMBER", "value":6290855005}
-    - my user id is [8877689391]{"entity": "NUMBER", "value":8877689391}
-    - [162458008]{"entity": "NUMBER", "value":162458008} is my user id
-    - my user id is [11624580081]{"entity": "NUMBER", "value":11624580081}
-    - [3977333714]{"entity": "NUMBER", "value":3977333714}
 
 - intent: inform_gender
   examples: |
