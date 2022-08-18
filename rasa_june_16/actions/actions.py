@@ -690,6 +690,7 @@ class action_store_db(Action): ## custom action function for storing user inform
         user_information = pymongo.MongoClient("mongodb+srv://root:Password!23@cluster0.7ua3r.mongodb.net/?retryWrites=true&w=majority")
         user_db = user_information['user_db']
         records = user_db["users_records"] 
+        print("inside storage of DB")
         print(str((tracker.current_state())["sender_id"]))
         print(tracker.get_slot('name'))
         print(tracker.get_slot('measuringUnit'))
@@ -702,7 +703,7 @@ class action_store_db(Action): ## custom action function for storing user inform
         print(tracker.get_slot('likeFood'))
         print(tracker.get_slot('userGoal'))
         dispatcher.utter_message(text = f"your data is stored in the database.")
-        mydict = { "user_id": str(tracker.current_state())["sender_id"], "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
+        mydict = { "user_id": str(tracker.current_state()["sender_id"]), "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
                    "age": tracker.get_slot('age'), "gender": tracker.get_slot('gender'), 
                    "weight": tracker.get_slot('weight'), "height": tracker.get_slot('height1'), 
                    "eating": tracker.get_slot('eating'), "stressLevel": tracker.get_slot('stressLevel'),
