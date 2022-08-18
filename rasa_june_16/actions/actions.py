@@ -25,7 +25,7 @@ class action_validate_user(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print(str((tracker.current_state())["sender_id"]))
         sender_id = str((tracker.current_state())["sender_id"])
-        print(tracker.current_state())
+        #print(tracker.current_state())
         user_information = pymongo.MongoClient("mongodb+srv://root:Password!23@cluster0.7ua3r.mongodb.net/?retryWrites=true&w=majority")
         user_db = user_information['user_db']
         records = user_db["users_records"] 
