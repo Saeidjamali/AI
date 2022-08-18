@@ -1,8 +1,0 @@
-{
-  "rule_only_slots": [
-    "weight"
-  ],
-  "rule_only_loops": [
-    "simple_user_form"
-  ]
-}
