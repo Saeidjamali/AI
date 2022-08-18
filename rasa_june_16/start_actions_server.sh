@@ -1,4 +1,3 @@
 #!/bin/bash
-source /opt/anaconda/etc/profile.d/conda.sh
-conda activate rasa_3
+source /opt/rasa_venv/bin/activate
 rasa run actions

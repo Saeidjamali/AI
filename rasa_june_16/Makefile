@@ -14,7 +14,7 @@ deploy-stage: --deploy
 --publish-artifacts:
 	@echo "--- :shipit: Publishing artifacts to '$(ENV)' environment :shipit:"
 	
-	tar -czf /tmp/chatbot.tgz * && \
+	tar -czf /tmp/chatbot.tgz --exclude models_archive * ../requirements.txt && \
 	aws s3  cp  /tmp/chatbot.tgz s3://ithing-$(ENV)-artifacts/archives/
 	
 --deploy:
