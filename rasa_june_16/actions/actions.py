@@ -12,6 +12,7 @@ import pyaf.ForecastEngine as autof
 import os
 import datetime
 from copy import deepcopy
+from bson.objectid import ObjectId
 pd.options.mode.chained_assignment = None
 # get_ipython().run_line_magic('matplotlib', 'inline')
 
@@ -24,13 +25,14 @@ class action_validate_user(Action):
         return "action_validate_user"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print(str((tracker.current_state())["sender_id"]))
-        sender_id = str((tracker.current_state())["sender_id"])
+        user_id = str((tracker.current_state())["sender_id"])
         #print(tracker.current_state())
-        user_information = pymongo.MongoClient("mongodb+srv://root:Password!23@cluster0.7ua3r.mongodb.net/?retryWrites=true&w=majority")
-        user_db = user_information['user_db']
-        records = user_db["users_records"] 
-        print(records.distinct('user_id'))
-        if sender_id not in records.distinct('user_id'):
+        main_db = pymongo.MongoClient("mongodb://ithing:bZnhcpOFgXn@mongodb-node-00-00.internal.intellithing.com/intellithing")
+        user_db = main_db['intellithing']
+        user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
+
+        print(user_record["_id"])
+        if 'profileComplete' not in user_record:
             print('not in')
             return [FollowupAction("simple_user_form")]
         else:
@@ -687,9 +689,25 @@ class action_store_db(Action): ## custom action function for storing user inform
     def name(self) -> Text:
         return "action_store_db"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        user_information = pymongo.MongoClient("mongodb+srv://root:Password!23@cluster0.7ua3r.mongodb.net/?retryWrites=true&w=majority")
-        user_db = user_information['user_db']
-        records = user_db["users_records"] 
+        user_id = str((tracker.current_state())["sender_id"])
+        main_db = pymongo.MongoClient("mongodb://ithing:bZnhcpOFgXn@mongodb-node-00-00.internal.intellithing.com/intellithing")
+        user_db = main_db['intellithing']
+        user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'profileComplete': 'true'}})
+
+        goal = {'You are trying to Lose weight': "LOSE_WEIGHT",
+                'You are trying to Mantain Weight':"MAINTAIN_WEIGHT",
+                'You are trying to Gain Weight': "GAIN_WEIGHT",
+                }
+        gender = {'male': "MALE",'female': "FEMALE"}
+        measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
+        eating = {'You are a Vegan': 'VEGAN', 'You are a Vegetarian': 'VEGETARIAN', 'You are a Non-vegetarian': 'NON_VEGETARIAN'}
+        stressLevel = {'very low': 1, 'low' : 2, 'average': 3, 'high': 4, 'very high': 5}
+        likeFood = {'and you are not much of a foodie at all' : 1,
+                    'and your food likeness rating is below average': 2,
+                    'and your food likeness rating is average': 3, 'and you love food': 4,
+                    'and food is life for you': 5}
+
         print("inside storage of DB")
         print(str((tracker.current_state())["sender_id"]))
         print(tracker.get_slot('name'))
@@ -702,18 +720,32 @@ class action_store_db(Action): ## custom action function for storing user inform
         print(tracker.get_slot('stressLevel'))
         print(tracker.get_slot('likeFood'))
         print(tracker.get_slot('userGoal'))
+        print(records.distinct('_id'))
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.age': int(tracker.get_slot('age'))}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.gender': gender.get((str(tracker.get_slot('gender'))), None)}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.weight': str(tracker.get_slot('weight'))}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.height': str(tracker.get_slot('height1'))}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.eating': eating.get((str(tracker.get_slot('eating'))), None)}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None)}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.likeFood': likeFood.get((str(tracker.get_slot('likeFood'))), None)}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.goal': goal.get((str(tracker.get_slot('userGoal'))), None)}})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : str(tracker.get_slot('height1')), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : str(tracker.get_slot('weight')), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
         dispatcher.utter_message(text = f"your data is stored in the database.")
-        mydict = { "user_id": str(tracker.current_state()["sender_id"]), "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
-                   "age": tracker.get_slot('age'), "gender": tracker.get_slot('gender'), 
-                   "weight": tracker.get_slot('weight'), "height": tracker.get_slot('height1'), 
-                   "eating": tracker.get_slot('eating'), "stressLevel": tracker.get_slot('stressLevel'),
-                   "likeFood": tracker.get_slot('likeFood'), "userGoal": tracker.get_slot('userGoal') }
+        print((user_db.users.find_one({"_id": ObjectId(user_id)})))
+        # mydict = { "user_id": str(tracker.current_state()["sender_id"]), "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
+        #            "age": tracker.get_slot('age'), "gender": tracker.get_slot('gender'), 
+        #            "weight": tracker.get_slot('weight'), "height": tracker.get_slot('height1'), 
+        #            "eating": tracker.get_slot('eating'), "stressLevel": tracker.get_slot('stressLevel'),
+        #            "likeFood": tracker.get_slot('likeFood'), "userGoal": tracker.get_slot('userGoal') }
 
-        x = records.insert_one(mydict) ## Command for entrying the json document into the collection
-        print(x)
-        cursor = records.find()
-        for record in cursor:
-            print(record)
+        # x = records.insert_one(mydict) ## Command for entrying the json document into the collection
+        # print(x)
+        # cursor = records.find()
+        # for record in cursor:
+        #     print(record)
         return None
 
 class Questions:
