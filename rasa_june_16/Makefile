@@ -6,9 +6,17 @@ export AWS_PROFILE ?= intellithing
 publish-artifacts-stage: ENV=stage
 publish-artifacts-stage: --publish-artifacts
 
+.PHONY: publish-artifacts-prod
+publish-artifacts-prod: ENV=prod
+publish-artifacts-prod: --publish-artifacts
+
 .PHONY: deploy-stage
 deploy-stage: ENV=stage
 deploy-stage: --deploy
+
+.PHONY: deploy-prod
+deploy-prod: ENV=prod
+deploy-prod: --deploy
 
 
 --publish-artifacts:
