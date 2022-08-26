@@ -20,6 +20,8 @@ pd.options.mode.chained_assignment = None
 # ALLOWED_PIZZA_TYPES = ["mozzarella", "fungi", "veggie", "pepperoni", "hawaii"]
 #def weight_function():
 
+MONGODB_URL="mongodb://ithing:bZnhcpOFgXn@mongodb-node-00-00.internal.intellithing.com/intellithing"
+
 class action_validate_user(Action): 
     def name(self) -> Text:
         return "action_validate_user"
@@ -27,7 +29,7 @@ class action_validate_user(Action):
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
         #print(tracker.current_state())
-        main_db = pymongo.MongoClient("mongodb://ithing:bZnhcpOFgXn@mongodb-node-00-00.internal.intellithing.com/intellithing")
+        main_db = pymongo.MongoClient(MONGODB_URL)
         user_db = main_db['intellithing']
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
 
@@ -690,7 +692,7 @@ class action_store_db(Action): ## custom action function for storing user inform
         return "action_store_db"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         user_id = str((tracker.current_state())["sender_id"])
-        main_db = pymongo.MongoClient("mongodb://ithing:bZnhcpOFgXn@mongodb-node-00-00.internal.intellithing.com/intellithing")
+        main_db = pymongo.MongoClient(MONGODB_URL)
         user_db = main_db['intellithing']
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'profileComplete': 'true'}})
@@ -720,7 +722,7 @@ class action_store_db(Action): ## custom action function for storing user inform
         print(tracker.get_slot('stressLevel'))
         print(tracker.get_slot('likeFood'))
         print(tracker.get_slot('userGoal'))
-        print(records.distinct('_id'))
+        # print(records.distinct('_id'))
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.age': int(tracker.get_slot('age'))}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.gender': gender.get((str(tracker.get_slot('gender'))), None)}})
