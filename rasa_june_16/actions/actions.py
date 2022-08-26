@@ -20,7 +20,14 @@ pd.options.mode.chained_assignment = None
 # ALLOWED_PIZZA_TYPES = ["mozzarella", "fungi", "veggie", "pepperoni", "hawaii"]
 #def weight_function():
 
+# TODO: read from env
 MONGODB_URL="mongodb://ithing:bZnhcpOFgXn@mongodb-node-00-00.internal.intellithing.com/intellithing"
+
+
+def get_mongo_database():
+    client = pymongo.MongoClient(MONGODB_URL)
+    return client.get_default_database()
+
 
 class action_validate_user(Action): 
     def name(self) -> Text:
@@ -29,8 +36,7 @@ class action_validate_user(Action):
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
         #print(tracker.current_state())
-        main_db = pymongo.MongoClient(MONGODB_URL)
-        user_db = main_db['intellithing']
+        user_db = get_mongo_database()
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
 
         print(user_record["_id"])
@@ -692,8 +698,7 @@ class action_store_db(Action): ## custom action function for storing user inform
         return "action_store_db"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         user_id = str((tracker.current_state())["sender_id"])
-        main_db = pymongo.MongoClient(MONGODB_URL)
-        user_db = main_db['intellithing']
+        user_db = get_mongo_database()
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'profileComplete': 'true'}})
 
