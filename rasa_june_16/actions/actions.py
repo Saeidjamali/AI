@@ -21,7 +21,10 @@ pd.options.mode.chained_assignment = None
 #def weight_function():
 
 # TODO: read from env
+# stage one:
 MONGODB_URL="mongodb://ithing:bZnhcpOFgXn@mongodb-node-00-00.internal.intellithing.com/intellithing"
+# prod one:
+#MONGODB_URL="mongodb://ithing:nbA1gShiT3@mongodb-node-00-00.internal.intellithing.com,mongodb-node-00-01.internal.intellithing.com,mongodb-node-00-02.internal.intellithing.com/intellithing?replicaSet=rs0"
 
 
 def get_mongo_database():

@@ -12,10 +12,12 @@ publish-artifacts-prod: --publish-artifacts
 
 .PHONY: deploy-stage
 deploy-stage: ENV=stage
+deploy-stage: --publish-artifacts
 deploy-stage: --deploy
 
 .PHONY: deploy-prod
 deploy-prod: ENV=prod
+deploy-prod: --publish-artifacts
 deploy-prod: --deploy
 
 
