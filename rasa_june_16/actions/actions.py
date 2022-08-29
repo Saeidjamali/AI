@@ -715,6 +715,20 @@ class action_store_db(Action): ## custom action function for storing user inform
                     'and your food likeness rating is average': 3, 'and you love food': 4,
                     'and food is life for you': 5}
 
+        ## For weight
+        weight_initial = str(tracker.get_slot('weight'))
+        weight = weight_initial.split(' ')[0]
+        
+        ## For Height
+        height_initial = str(tracker.get_slot('height1'))
+        if str(tracker.get_slot('measuringUnit')) == 'imperial':
+            if len(height_initial.split(' ')) > 2:
+                height  = height_initial.split(' ')[0] + '.' + height_initial.split(' ')[2]
+            else:
+                height = height_initial.split(' ')[0]
+        else:
+            height = height_initial.split(' ')[0]
+
         print("inside storage of DB")
         print(str((tracker.current_state())["sender_id"]))
         print(tracker.get_slot('name'))
@@ -731,14 +745,14 @@ class action_store_db(Action): ## custom action function for storing user inform
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.age': int(tracker.get_slot('age'))}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.gender': gender.get((str(tracker.get_slot('gender'))), None)}})
-        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.weight': str(tracker.get_slot('weight'))}})
-        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.height': str(tracker.get_slot('height1'))}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.weight': float(weight)}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.height': float(height)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.eating': eating.get((str(tracker.get_slot('eating'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.likeFood': likeFood.get((str(tracker.get_slot('likeFood'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.goal': goal.get((str(tracker.get_slot('userGoal'))), None)}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : str(tracker.get_slot('height1')), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : str(tracker.get_slot('weight')), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
         user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
         dispatcher.utter_message(text = f"your data is stored in the database.")
         print((user_db.users.find_one({"_id": ObjectId(user_id)})))
