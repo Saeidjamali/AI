@@ -4,6 +4,7 @@ from rasa_sdk import Tracker, FormValidationAction, Action
 from rasa_sdk.events import EventType, SlotSet, FollowupAction
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
+from dotenv import load_dotenv, find_dotenv
 import pymongo
 import numpy as np # data arrays
 import pandas as pd # data analysis
@@ -20,11 +21,8 @@ pd.options.mode.chained_assignment = None
 # ALLOWED_PIZZA_TYPES = ["mozzarella", "fungi", "veggie", "pepperoni", "hawaii"]
 #def weight_function():
 
-# TODO: read from env
-# stage one:
-MONGODB_URL="mongodb://ithing:bZnhcpOFgXn@mongodb-node-00-00.internal.intellithing.com/intellithing"
-# prod one:
-#MONGODB_URL="mongodb://ithing:nbA1gShiT3@mongodb-node-00-00.internal.intellithing.com,mongodb-node-00-01.internal.intellithing.com,mongodb-node-00-02.internal.intellithing.com/intellithing?replicaSet=rs0"
+load_dotenv(find_dotenv())
+MONGODB_URL = os.getenv('MONGODB_URL')
 
 
 def get_mongo_database():

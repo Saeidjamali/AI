@@ -32,4 +32,4 @@ deploy-prod: --deploy
 	
 	aws autoscaling start-instance-refresh \
 		--auto-scaling-group-name "ithing-$(ENV)-chatbot-asg" \
-		--preferences MinHealthyPercentage=50,InstanceWarmup=100
+		--preferences MinHealthyPercentage=50,InstanceWarmup=60
