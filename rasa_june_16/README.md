@@ -2,7 +2,7 @@
 
 ## How to run rasa server and actions server locally
 
-### Cretae .env file
+### Create .env file
 
 MONGODB_URL should be specified
 ```
