@@ -701,7 +701,7 @@ class action_store_db(Action): ## custom action function for storing user inform
         user_id = str((tracker.current_state())["sender_id"])
         user_db = get_mongo_database()
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
-        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'profileComplete': 'true'}})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'profileComplete': True}})
 
         goal = {'You are trying to Lose weight': "LOSE_WEIGHT",
                 'You are trying to Mantain Weight':"MAINTAIN_WEIGHT",
@@ -743,6 +743,7 @@ class action_store_db(Action): ## custom action function for storing user inform
         print(tracker.get_slot('likeFood'))
         print(tracker.get_slot('userGoal'))
         # print(records.distinct('_id'))
+        #utctime = datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.age': int(tracker.get_slot('age'))}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.gender': gender.get((str(tracker.get_slot('gender'))), None)}})
@@ -752,10 +753,11 @@ class action_store_db(Action): ## custom action function for storing user inform
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.likeFood': likeFood.get((str(tracker.get_slot('likeFood'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.goal': goal.get((str(tracker.get_slot('userGoal'))), None)}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}})
-        dispatcher.utter_message(text = f"your data is stored in the database.")
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')}})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')})
+        #dispatcher.utter_message(text = f"your data is stored in the database.")
         print((user_db.users.find_one({"_id": ObjectId(user_id)})))
         # mydict = { "user_id": str(tracker.current_state()["sender_id"]), "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
         #            "age": tracker.get_slot('age'), "gender": tracker.get_slot('gender'), 
