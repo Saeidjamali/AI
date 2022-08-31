@@ -62,7 +62,7 @@ class ValidateSimpleUserForm(FormValidationAction):
     ) -> Dict[Text, Any]:
         """Validate `pizza_size` value."""
         if not slot_value:
-            dispatcher.utter_message(text=f"I’m sorry I didn’t understand, I’m still learning please try entering your height differently.")
+            dispatcher.utter_message(text=f"I’m sorry I didn’t understand, I’m still learning please try telling me your height differently.")
             return {"height1": None}
         # have height 1
         unit_temp = next(tracker.get_latest_entity_values('unit'), None)
@@ -71,7 +71,7 @@ class ValidateSimpleUserForm(FormValidationAction):
         print('measuringUnit:', measuringUnit)
 
         if unit_temp not in ['cm', 'feet', None]:
-            dispatcher.utter_message(text="Seems like you have entered incorrect unit. I’m still learning please try entering your height differently.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect unit. I’m still learning please try telling me your height differently.")
             return {"height1": None}
 
         if unit_temp == None:
@@ -83,7 +83,7 @@ class ValidateSimpleUserForm(FormValidationAction):
                     return {"height1": value, "height2": 0}
                 else:
                     dispatcher.utter_message(
-                        text="Entered height seems incorrect to me, typically human height is between 1 to 9 feets.\n I’m still learning please try entering your height differently.")
+                        text="Typed height seems incorrect to me, typically human height is between 1 to 9 feets.\n I’m still learning please try telling me your height differently.")
                     return {"height1": None}
             elif measuringUnit == 'metric':
                 if float(slot_value) >= 80 and float(slot_value) <= 250:
@@ -93,17 +93,17 @@ class ValidateSimpleUserForm(FormValidationAction):
                     return {"height1": value, "height2": 0}
                 else:
                     dispatcher.utter_message(
-                        text="Entered height seems incorrect to me, typically human height is between 80 to 250 cm.\n I’m still learning please try entering your height differently.")
+                        text="Typed height seems incorrect to me, typically human height is between 80 to 250 cm.\n I’m still learning please try telling me your height differently.")
                     return {"height1": None}
 
         if measuringUnit == 'metric' and unit_temp == 'cm':
             if float(slot_value) < 80:
                 dispatcher.utter_message(
-                    text="Entered value seems quite low to me, typically human height is between 80 to 250 cm.\n I’m still learning please try entering your height differently.")
+                    text="Typed value seems quite low to me, typically human height is between 80 to 250 cm.\n I’m still learning please try telling me your height differently.")
                 return {"height1": None}
             elif float(slot_value) > 250:
                 dispatcher.utter_message(
-                    text="Entered value seems quite high, typically human height is between 80 to 250 cm.\n I’m still learning please try entering your height differently.")
+                    text="Typed value seems quite high, typically human height is between 80 to 250 cm.\n I’m still learning please try telling me your height differently.")
                 return {"height1": None}
             else:
                 slot_value = slot_value + " cm"
@@ -111,28 +111,28 @@ class ValidateSimpleUserForm(FormValidationAction):
         elif measuringUnit == 'imperial' and unit_temp == 'feet':
             if float(slot_value) < 1:
                 dispatcher.utter_message(
-                    text="Entered value seems quite low, typically human height is between 1 to 9 feets.\n I’m still learning please try entering your height differently.")
+                    text="Typed value seems quite low, typically human height is between 1 to 9 feets.\n I’m still learning please try telling me your height differently.")
                 return {"height1": None}
             elif float(slot_value) > 9:
                 dispatcher.utter_message(
-                    text="Entered value seems quite high, typically human height is between 1 to 9 feets.\n I’m still learning please try entering your height differently.")
+                    text="Typed value seems quite high, typically human height is between 1 to 9 feets.\n I’m still learning please try telling me your height differently.")
                 return {"height1": None}
             else:
                 slot_value = slot_value + " feets"
         else:
-            dispatcher.utter_message(text="Seems like you have entered incorrect unit according to the entered measuring system.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect unit according to the typed measuring system.")
             return {"height1": None, "height2": None}
 
         # unit is cm or feet.
         if tracker.get_slot('height2') == None:
-            # height in cm or user has entered e.g. "45 feets" only
+            # height in cm or user has typed e.g. "45 feets" only
             dispatcher.utter_message(text=f"OK! Your height is {slot_value}")
             return {"height1": slot_value, "height2": 0}
         # there is height2
 
         height2_temp = tracker.get_slot('height2')
         if float(height2_temp) > 12 or float(height2_temp) < 0:
-            dispatcher.utter_message(text="You have entered incorrect amount of inches, kindly type between 1 and 12 inches.\n I’m still learning please try entering your height differently.")
+            dispatcher.utter_message(text="You have typed incorrect amount of inches, kindly type between 1 and 12 inches.\n I’m still learning please try telling me your height differently.")
             return {"height1": None}
 
         height_temp = slot_value + " " + height2_temp + " inches"
@@ -150,7 +150,7 @@ class ValidateSimpleUserForm(FormValidationAction):
         print(slot_value)
         if not slot_value:
             return {"height2": 0}
-            # dispatcher.utter_message(text=f"You have entered wrong height.")
+            # dispatcher.utter_message(text=f"Your height seems wrong.")
             # return {"height2": None}
         #dispatcher.utter_message(text=f"OK! You want to have a {slot_value} pizza.")
         return {"height2": slot_value}
@@ -164,7 +164,7 @@ class ValidateSimpleUserForm(FormValidationAction):
     ) -> Dict[Text, Any]:
 
         if not slot_value:
-            dispatcher.utter_message(text="You have entered wrong weight")
+            dispatcher.utter_message(text="Your weight seems wrong")
             return {"weight": None}
 
         unit_temp = next(tracker.get_latest_entity_values('unit'), None)
@@ -172,7 +172,7 @@ class ValidateSimpleUserForm(FormValidationAction):
 
         print('unit_temp:', unit_temp)
         if unit_temp not in ['kg', 'pound', None]:
-            dispatcher.utter_message(text="Seems like you have entered incorrect unit.\n I’m still learning please try entering your height differently.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect unit.\n I’m still learning please try telling me your height differently.")
             return {"weight": None}
 
         if unit_temp == None:
@@ -183,7 +183,7 @@ class ValidateSimpleUserForm(FormValidationAction):
                     return {"weight": value}
                 else:
                     dispatcher.utter_message(
-                        text=f"Entered weight seems incorrect to me, typically human weight is between 20 to 640 pounds.")
+                        text=f"Typed weight seems incorrect to me, typically human weight is between 20 to 640 pounds.")
                     return {"weight": None}
             elif measuringUnit == 'metric':
                 if float(slot_value) > 20 and float(slot_value) < 290:
@@ -192,33 +192,33 @@ class ValidateSimpleUserForm(FormValidationAction):
                     return {"weight": value}
                 else:
                     dispatcher.utter_message(
-                        text=f"Entered weight seems incorrect to me, typically human weight is between 20 to 290 kgs.")
+                        text=f"Typed weight seems incorrect to me, typically human weight is between 20 to 290 kgs.")
                     return {"weight": None}
 
         if measuringUnit == 'imperial' and unit_temp == 'pound':
             if float(slot_value) < 20:
                 dispatcher.utter_message(
-                    text="Entered value seems quite low, typically human weight is between 20 to 640 pounds.")
+                    text="Typed value seems quite low, typically human weight is between 20 to 640 pounds.")
                 return {"weight": None}
             elif float(slot_value) > 640:
                 dispatcher.utter_message(
-                    text="Entered value seems quite high, typically human weight is between 20 to 640 pounds.")
+                    text="Typed value seems quite high, typically human weight is between 20 to 640 pounds.")
                 return {"weight": None}
             else:
                 slot_value = slot_value + " pounds"
         elif measuringUnit == 'metric' and unit_temp == 'kg':
             if float(slot_value) < 20:
                 dispatcher.utter_message(
-                    text="Entered value seems quite low, typically human weight is between 20 to 290 kgs.")
+                    text="Typed value seems quite low, typically human weight is between 20 to 290 kgs.")
                 return {"weight": None}
             elif float(slot_value) > 290:
                 dispatcher.utter_message(
-                    text="Entered value seems quite high, typically human weight is between 20 to 290 kgs.")
+                    text="Typed value seems quite high, typically human weight is between 20 to 290 kgs.")
                 return {"weight": None}
             else:
                 slot_value = slot_value + " kgs"
         else:
-            dispatcher.utter_message(text="Seems like you have entered incorrect unit for the entered measuring system.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect unit for the typed measuring system.")
             return {"weight": None}
 
         dispatcher.utter_message(text=f"Noted! Your weight is {slot_value}.")
@@ -261,7 +261,7 @@ class ValidateSimpleUserForm(FormValidationAction):
             dispatcher.utter_message(text=f"I’m sorry I didn’t understand, I’m still learning please try typing your age differently.")
             return {"age": None}
         elif float(slot_value) < 1 or float(slot_value) > 150:
-            dispatcher.utter_message(text=f"Seems like you have entered incorrect age, Please type between 1 and 150 years old")
+            dispatcher.utter_message(text=f"Seems like you have typed incorrect age, Please type between 1 and 150 years old")
             return {"age": None}
         dispatcher.utter_message(text=f"hmm ok! so you are {slot_value} years old.")
         return {"age": slot_value}
@@ -283,7 +283,7 @@ class ValidateSimpleUserForm(FormValidationAction):
         print('gender', slot_value)
 
         if not (slot_value or  Number):
-            dispatcher.utter_message(text=f"Seems like you have entered incorrect gender. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text=f"Seems like you have typed incorrect gender. I’m still learning please try saying it differently.")
             return {"gender": None}
 
         elif Number in ['1','2']:
@@ -307,10 +307,10 @@ class ValidateSimpleUserForm(FormValidationAction):
 
         stressLevel = {'1':'very low', '2':'low', '3':'average', '4':'high', '5':'very high'}
         if not slot_value:
-            dispatcher.utter_message(text="Seems like you have entered incorrect stress Level. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect stress Level. I’m still learning please try saying it differently.")
             return {"stressLevel": None}
         elif slot_value not in ['1','2','3','4','5']:
-            dispatcher.utter_message(text="Seems like you have entered incorrect stress Level.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect stress Level.")
             return {"stressLevel": None}
 
         dispatcher.utter_message(text=f"OK! Seems like your stress Level is {stressLevel[slot_value]}.")
@@ -327,10 +327,10 @@ class ValidateSimpleUserForm(FormValidationAction):
         likeFood = {'1':'and you are not much of a foodie at all', '2':'and your food likeness rating is below average',
                     '3':'and your food likeness rating is average', '4':'and you love food', '5':'and food is life for you'}
         if not slot_value:
-            dispatcher.utter_message(text="Seems like you have entered incorrect Level. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect Level. I’m still learning please try saying it differently.")
             return {"likeFood": None}
         elif slot_value not in ['1','2','3','4','5']:
-            dispatcher.utter_message(text="Seems like you have entered incorrect level.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect level.")
             return {"likeFood": None}
         message_displayed={'1':'Seems like you are not much of a foodie at all...',
         '2':'So, you are not much of a foodie...', '3':'It seems like you are not much of a foodie...',
@@ -363,18 +363,18 @@ class ValidateSimpleUserForm(FormValidationAction):
                 }
 
         if not (slot_value or Number):
-            dispatcher.utter_message(text=f"Seems like you have entered incorrect goal. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text=f"Seems like you have typed incorrect goal. I’m still learning please try saying it differently.")
             return {"userGoal": None}
 
         elif Number in ['1', '2', '3', '4']:
             dispatcher.utter_message(text=f"OK! {goal[Number]}.")
             return {"userGoal": goal[Number]}
 
-        elif slot_value in ['lose', 'maintain', 'gain', 'gther']:
+        elif slot_value in ['lose', 'maintain', 'gain', 'other']:
             dispatcher.utter_message(text=f"OK! You are a {goal[slot_value]}.")
             return {"userGoal": goal[slot_value]}
         #else:
-        dispatcher.utter_message(text=f"Seems like you have entered incorrect goal.")
+        dispatcher.utter_message(text=f"Seems like you have typed incorrect goal.")
         return {"userGoal": None}
 
     def validate_eating(
@@ -398,15 +398,15 @@ class ValidateSimpleUserForm(FormValidationAction):
                   'vegetarian': 'You are a Vegetarian',
                   'non-vegetarian': 'You are a Non-vegetarian',
                   }
-        message_displayed = {'1': 'Its great to hear that you follows a vegan diet and lifestyle',
-                             '2': 'Its great to hear that you follows a vegetarian diet and lifestyle',
+        message_displayed = {'1': 'It\'s great to hear that you follow a vegan diet and lifestyle',
+                             '2': 'It\'s great to hear that you follow a vegetarian diet and lifestyle',
                              '3': 'Great! so you are an omnivore',
-                             'vegan': 'Its great to hear that you follows a vegan diet and lifestyle',
-                             'vegetarian': 'Its great to hear that you follows a vegetarian diet and lifestyle',
+                             'vegan': 'It\'s great to hear that you follows a vegan diet and lifestyle',
+                             'vegetarian': 'It\'s great to hear that you follows a vegetarian diet and lifestyle',
                              'non-vegetarian': 'Great! so you are an omnivore',
                              }
         if not (slot_value or Number):
-            dispatcher.utter_message(text=f"Seems like you have entered incorrect eating category. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text=f"Seems like you have typed incorrect eating category. I’m still learning please try saying it differently.")
             return {"eating": None}
         elif slot_value in ['vegan', 'vegetarian', 'non-vegetarian']:
             dispatcher.utter_message(text=f"{message_displayed.get(slot_value, None)}")
@@ -415,7 +415,7 @@ class ValidateSimpleUserForm(FormValidationAction):
             dispatcher.utter_message(text=f"{message_displayed.get(Number, None)}")
             return {"eating": eating.get(Number, None)}
 
-        dispatcher.utter_message(text=f"Seems like you have entered incorrect eating category.")
+        dispatcher.utter_message(text=f"Seems like you have typed incorrect eating category.")
         return {"eating": None}
 
     def validate_measuringUnit(
@@ -433,24 +433,24 @@ class ValidateSimpleUserForm(FormValidationAction):
         slot_value = next(tracker.get_latest_entity_values('measurement'), None)
         print('measurement', slot_value)
 
-        MEASURE = {'1': 'Imperial', '2': 'Metric', '3': 'Default'}
+        MEASURE = {'1': 'imperial', '2': 'metric'}
 
         slot_value = next(tracker.get_latest_entity_values('measurement'), None)
         print(slot_value)
 
         if not (slot_value or Number):
-            dispatcher.utter_message(text="Seems like you have entered incorrect measuring unit. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect measuring unit. I’m still learning please try saying it differently.")
             return {"measuringUnit": None}
 
-        elif slot_value in ['imperial','metric','default']:
+        elif slot_value in ['imperial','metric']:
             dispatcher.utter_message(text=f"Noted! You have chosen {slot_value} as your measuring unit.")
             return {"measuringUnit": slot_value}
 
-        elif Number in ['1','2','3']:
+        elif Number in ['1','2']:
             dispatcher.utter_message(text=f"Noted! You have chosen {MEASURE[Number]} as your measuring unit.")
             return {"measuringUnit": MEASURE[Number]}
 
-        dispatcher.utter_message(text=f"Seems like you have entered incorrect measuring unit. I’m still learning please try saying it differently.")
+        dispatcher.utter_message(text=f"Seems like you have typed incorrect measuring unit. I’m still learning please try saying it differently.")
         return {"measuringUnit": None}
 
     def validate_healthcondition(
@@ -461,7 +461,7 @@ class ValidateSimpleUserForm(FormValidationAction):
             domain: DomainDict,
     ) -> Dict[Text, Any]:
         if not slot_value:
-            dispatcher.utter_message(text=f"Seems like you have entered incorrect medical condidion. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text=f"Seems like you have typed incorrect medical condidion. I’m still learning please try saying it differently.")
             return {"healthcondition": None}
         dispatcher.utter_message(text="OK!.")
         return {"healthcondition": slot_value}
@@ -474,7 +474,7 @@ class ValidateSimpleUserForm(FormValidationAction):
             domain: DomainDict,
     ) -> Dict[Text, Any]:
         if not slot_value:
-            dispatcher.utter_message(text=f"you have not entered correct response.")
+            dispatcher.utter_message(text=f"you have not typed correct response.")
             return {"diseases": 'No diseases'}
         dispatcher.utter_message(text="OK!.")
         return {"diseases": slot_value}
@@ -487,27 +487,27 @@ class action_change_weight(Action):
         value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="weight2"), None)
         print(value)
         if not value:
-            dispatcher.utter_message(text="You have entered wrong weight")
+            dispatcher.utter_message(text="Your weight seems wrong")
             return[SlotSet("weight", None)]
         if((tracker.get_slot('measuringUnit') == 'imperial')):
             if float(value) < 20:
                 dispatcher.utter_message(
-                    text="Entered weight seems incorrect to me, typically human weight is between 20 to 640 pounds.")
+                    text="Your weight seems incorrect to me, typically human weight is between 20 to 640 pounds.")
                 return[SlotSet("weight", None)]
             elif float(value) > 640:
                 dispatcher.utter_message(
-                    text="Entered weight seems incorrect to me, typically human weight is between 20 to 640 pounds.")
+                    text="Your weight seems incorrect to me, typically human weight is between 20 to 640 pounds.")
                 return[SlotSet("weight", None)]
             else:
                 value = value + " pounds"
         elif((tracker.get_slot('measuringUnit') == 'metric')):
             if float(value) < 20:
                 dispatcher.utter_message(
-                    text="Entered weight seems incorrect to me, typically human weight is between 20 to 290 kgs")
+                    text="Your weight seems incorrect to me, typically human weight is between 20 to 290 kgs")
                 return[SlotSet("weight", None)]
             elif float(value) > 290:
                 dispatcher.utter_message(
-                    text="Entered weight seems incorrect to me, typically human weight is between 20 to 290 kgs")
+                    text="Your weight seems incorrect to me, typically human weight is between 20 to 290 kgs")
                 return [SlotSet("weight", None)]
             else:
                 value = value + " kgs"
@@ -524,10 +524,10 @@ class action_change_stressLevel(Action):
         print(value)
         stressLevel = {'1':'very low', '2':'low', '3':'average', '4':'high', '5':'very high'}
         if not value:
-            dispatcher.utter_message(text="Seems like you have entered incorrect stress Level. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text="Your stress Level seems incorrect to me. I’m still learning please try saying it differently.")
             return[SlotSet("stressLevel", None)]
         elif value not in ['1','2','3','4','5']:
-            dispatcher.utter_message(text="Seems like you have entered incorrect stress Level.")
+            dispatcher.utter_message(text="Your stress Level seems incorrect to me. I’m still learning please try saying it differently.")
             return[SlotSet("stressLevel", None)]
         dispatcher.utter_message(text=f"OK! Seems like your stress Level is {value}({stressLevel.get(value,None)}).")
         return[SlotSet("stressLevel", stressLevel.get(value,None))]
@@ -545,7 +545,7 @@ class action_change_age(Action):
             return[SlotSet("age", None)]
 
         elif float(slot_value) < 1 or float(slot_value) > 150:
-            dispatcher.utter_message(text=f"Seems like you have entered incorrect age, Please type between 1 and 150 years old.")
+            dispatcher.utter_message(text=f"Your age seems incorrect to me, Please type between 1 and 150 years old.")
             return[SlotSet("age", None)]
 
         dispatcher.utter_message(text=f"hmm ok! so you are {slot_value} years old.")
@@ -562,7 +562,7 @@ class action_change_measuringUnit(Action):
         print(slot_value)
 
         if not slot_value:
-            dispatcher.utter_message(text="Seems like you have entered incorrect measuring unit. I’m still learning please try saying your name differently.")
+            dispatcher.utter_message(text="Your measuring unit seems incorrect to me. I’m still learning please try saying your name differently.")
             return [SlotSet("measuringUnit", slot_value)]
 
         elif slot_value in ['imperial', 'metric']:
@@ -572,7 +572,7 @@ class action_change_measuringUnit(Action):
         # old_measuring_unit = tracker.get_slot('measuringUnit')
 
         # if not slot_value:
-        #     dispatcher.utter_message(text="You have entered wrong measuring unit.")
+        #     dispatcher.utter_message(text="You have typed wrong measuring unit.")
         #     return [SlotSet("measuringUnit", slot_value)]
         # elif slot_value in ['imperial', 'metric']:
         #     if slot_value == old_measuring_unit:
@@ -588,7 +588,7 @@ class action_change_measuringUnit(Action):
         #             dispatcher.utter_message(text=f"OK! Your height is {height_temp}.")
         #     elif slot_value == 'metric':
 
-        dispatcher.utter_message(text="Seems like you have entered incorrect measuring unit. I’m still learning please try saying it differently.")
+        dispatcher.utter_message(text="Your measuring unit seems incorrect to me. I’m still learning please try saying it differently.")
         return [SlotSet("measuringUnit", None)]
 
 class action_change_eating(Action):
@@ -609,7 +609,7 @@ class action_change_eating(Action):
                   }
 
         if (not slot_value) or (slot_value not in ['vegan', 'vegetarian', 'non-vegetarian']):
-            dispatcher.utter_message(text="Seems like you have entered incorrect eating category. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text="Your eating category seems incorrect to me. I’m still learning please try saying it differently.")
             return [SlotSet("eating", None)]
 
         dispatcher.utter_message(text=f"{eating.get(slot_value,None)}")
@@ -632,7 +632,7 @@ class action_change_foodieLevel(Action):
                              '3': 'It seems like you are not much of a foodie...',
                              '4': 'So, you love food...', '5': 'hmm great, so food is life for you... '}
         if (not slot_value) or (slot_value not in ['1', '2', '3', '4', '5']):
-            dispatcher.utter_message(text="Seems like you have entered incorrect stress Level. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text="Seems like you have typed incorrect stress Level. I’m still learning please try saying it differently.")
             return [SlotSet("likeFood", None)]
         #else
 
@@ -652,16 +652,16 @@ class action_change_height(Action):
         print('inches:',inches)
 
         if not value:
-            dispatcher.utter_message(text="I’m sorry I didn’t understand, I’m still learning please try entering your height differently.")
+            dispatcher.utter_message(text="I’m sorry I didn’t understand, I’m still learning please try telling me your height differently.")
             return[SlotSet("height1", None)]
         print(tracker.get_slot('measuringUnit'))
         if(tracker.get_slot('measuringUnit') == 'imperial'):
             if inches:
                 if (float(value) > 9 or float(value) < 1):
-                    dispatcher.utter_message(text="Entered height seems incorrect to me, typically human height is between 1 to 9 feets in imperial measurement system.\n I’m still learning please try entering your height differently.")
+                    dispatcher.utter_message(text="Your height seems incorrect to me, typically human height is between 1 to 9 feets in imperial measurement system.\n I’m still learning please try telling me your height differently.")
                     return[SlotSet("height1", None), SlotSet("height2", None)]
                 elif (float(inches) > 12 or float(inches) < 0):
-                    dispatcher.utter_message(text="Seems like you have entered wrong amount of inches. Inches are between 0 to 12 in height")
+                    dispatcher.utter_message(text="Seems like you have typed wrong amount of inches. Inches are between 0 to 12 in height")
                     return[SlotSet("height1", None), SlotSet("height2", None)]
                 else:
                     value=value +" feet "+ inches+" inches"
@@ -670,11 +670,11 @@ class action_change_height(Action):
             #else
             if float(value) < 1:
                 dispatcher.utter_message(
-                    text="Entered value seems quite low, typically human height is between 1 to 9 feets in imperial measurement system.")
+                    text="Typed value seems quite low, typically human height is between 1 to 9 feets in imperial measurement system.")
                 return[SlotSet("height1", None)]
             elif float(value) > 9:
                 dispatcher.utter_message(
-                    text="Entered value seems quite high, typically human height is between 1 to 9 feets in imperial measurement system.")
+                    text="Typed value seems quite high, typically human height is between 1 to 9 feets in imperial measurement system.")
                 return[SlotSet("height1", None)]
             else:
                 value= value +" feet "
@@ -683,11 +683,11 @@ class action_change_height(Action):
         else:
             if float(value) < 80:
                 dispatcher.utter_message(
-                    text="Entered value seems quite low, typically human height is between 80 to 250 cm in metric measurement system.")
+                    text="Typed value seems quite low, typically human height is between 80 to 250 cm in metric measurement system.")
                 return[SlotSet("height1", None), SlotSet("height2", None)]
             elif float(value) > 250:
                 dispatcher.utter_message(
-                    text="Entered value seems quite high, typically human height is between 80 to 250 cm in metric measurement system.")
+                    text="Typed value seems quite high, typically human height is between 80 to 250 cm in metric measurement system.")
                 return [SlotSet("height1", None), SlotSet("height2", None)]
             else:
                 value = value + " cm"
@@ -783,96 +783,97 @@ class Questions:
                 if len(peaks_valleys['valleys_cal'])>3:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['peaks_sleep'])>2 or len(peaks_valleys['valleys_sleep'])>2:
-                            response = "As per your history, you have walked less in "+str(len(peaks_valleys['valleys_steps']))+" days, your calories out are less in "+str(len(peaks_valleys['valleys_cal']))+" days, you have taken more calories in "+str(len(peaks_valleys['peaks_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight lossing performance."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "As per your history, you have walked less in "+str(len(peaks_valleys['valleys_steps']))+" days, your calories out are less in "+str(len(peaks_valleys['valleys_cal']))+" days, you have taken more calories in "+str(len(peaks_valleys['peaks_calin']))+" days that are affecting your weight lossing performance."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have walked less in "+str(len(peaks_valleys['valleys_steps']))+" days, your calories out are less in "+str(len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight lossing performance."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "As per your history, you have walked less in "+str(len(peaks_valleys['valleys_steps']))+" days, your calories out are less in "+str(len(peaks_valleys['valleys_cal']))+" days that are affecting your weight lossing performance."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days. These are affecting your weight loss journey."
                 else:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have walked less in "+str(len(peaks_valleys['valleys_steps']))+" days, you have taken more calories in "+str(len(peaks_valleys['peaks_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight lossing performance."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "As per your history, you have walked less in "+str(len(peaks_valleys['valleys_steps']))+" days, you have taken more calories in "+str(len(peaks_valleys['peaks_calin']))+" days that are affecting your weight lossing performance."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have walked less in "+str(len(peaks_valleys['valleys_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight lossing performance."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "As per your history, you have walked less in "+str(len(peaks_valleys['valleys_steps']))+" days that is affecting your weight lossing performance."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days that is affecting your weight lossing performance."
             else:
                 if len(peaks_valleys['valleys_cal'])>3:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, your calories out are less in "+str(len(peaks_valleys['valleys_cal']))+" days, you have taken more calories in "+str(len(peaks_valleys['peaks_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight lossing performance."
+                            response = "You have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "As per your history, your calories out are less in "+str(len(peaks_valleys['valleys_cal']))+" days, you have taken more calories in "+str(len(peaks_valleys['peaks_calin']))+" days that are affecting your weight lossing performance."
+                            response = "You have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, your calories out are less in "+str(len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight lossing performance."
+                            response = "You have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "As per your history, your calories out are less in "+str(len(peaks_valleys['valleys_cal']))+" days that are affecting your weight lossing performance."
+                            response = "You have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days. These are affecting your weight loss journey."
                 else:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have taken more calories in "+str(len(peaks_valleys['peaks_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight lossing performance."
+                            response = "You have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey ."
                         else:
-                            response = "As per your history, you have taken more calories in "+str(len(peaks_valleys['peaks_calin']))+" days that are affecting your weight lossing performance."
+                            response = "You have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight lossing performance."
+                            response = "you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "As per your history, your activities seems normal. Contact cosultant for detailed diagnosis."
+                            response = "Your body performance and habits seem to be great. I didn’t spot any issue."
             return response
+
         elif self.id == 2:
             if len(peaks_valleys['peaks_steps'])>3:
                 if len(peaks_valleys['peaks_cal'])>3:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have walked more in "+str(len(peaks_valleys['peaks_steps']))+" days, your calories out are more in "+str(len(peaks_valleys['peak_cal']))+" days, you have taken less calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight gaining performance."
+                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "As per your history, you have walked more in "+str(len(peaks_valleys['peaks_steps']))+" days, your calories out are more in "+str(len(peaks_valleys['peak_cal']))+" days, you have taken less calories in "+str(len(peaks_valleys['valleys_calin']))+" days that are affecting your weight gaining performance."
+                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have walked more in "+str(len(peaks_valleys['peaks_steps']))+" days, your calories out are more in "+str(len(peaks_valleys['peak_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight gaining performance."
+                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "As per your history, you have walked more in "+str(len(peaks_valleys['peaks_steps']))+" days, your calories out are more in "+str(len(peaks_valleys['peak_cal']))+" days that are affecting your weight gaining performance."
+                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days. These are affecting your weight gain journey."
                 else:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have walked more in "+str(len(peaks_valleys['peaks_steps']))+" days, you have taken less calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight gaining performance."
+                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "As per your history, you have walked more in "+str(len(peaks_valleys['peaks_steps']))+" days, you have taken less calories in "+str(len(peaks_valleys['valleys_calin']))+" days that are affecting your weight gaining performance."
+                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have walked more in "+str(len(peaks_valleys['peask_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight gaining performance."
+                            response = "You have high activity level in the "+str(len(peaks_valleys['peask_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "As per your history, you have walked more in "+str(len(peaks_valleys['peak_ssteps']))+" days that is affecting your weight gaining performance."
+                            response = "You have high activity level in the "+str(len(peaks_valleys['peak_ssteps']))+" days that is affecting your weight gaining performance."
             else:
                 if len(peaks_valleys['peaks_cal'])>3:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, your calories out are more in "+str(len(peaks_valleys['peaks_cal']))+" days, you have taken less calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight gaining performance."
+                            response = " You have high calories burn rate in the "+str(len(peaks_valleys['peaks_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "As per your history, your calories out are more in "+str(len(peaks_valleys['peaks_cal']))+" days, you have taken less calories in "+str(len(peaks_valleys['valleys_calin']))+" days that are affecting your weight gaining performance."
+                            response = "You have high calories burn rate in the "+str(len(peaks_valleys['peaks_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, your calories out are more in "+str(len(peaks_valleys['peaks_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight gaining performance."
+                            response = "You have high calories burn rate in the "+str(len(peaks_valleys['peaks_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "As per your history, your calories out are more in "+str(len(peaks_valleys['peaks_cal']))+" days that are affecting your weight gaining performance."
+                            response = "You have high calories burn rate in the "+str(len(peaks_valleys['peaks_cal']))+" days. These are affecting your weight gain journey."
                 else:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have taken less calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight gaining performance."
+                            response = "You have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "As per your history, you have taken less calories in "+str(len(peaks_valleys['valleys_calin']))+" days that are affecting your weight gaining performance."
+                            response = "You have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight gaining performance."
+                            response = "You have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "As per your history, your activities seems normal. Contact cosultant for detailed diagnosis."
+                            response = "Your body performance and habits seem to be great. I didn’t spot any issue."
             return response
 
         elif self.id == 3:
@@ -880,27 +881,27 @@ class Questions:
                 if len(peaks_valleys['peaks_cal'])>2 or len(peaks_valleys['valleys_cal'])>2:
                     if len(peaks_valleys['valleys_calin'])>2 or len(peaks_valleys['peaks_sleep'])>2:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have inconsistent walking in "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, your calories out are improper in "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, you have taken inconsistent calories in "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['peaks_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight maintaining performance."
+                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, inconsistent calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['peaks_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintaining performance."
                         else:
-                            response = "As per your history, you have inconsistent walking in "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, your calories out are improper in "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, you have taken inconsistent calories in "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['peaks_calin']))+" days that are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, and inconsistent calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight maintainig performance."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have inconsistent walking in "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, your calories out are improper in "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintainig performance."
                         else:
-                            response = "As per your history, you have inconsistent walking in "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, your calories out are improper in "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days that are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days that are affecting your weight maintainig performance."
                 else:
                     if len(peaks_valleys['valleys_calin'])>3 or len(peaks_valleys['peaks_calin']):
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have inconsistent walking in "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, you have taken improper calories in "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, you have improper calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintainig performance."
                         else:
-                            response = "As per your history, you have inconsistent walking in "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, you have taken improper calories in "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['valleys_cal']))+" days that are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and you have improper calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['valleys_cal']))+" days. These are affecting your weight maintainig performance."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you have inconsistent walking in "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days that are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintainig performance."
                         else:
-                            response = "As per your history, you have inconsistent walking in "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days that is affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days that is affecting your weight maintainig performance."
             else:
-                response = "As per your history, your activities seems normal. Contact cosultant for detailed diagnosis."
+                response = "Your body performance and habits seem to be great. I didn’t spot any issue."
 
             return response
 
@@ -909,48 +910,48 @@ class Questions:
                 if len(peaks_valleys['peaks_cal'])>3:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can gain weight by walking less then normal range, by consuming less calories and increasing calories intake, also by sleeping 7-9 hours."
+                            response = "You can gain weight by reducing your activity level, burning fewer calories and high calories intake. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can gain weight by walking less then normal range, by consuming less calories and increasing calories intake."
+                            response = "You can gain weight by reducing your activity level, burning fewer calories and high calories intake."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can gain weight by walking less then normal range, by consuming less calories, also by sleeping 7-9 hours."
+                            response = "You can gain weight by reducing your activity level, burning fewer calories. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can gain weight by walking less then normal range, by consuming less calories."
+                            response = "You can gain weight by reducing your activity level, burning fewer calories."
                 else:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can gain weight by walking less then normal range, by increasing calories intake, also by sleeping 7-9 hours."
+                            response = "You can gain weight by reducing your activity level, by increasing calories intake. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can gain weight by walking less then normal range, by increasing calories intake."
+                            response = "You can gain weight by reducing your activity level, by increasing calories intake."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can gain weight by walking less then normal range and  by sleeping 7-9 hours."
+                            response = "You can gain weight by reducing your activity level and  by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can gain weight by walking less then normal range."
+                            response = "You can gain weight by reducing your activity level."
             else:
                 if len(peaks_valleys['peaks_cal'])>3:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can gain weight by consuming less calories and increasing calories intake, also by sleeping 7-9 hours."
+                            response = "You can gain weight by burning fewer calories and high calories intake. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can gain weight by consuming less calories and increasing calories intake."
+                            response = "You can gain weight by burning fewer calories and high calories intake."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can gain weight by consuming less calories, also by sleeping 7-9 hours."
+                            response = "You can gain weight by burning fewer calories. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can gain weight by consuming less calories."
+                            response = "You can gain weight by burning fewer calories."
                 else:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can gain weight by increasing calories intake, also by sleeping 7-9 hours."
+                            response = "You can gain weight by high calories intake. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can gain weight by increasing calories intake."
+                            response = "You can gain weight by high calories intake."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can gain weight by sleeping 7-9 hours."
+                            response = "You can gain weight by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, your activities are as per weight gaining criteria. Contact cosultant for detailed diagnosis."
+                            response = "Your body performance seems fine for gaining weight. I didn’t spot any issue at this time."
 
             return response
 
@@ -959,76 +960,73 @@ class Questions:
                 if len(peaks_valleys['valleys_cal'])>3:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['peaks_sleep'])>2 or len(peaks_valleys['valleys_sleep'])>2:
-                            response = "As per your history, you can lose weight by walking more then normal range, by consuming more calories and decreasing calories intake, also by sleeping 7-9 hours."
+                            response = "You can lose weight by increasing your activity level, by burning more calories and fewer calories intake. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can lose weight by walking more then normal range, by consuming more calories and decreasing calories intake."
+                            response = "You can lose weight by increasing your activity level, by burning more calories and fewer calories intake."
                     else:
                         if len(peaks_valleys['peaks_sleep'])>2 or len(peaks_valleys['valleys_sleep'])>2:
-                            response = "As per your history, you can lose weight by walking more then normal range, by consuming more calories, also by sleeping 7-9 hours."
+                            response = "You can lose weight by increasing your activity level, by burning more calories. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can lose weight by walking more then normal range, by consuming more calories."
+                            response = "You can lose weight by increasing your activity level, by burning more calories."
                 else:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['peaks_sleep'])>2 or len(peaks_valleys['valleys_sleep'])>2:
-                            response = "As per your history, you can lose weight by walking more then normal range, by decreasing calories intake, also by sleeping 7-9 hours."
+                            response = "You can lose weight by increasing your activity level, by fewer calories intake. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can lose weight by walking more then normal range, by decreasing calories intake."
+                            response = "You can lose weight by increasing your activity level, by fewer calories intake."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can lose weight by walking more then normal range and by sleeping 7-9 hours."
+                            response = " you can lose weight by increasing your activity level and by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can lose weight by walking more then normal range."
+                            response = "You can lose weight by increasing your activity level."
             else:
                 if len(peaks_valleys['valleys_cal'])>3:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['peaks_sleep'])>2 or len(peaks_valleys['valleys_sleep'])>2:
-                            response = "As per your history, you can lose weight by consuming more calories and decreasing calories intake, also by sleeping 7-9 hours."
+                            response = "You can lose weight by burning more calories and fewer calories intake. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can lose weight by consuming more calories and decreasing calories intake."
+                            response = "You can lose weight by burning more calories and fewer calories intake."
                     else:
                         if len(peaks_valleys['peaks_sleep'])>2 or len(peaks_valleys['valleys_sleep'])>2:
-                            response = "As per your history, you can lose weight by consuming more calories, also by sleeping 7-9 hours."
+                            response = "You can lose weight by burning more calories. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can lose weight by consuming more calories."
+                            response = "You can lose weight by burning more calories."
                 else:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['peaks_sleep'])>2 or len(peaks_valleys['valleys_sleep'])>2:
-                            response = "As per your history, you can lose weight by decreasing calories intake, also by sleeping 7-9 hours."
+                            response = "You can lose weight by fewer calories intake. Also, by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, you can lose weight by decreasing calories intake."
+                            response = "You can lose weight by fewer calories intake."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can lose weight by sleeping 7-9 hours."
+                            response = "You can lose weight by sleeping 7-9 hours."
                         else:
-                            response = "As per your history, your activities are as per weight losing criteria. Contact cosultant for detailed diagnosis."
+                            response = "Your body performance seems fine for losing weight. I didn’t spot any issue."
             return response
 
         elif self.id == 6:
-            if len(peaks_valleys['peaks_steps'])>2 or len(peaks_valleys['valleys_steps'])>2:
-                if len(peaks_valleys['peaks_cal'])>2 or len(peaks_valleys['valleys_cal'])>2:
-                    if len(peaks_valleys['valleys_calin'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                        if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can maintain weight by walking in normal range, by consuming calories in normal range, by taking calories in normal range, and with proper sleep pattern."
-                        else:
-                            response = "As per your history, you can maintain weight by walking in normal range, by consuming calories in normal range, and by taking calories in normal range."
+            if len(peaks_valleys['peaks_cal'])>2 or len(peaks_valleys['valleys_cal'])>2:
+                if len(peaks_valleys['valleys_calin'])>2 or len(peaks_valleys['peaks_calin'])>2:
+                    if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
+                        response = "You can maintain weight by balancing calories in/out ratio and with proper sleep pattern."
                     else:
-                        if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can maintain weight by walking in normal range, by consuming calories in normal range, and with proper sleep pattern."
-                        else:
-                            response = "As per your history, you can maintain weight by walking in normal range, and by consuming calories in normal range."
+                        response = "You can maintain weight by balancing calories in/out ratio."
                 else:
-                    if len(peaks_valleys['valleys_calin'])>3 or len(peaks_valleys['peaks_calin']):
-                        if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can maintain weight by walking in normal range, by taking calories in normal range, and with proper sleep pattern."
-                        else:
-                            response = "As per your history, you can maintain weight by walking in normal range, and by taking calories in normal range."
+                    if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
+                        response = "You can maintain weight by burning calories as per calories intake, and with proper sleep pattern."
                     else:
-                        if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "As per your history, you can maintain weight by walking in normal range, and with proper sleep pattern."
-                        else:
-                            response = "As per your history, you can maintain weight by walking in normal range."
+                        response = "You can maintain weight by burning calories as per calories intake."
             else:
-                response = "As per your history, your activities are as per weight maintaining criteria. Contact cosultant for detailed diagnosis."
+                if len(peaks_valleys['valleys_calin'])>3 or len(peaks_valleys['peaks_calin']):
+                    if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
+                        response = "You can maintain weight by taking calories as per calories burnt, and with proper sleep pattern."
+                    else:
+                        response = "You can maintain weight by taking calories as per calorie burnt."
+                else:
+                    if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
+                        response = "You can maintain weight with proper sleep pattern."
+                    else:
+                        response = "Your activity level seems fine maintaining weight. I didn’t spot any issue."
 
             return response
 
@@ -1037,27 +1035,27 @@ class Questions:
                 if len(peaks_valleys['peaks_cal'])>4 or len(peaks_valleys['valleys_cal'])>4:
                     if len(peaks_valleys['valleys_calin'])>4 or len(peaks_valleys['peaks_sleep'])>4:
                         if len(peaks_valleys['valleys_sleep'])>4 or len(peaks_valleys['peaks_sleep'])>4:
-                            response = "As per your history, inconsistent walking, improper calories consumption and intake, and poor sleep pattern are bad habits in your life."
+                            response = "Inconsistent activity level, poor calories in/out patterns, and poor sleep pattern are bad habits in your life."
                         else:
-                            response = "As per your history, inconsistent walking, improper calories consumption and intake are bad habits in your life."
+                            response = "Inconsistent activity level, poor calories in/out patterns are bad habits in your life."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>4 or len(peaks_valleys['peaks_sleep'])>4:
-                            response = "As per your history, inconsistent walking, improper calories consumption, and poor sleep pattern are bad habits in your life."
+                            response = "Inconsistent activity level, poor calories burning rate, and poor sleep pattern are bad habits in your life."
                         else:
-                            response = "As per your history, inconsistent walking, and improper calories consumption are bad habits in your life."
+                            response = "Inconsistent activity level, and poor calories burning rate are bad habits in your life."
                 else:
                     if len(peaks_valleys['valleys_calin'])>4 or len(peaks_valleys['peaks_calin'])>4:
                         if len(peaks_valleys['valleys_sleep'])>4 or len(peaks_valleys['peaks_sleep'])>4:
-                            response = "As per your history, inconsistent walking, improper calories intake, and poor sleep pattern are bad habits in your life."
+                            response = "Inconsistent activity level, improper calories intake, and poor sleep pattern are bad habits in your life."
                         else:
-                            response = "As per your history, inconsistent walking, and improper calories intake bad habits in your life."
+                            response = "Inconsistent activity level, and improper calories intake bad habits in your life."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>4 or len(peaks_valleys['peaks_sleep'])>4:
-                            response = "As per your history, inconsistent walking, and poor sleep pattern are bad habits in your life."
+                            response = "Inconsistent activity level, and poor sleep pattern are bad habits in your life."
                         else:
-                            response = "As per your history, inconsistent walking is the bad habits in your life."
+                            response = "Inconsistent activity level is the bad habit in your life."
             else:
-                response = "As per your history, your activities are normal. Contact cosultant for detailed analysis."
+                response = "Your body performance and habits seem to be great. I didn’t spot any issue."
 
             return response
 
@@ -1070,48 +1068,48 @@ class Questions:
                 if len(peaks_valleys['valleys_cal'])>4:
                     if len(peaks_valleys['peaks_calin'])>4:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, less walking, less calories consumption and more calories intake, also poor sleep pattern are keeping you away from your goal."
+                            response = "Low level activity, fewer calories consumption and high calories intake, and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, less walking, less calories consumption and more calories intake are keeping you away from your goal."
+                            response = "Low level activity, fewer calories consumption and high calories intake are keeping you away from your goal."
                     else:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, less walking, less calories consumption, also poor sleep pattern are keeping you away from your goal."
+                            response = "Low level activity, fewer calories consumption, and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, less walking, less calories consumption are keeping you away from your goal."
+                            response = "Low level activity, fewer calories consumption are keeping you away from your goal."
                 else:
                     if len(peaks_valleys['peaks_calin'])>4:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, less walking, more calories intake, also poor sleep pattern are keeping you away from your goal."
+                            response = "Low level activity, high calories intake, and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, less walking, more calories intake are keeping you away from your goal."
+                            response = "Low level activity and high calories intake are keeping you away from your goal."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>3 or len(peaks_valleys['peaks_sleep'])>3:
-                            response = "As per your history, less walking, and poor sleep pattern are keeping you away from your goal."
+                            response = "Low level activity, and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, less walking is keeping you away from your goal."
+                            response = "Low level activity is keeping you away from your goal."
             else:
                 if len(peaks_valleys['valleys_cal'])>4:
                     if len(peaks_valleys['peaks_calin'])>4:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, less calories consumption and more calories intake, also poor sleep pattern are keeping you away from your goal."
+                            response = "Fewer calories consumption and more calories intake. Also, poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, less calories consumption and more calories intake are keeping you away from your goal."
+                            response = "Fewer calories consumption and more calories intake are keeping you away from your goal."
                     else:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, less calories consumption, also poor sleep pattern are keeping you away from your goal."
+                            response = "Fewer calories consumption. Also, poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, less calories consumption are keeping you away from your goal."
+                            response = "Fewer calories consumption is keeping you away from your goal."
                 else:
                     if len(peaks_valleys['peaks_calin'])>4:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, more calories intake, also poor sleep pattern are keeping you away from your goal."
+                            response = "High calories intake. Also, poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, more calories intake is keeping you away from your goal."
+                            response = "High calories intake is keeping you away from your goal."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>3 or len(peaks_valleys['peaks_sleep'])>3:
-                            response = "As per your history, poor sleep pattern is keeping you away from your goal."
+                            response = "Poor sleep pattern is keeping you away from your goal."
                         else:
-                            response = "As per your history, you are on track to achieve your goal. Contact cosultant for detailed diagnosis."
+                            response = "You are on track to achieving your goal. Keep up the great work!"
 
             return response
 
@@ -1120,48 +1118,48 @@ class Questions:
                 if len(peaks_valleys['peaks_cal'])>4:
                     if len(peaks_valleys['valleys_calin'])>4:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, extra walking, increased calories consumption and less calories intake, also poor sleep pattern are keeping you away from your goal."
+                            response = "High level activity, high calories burn rate and fewer calories intake, and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, extra walking, increased calories consumption and less calories intake are keeping you away from your goal."
+                            response = "High level activity, high calories burn rate and fewer calories intake are keeping you away from your goal."
                     else:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, extra walking, increased calories consumption, also poor sleep pattern are keeping you away from your goal."
+                            response = "High level activity, high calories burn rate, and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, extra walking, increased calories consumption are keeping you away from your goal."
+                            response = "High level activity, high calories burn rate are keeping you away from your goal."
                 else:
                     if len(peaks_valleys['valleys_calin'])>4:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, extra walking, less calories intake, also poor sleep pattern are keeping you away from your goal."
+                            response = "High level activity, fewer calories intake, and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, extra walking, less calories intake are keeping you away from your goal."
+                            response = "High level activity, fewer calories intake are keeping you away from your goal."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>3 or len(peaks_valleys['peaks_sleep'])>3:
-                            response = "As per your history, extra walking, and poor sleep pattern are keeping you away from your goal."
+                            response = "High level activity and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, extra walking is keeping you away from your goal."
+                            response = "High level activity is keeping you away from your goal."
             else:
                 if len(peaks_valleys['peaks_cal'])>4:
                     if len(peaks_valleys['valleys_calin'])>4:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, increased calories consumption and less calories intake, also poor sleep pattern are keeping you away from your goal."
+                            response = "High calories burn rate and fewer calories intake and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, increased calories consumption and less calories intake are keeping you away from your goal."
+                            response = "High calories burn rate and fewer calories intake are keeping you away from your goal."
                     else:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, increased calories consumption, also poor sleep pattern are keeping you away from your goal."
+                            response = "High calories burn rate and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, increased calories consumption are keeping you away from your goal."
+                            response = "High calories burn rate are keeping you away from your goal."
                 else:
                     if len(peaks_valleys['valleys_calin'])>4:
                         if len(peaks_valleys['peaks_sleep'])>3 or len(peaks_valleys['valleys_sleep'])>3:
-                            response = "As per your history, less calories intake, also poor sleep pattern are keeping you away from your goal."
+                            response = "Fewer calories intake and poor sleep pattern are keeping you away from your goal."
                         else:
-                            response = "As per your history, less calories intake is keeping you away from your goal."
+                            response = "Fewer calories intake is keeping you away from your goal."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>3 or len(peaks_valleys['peaks_sleep'])>3:
-                            response = "As per your history, poor sleep pattern is keeping you away from your goal."
+                            response = "Poor sleep pattern is keeping you away from your goal."
                         else:
-                            response = "As per your history, you are on track to achieve your goal. Contact cosultant for detailed diagnosis."
+                            response = "You are on track to achieving your goal. Keep up the great work!"
             return response
 
         elif self.id==11:    
@@ -1290,7 +1288,7 @@ class forcasting:
       print(df_forecast['Signal_Forecast'].tail(Horizon).values)
       self.predicted_weight=(df_forecast['Signal_Forecast']).iloc[-1]
       self.current_weight=(df_forecast['Signal_Forecast']).iloc[-16]
-      self.return_print='Your current weight is: '+str(self.current_weight)+ ', and your predicted weight after '+str(Horizon)+ ' days is: '+ str(self.predicted_weight)
+      self.return_print = 'Your current weight is: ' + str(round(self.current_weight, 2)) + ', and your predicted weight after ' + str(Horizon) + ' days is: ' + str(round(self.predicted_weight, 2))
       return None 
   
       #return deepcopy((df_forecast['Signal_Forecast'].tail(Horizon).values))
