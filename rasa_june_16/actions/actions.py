@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt # data visualization
 import pyaf.ForecastEngine as autof
 import os
 import datetime
+from dateutil import parser
 from copy import deepcopy
 from bson.objectid import ObjectId
 pd.options.mode.chained_assignment = None
@@ -753,10 +754,10 @@ class action_store_db(Action): ## custom action function for storing user inform
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.likeFood': likeFood.get((str(tracker.get_slot('likeFood'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.goal': goal.get((str(tracker.get_slot('userGoal'))), None)}})
-        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), '_class' : 'com.intellithing.common.entity.HealthRecord'})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), '_class' : 'com.intellithing.common.entity.HealthRecord'})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
         #dispatcher.utter_message(text = f"your data is stored in the database.")
         print((user_db.users.find_one({"_id": ObjectId(user_id)})))
         # mydict = { "user_id": str(tracker.current_state()["sender_id"]), "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
@@ -783,46 +784,46 @@ class Questions:
                 if len(peaks_valleys['valleys_cal'])>3:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['peaks_sleep'])>2 or len(peaks_valleys['valleys_sleep'])>2:
-                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
+                            response = "You have reduced activity level in the last "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer calories in the last "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
+                            response = "You have reduced activity level in the last"+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer calories in the last "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
+                            response = "You have reduced activity level in the last "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer calories in the last "+str(len(peaks_valleys['valleys_cal']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days. These are affecting your weight loss journey."
+                            response = "You have reduced activity level in the  last "+str(len(peaks_valleys['valleys_steps']))+" days, you have burnt fewer calories in the last "+str(len(peaks_valleys['valleys_cal']))+" days. These are affecting your weight loss journey."
                 else:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have high calorie intake levels in the last "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
+                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, you have high calorie intake levels in the last "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
+                            response = "You have reduced activity level in the last"+str(len(peaks_valleys['valleys_steps']))+" days, and you have had a poor sleep pattern in the last "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "You have reduced activity level in "+str(len(peaks_valleys['valleys_steps']))+" days that is affecting your weight lossing performance."
+                            response = "You have reduced activity level in the last "+str(len(peaks_valleys['valleys_steps']))+" days that is affecting your weight lossing performance."
             else:
                 if len(peaks_valleys['valleys_cal'])>3:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
+                            response = "You have burnt fewer calories in the last "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "You have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
+                            response = "You have burnt fewer calories in the last "+str(len(peaks_valleys['valleys_cal']))+" days, you have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
+                            response = "You have burnt fewer calories in the last "+str(len(peaks_valleys['valleys_cal']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
-                            response = "You have burnt fewer caloriesss in the "+str(len(peaks_valleys['valleys_cal']))+" days. These are affecting your weight loss journey."
+                            response = "You have burnt fewer calories in the last "+str(len(peaks_valleys['valleys_cal']))+" days. These are affecting your weight loss journey."
                 else:
                     if len(peaks_valleys['peaks_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey ."
+                            response = "You have high calorie intake levels in the last "+str(len(peaks_valleys['peaks_calin']))+" days, and you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey ."
                         else:
-                            response = "You have high calorie intake levels in the "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
+                            response = "You have high calorie intake levels in the last "+str(len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight loss journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "you have had a poor sleep pattern in the "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
+                            response = "you have had a poor sleep pattern in the last "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight loss journey."
                         else:
                             response = "Your body performance and habits seem to be great. I didn’t spot any issue."
             return response
@@ -832,46 +833,46 @@ class Questions:
                 if len(peaks_valleys['peaks_cal'])>3:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days. These are affecting your weight gain journey."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peaks_steps']))+" days, high calories burn rate in the "+str(len(peaks_valleys['peak_cal']))+" days. These are affecting your weight gain journey."
                 else:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peaks_steps']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "You have high activity level in the "+str(len(peaks_valleys['peaks_steps']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peaks_steps']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have high activity level in the "+str(len(peaks_valleys['peask_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peask_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "You have high activity level in the "+str(len(peaks_valleys['peak_ssteps']))+" days that is affecting your weight gaining performance."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peak_ssteps']))+" days that is affecting your weight gaining performance."
             else:
                 if len(peaks_valleys['peaks_cal'])>3:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = " You have high calories burn rate in the "+str(len(peaks_valleys['peaks_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+                            response = " You have high calories burn rate in the last "+str(len(peaks_valleys['peaks_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "You have high calories burn rate in the "+str(len(peaks_valleys['peaks_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
+                            response = "You have high calories burn rate in the last "+str(len(peaks_valleys['peaks_cal']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have high calories burn rate in the "+str(len(peaks_valleys['peaks_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+                            response = "You have high calories burn rate in the last "+str(len(peaks_valleys['peaks_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "You have high calories burn rate in the "+str(len(peaks_valleys['peaks_cal']))+" days. These are affecting your weight gain journey."
+                            response = "You have high calories burn rate in the last "+str(len(peaks_valleys['peaks_cal']))+" days. These are affecting your weight gain journey."
                 else:
                     if len(peaks_valleys['valleys_calin'])>3:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+                            response = "You have taken fewer calories in the last"+str(len(peaks_valleys['valleys_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "You have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
+                            response = "You have taken fewer calories in the last "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+                            response = "You have improper sleep pattern in the last"+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
                             response = "Your body performance and habits seem to be great. I didn’t spot any issue."
             return response
@@ -881,25 +882,25 @@ class Questions:
                 if len(peaks_valleys['peaks_cal'])>2 or len(peaks_valleys['valleys_cal'])>2:
                     if len(peaks_valleys['valleys_calin'])>2 or len(peaks_valleys['peaks_sleep'])>2:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, inconsistent calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['peaks_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintaining performance."
+                            response = "You have had an inconsistent activity level in the last "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, inconsistent calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['peaks_calin']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintaining performance."
                         else:
-                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, and inconsistent calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the last "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, and inconsistent calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['peaks_calin']))+" days. These are affecting your weight maintainig performance."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the last "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintainig performance."
                         else:
-                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days that are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the last "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and poor calories burn rate in the  "+str(len(peaks_valleys['peaks_cal'])+len(peaks_valleys['valleys_cal']))+" days that are affecting your weight maintainig performance."
                 else:
                     if len(peaks_valleys['valleys_calin'])>3 or len(peaks_valleys['peaks_calin']):
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, you have improper calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the last "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, you have improper calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['valleys_cal']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintainig performance."
                         else:
-                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and you have improper calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['valleys_cal']))+" days. These are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the last "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and you have improper calories intake in the "+str(len(peaks_valleys['valleys_calin'])+len(peaks_valleys['valleys_cal']))+" days. These are affecting your weight maintainig performance."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the last "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight maintainig performance."
                         else:
-                            response = "You have had an inconsistent activity level in the  "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days that is affecting your weight maintainig performance."
+                            response = "You have had an inconsistent activity level in the last "+str(len(peaks_valleys['peaks_steps'])+ len(peaks_valleys['valleys_steps']))+" days that is affecting your weight maintainig performance."
             else:
                 response = "Your body performance and habits seem to be great. I didn’t spot any issue."
 
