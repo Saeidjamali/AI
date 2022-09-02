@@ -1329,7 +1329,6 @@ class Pipeline:
         self.user= self.user[-days:]
     
     def FindPeaksValleys(self):
-        import pandas as pd
         t = np.arange(1,len(self.user.total_steps)+1)
     #     user['SMA_steps']=user['total_steps'].rolling(2, min_periods=1).mean().tolist()
     #     series1 = user.SMA_steps
@@ -1382,7 +1381,17 @@ class action_QN_response(Action):
     def name(self) -> Text:
         return "action_QN_response"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        user_id = 1503960366
+        filename = "UpdatedDatasetFitBit.csv"
+        fitbit_df = pd.read_csv(filename);
+        user_ids = fitbit_df.iloc[:, 1]
+
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+
+        if int(user_id) not in user_ids.values:
+            dispatcher.utter_message(text = "There is no historical data available about you at the moment.")
+            return []
         days=30
         goal=0
         pipeline= Pipeline(user_id,days,goal)
