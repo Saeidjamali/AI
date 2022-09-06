@@ -37,6 +37,7 @@ intents:
 - QN8
 - QN9_10
 - QN11
+- water_intake
 entities:
 - NUMBER
 - unit
@@ -299,18 +300,18 @@ responses:
     - text: How much do you weight? Type in format':' xx kg.
   utter_update_profile:
     - text: you can update your profile by saying things like “update my weight to xx”.
-  utter_list_questions:
-    - text: "You can ask me questions about the quality of your body functions for example:\n
-              How is the quality of my sleep?\n
-              How is the quality of my diet? (How is the quality of my meal)\n
-              How is my overall activity level?\n
-              How is the quality of my metabolism?\n
-              Or\n
-              Ask me to predict your weight.\n
-              If you are not achieving your goal ask me questions such as:\n
-              Why am I not losing weight?\n
-              Why am I not gaining weight?\n
-              I will then troubleshoot it for you."
+  # utter_list_questions:
+  #   - text: "You can ask me questions about the quality of your body functions for example:\n
+  #             How is the quality of my sleep?\n
+  #             How is the quality of my diet? (How is the quality of my meal)\n
+  #             How is my overall activity level?\n
+  #             How is the quality of my metabolism?\n
+  #             Or\n
+  #             Ask me to predict your weight.\n
+  #             If you are not achieving your goal ask me questions such as:\n
+  #             Why am I not losing weight?\n
+  #             Why am I not gaining weight?\n
+  #             I will then troubleshoot it for you."
   utter_identity:
     - text: "My name is Viki, your virtual health and fitness assistant."
   utter_viki_meaning:
@@ -339,3 +340,6 @@ actions:
 - action_change_foodieLevel
 - action_store_db
 - action_QN_response
+- action_list_questions
+- action_water_intake
+- action_default_fallback

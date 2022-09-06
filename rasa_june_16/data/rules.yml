@@ -136,7 +136,7 @@ rules:
 - rule: list_questions_path
   steps:
   - intent: list_questions
-  - action: utter_list_questions
+  - action: action_list_questions
 
 - rule: identity_path
   steps:
@@ -217,3 +217,14 @@ rules:
   steps:
   - intent: QN11
   - action: action_QN_response
+
+- rule: water glass count
+  steps:
+  - intent: water_intake
+  - action: action_water_intake
+
+# Fallback when the chatbot does not understand user message.
+- rule: Fallback
+  steps:
+  - intent: nlu_fallback
+  - action: action_default_fallback

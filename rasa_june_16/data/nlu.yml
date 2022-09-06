@@ -100,12 +100,26 @@ nlu:
 - intent: inform
   examples: |
     - [170]{"entity":"NUMBER"} [cm]{"entity":"unit","value":"cm"}
-    - [182]{"entity":"NUMBER"} [centimeter]{"entity":"unit","value":"cm"}
+    - [166]{"entity":"NUMBER"} [centimeter]{"entity":"unit","value":"cm"}
+    - [154]{"entity":"NUMBER"} [centimeter]{"entity":"unit","value":"cm"}
+    - [192]{"entity":"NUMBER"} [centimeters]{"entity":"unit","value":"cm"}
+    - [167]{"entity":"NUMBER"} [centimeters]{"entity":"unit","value":"cm"}
     - I am [95]{"entity":"NUMBER"} [centi meter]{"entity":"unit","value":"cm"}
+    - I am [148]{"entity":"NUMBER"} [centi meters]{"entity":"unit","value":"cm"}
     - I am [250]{"entity":"NUMBER"} [centi-meter]{"entity":"unit","value":"cm"}
-    - I am [80]{"entity":"NUMBER"} [CM]{"entity":"unit","value":"cm"}
+    - I am [162]{"entity":"NUMBER"} [centi-metres]{"entity":"unit","value":"cm"}
+    - [188]{"entity":"NUMBER"} [centimetre]{"entity":"unit","value":"cm"}
+    - [190]{"entity":"NUMBER"} [centimetre]{"entity":"unit","value":"cm"}
+    - [183]{"entity":"NUMBER"} [centimetres]{"entity":"unit","value":"cm"}
+    - [168]{"entity":"NUMBER"} [centimetres]{"entity":"unit","value":"cm"}
+    - I am [143]{"entity":"NUMBER"} [centi metre]{"entity":"unit","value":"cm"}
+    - I am [177]{"entity":"NUMBER"} [centi metre]{"entity":"unit","value":"cm"}
+    - I am [259]{"entity":"NUMBER"} [centi-metre]{"entity":"unit","value":"cm"}
+    - I am [206]{"entity":"NUMBER"} [centi-metres]{"entity":"unit","value":"cm"}
+    - I am [87]{"entity":"NUMBER"} [CM]{"entity":"unit","value":"cm"}
     - My height is [120]{"entity":"NUMBER"} [cm]{"entity":"unit","value":"cm"}
-    - My height is [130]{"entity":"NUMBER"} [CENTIMETER]{"entity":"unit","value":"cm"}
+    - My height is [130]{"entity":"NUMBER"} [CENTIMETRE]{"entity":"unit","value":"cm"}
+    - My height is [141]{"entity":"NUMBER"} [CENTIMETER]{"entity":"unit","value":"cm"}
     - [5]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} [7]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
     - [7]{"entity":"NUMBER"} [feets]{"entity":"unit","value":"feet"} [2]{"entity":"NUMBER", "role": "height2"} [INCHES]{"entity":"unit", "role": "inches","value":"inches"}
     - [8]{"entity":"NUMBER"} [feets]{"entity":"unit","value":"feet"} [9]{"entity":"NUMBER", "role": "height2"} [INCHES]{"entity":"unit", "role": "inches","value":"inches"}
@@ -510,10 +524,22 @@ nlu:
     - How can I make changes to my profile
     - How do I modify me profile
     - Is there any way I can update my profile
+    - How do I update my profile?
+    - How can I update my profile?
+    - How can my profile be updated?
+    - How can I make changes to my profile?
+    - How do I modify me profile?
+    - Is there any way I can update my profile?
 
 - intent: list_questions
   examples: |
     - what questions can you answer
+    - What questions are you able to answer
+    - What kind of queries are you capable of answering
+    - What queries can you respond to
+    - What inquiries are you able to address
+    - What kind of queries can you address
+    - what questions can you answer?
     - What questions are you able to answer?
     - What kind of queries are you capable of answering?
     - What queries can you respond to?
@@ -528,6 +554,16 @@ nlu:
     - Can you tell me about yourself
     - Can you identify yourself
     - What exactly are you
+    - Are you an AI
+    - Are you an ai
+    - Who are you?
+    - May I know you?
+    - Will you introduce yourself?
+    - Can you tell me about yourself?
+    - Can you identify yourself?
+    - What exactly are you?
+    - Are you an AI?
+    - Are you an ai?
 
 - intent: viki_meaning
   examples: |
@@ -537,6 +573,12 @@ nlu:
     - What Viki shows
     - What does the term Viki mean
     - What precisely is meant by the term Viki
+    - what does Viki mean?
+    - What exactly Viki is?
+    - What is meant by Viki?
+    - What Viki shows?
+    - What does the term Viki mean?
+    - What precisely is meant by the term Viki?
 
 - intent: gender_check
   examples: |
@@ -546,6 +588,14 @@ nlu:
     - Are you a boy or girl
     - What gender do you identify as
     - Whether you are a male or female
+    - what is your gender
+    - are you a man or a woman?
+    - Are you a male or female?
+    - Which Gender are you?
+    - Are you a boy or girl?
+    - What gender do you identify as?
+    - Whether you are a male or female?
+    - what is your gender?
 
 - intent: intellithing_meaning
   examples: |
@@ -555,6 +605,12 @@ nlu:
     - What does intellithing mean
     - Will you tell me about intellithing
     - Would you elaborate intellithing
+    - what is intellithing?
+    - Can you describe intellithing?
+    - What exactly intellithing is?
+    - What does intellithing mean?
+    - Will you tell me about intellithing?
+    - Would you elaborate intellithing?
 
 - intent: viki_creator
   examples: |
@@ -564,6 +620,12 @@ nlu:
     - Who built you
     - How were you created
     - Who developed you
+    - who created you?
+    - Who designed you?
+    - Who made you exactly?
+    - Who built you?
+    - How were you created?
+    - Who developed you?
 
 - intent: answer_method
   examples: |
@@ -574,6 +636,13 @@ nlu:
     - In what way do you respond to enquiries
     - How do you reply to inquiries
     - How would you answer to questions
+    - How do you answer questions?
+    - How do you predict?
+    - How do you answer queries?
+    - How do you respond to questions?
+    - In what way do you respond to enquiries?
+    - How do you reply to inquiries?
+    - How would you answer to questions?
 
 
 - intent: QN1
@@ -588,6 +657,16 @@ nlu:
     - Why haven't I lost weight?
     - Why don't I lose weight?
     - How come I don't lose weight?
+    - Why am I gaining weight
+    - What is causing my weight gain
+    - Why am I acquiring weight gain
+    - I am gaining weight, why
+    - What causes me to acquire weight
+    - why am I not losing weight
+    - Why don't I lose weight
+    - Why haven't I lost weight
+    - Why don't I lose weight
+    - How come I don't lose weight
 
 - intent: QN2
   examples: |
@@ -602,6 +681,17 @@ nlu:
     - I am losing weight, why?
     - What causes me to lose weight?
     - How come I am losing weight?
+    - Why am I not gaining weight
+    - Why don't I gain weight
+    - I'm not gaining weight, why
+    - Why I am unable to acquire weight
+    - Why I am not able to put on weight
+    - Why am I losing weight
+    - What is causing my weight lose
+    - Why am I dropping weight
+    - I am losing weight, why
+    - What causes me to lose weight
+    - How come I am losing weight
 
 
 - intent: QN3
@@ -611,6 +701,11 @@ nlu:
     - Why am I not able to keep my weight?
     - Why do I not maintain my weight?
     - Why am I incapable of keeping my weight?
+    - Why am I unable to maintain weight
+    - Why am I unable to sustain my weight
+    - Why am I not able to keep my weight
+    - Why do I not maintain my weight
+    - Why am I incapable of keeping my weight
 
 - intent: QN4
   examples: |
@@ -619,6 +714,11 @@ nlu:
     - How can I acquire weight?
     - How to build weight?
     - How can I get weight?
+    - How to gain weight
+    - How can I put on weight
+    - How can I acquire weight
+    - How to build weight
+    - How can I get weight
 
 - intent: QN5
   examples: |
@@ -627,6 +727,11 @@ nlu:
     - How to sustain weight?
     - How to retain weight?
     - How to hold the weight?
+    - How to lose weight
+    - How can I maintain weight
+    - How to sustain weight
+    - How to retain weight
+    - How to hold the weight
 
 - intent: QN6
   examples: |
@@ -635,6 +740,11 @@ nlu:
     - How to sustain weight?
     - How to retain weight?
     - How to hold the weight?
+    - How to maintain weight
+    - How can I maintain weight
+    - How to sustain weight
+    - How to retain weight
+    - How to hold the weight
 
 - intent: QN7
   examples: |
@@ -643,6 +753,11 @@ nlu:
     - What are the bad practices in my life?
     - What are the bad habits in me?
     - What are the poor habits of my life?
+    - What are bad habits in my life
+    - What bad habits do I have in my life
+    - What are the bad practices in my life
+    - What are the bad habits in me
+    - What are the poor habits of my life
 
 - intent: QN8
   examples: |
@@ -651,6 +766,11 @@ nlu:
     - Do I lead a healthy life?
     - Am I healthy in my lifestyle?
     - Am I part of a healthy lifestyle?
+    - Do I have a healthy lifestyle
+    - Have I got a healthy lifestyle
+    - Do I lead a healthy life
+    - Am I healthy in my lifestyle
+    - Am I part of a healthy lifestyle
 
 - intent: QN9_10
   examples: |
@@ -660,6 +780,12 @@ nlu:
     - Am I on track for my objective?
     - Am I doing well with my goal?
     - Am I going the right way with my goal?
+    - Am I on track with my goal
+    - Am I getting it right with my goal
+    - Am I on the right path with my target
+    - Am I on track for my objective
+    - Am I doing well with my goal
+    - Am I going the right way with my goal
 
 - intent: QN11
   examples: |
@@ -668,6 +794,25 @@ nlu:
     - What will be my weight in next [5]{"entity":"NUMBER", "role": "predict"} days
     - Compute my weight in next [23]{"entity":"NUMBER", "role": "predict"} days
     - Calculate my weight in the next [45]{"entity":"NUMBER", "role": "predict"} days
+    - Predict my weight in the next [30]{"entity":"NUMBER", "role": "predict"} days
+    - Forecast my weight in the next [30]{"entity":"NUMBER", "role": "predict"} days?
+    - Estimate my weight in the following [15]{"entity":"NUMBER", "role": "predict"} days?
+    - What will be my weight in next [5]{"entity":"NUMBER", "role": "predict"} days?
+    - Compute my weight in next [23]{"entity":"NUMBER", "role": "predict"} days?
+    - Calculate my weight in the next [45]{"entity":"NUMBER", "role": "predict"} days?
+    - Predict my weight in the next [30]{"entity":"NUMBER", "role": "predict"} days?
+
+- intent: water_intake
+  examples: |
+    - Add [1]{"entity":"NUMBER", "role":"glasses"} glass of water to my water intake.
+    - I drank [1]{"entity":"NUMBER", "role":"glasses"} glass of water.
+    - Add [2]{"entity":"NUMBER", "role":"glasses"} glasses of water to my water intake.
+    - Add [1]{"entity":"NUMBER", "role": "glasses"} drink of water to my water intake.
+    - I had [1]{"entity":"NUMBER", "role": "glasses"} glass of water.
+    - I drank [1]{"entity":"NUMBER", "role": "glasses"} glass of water.
+    - I am drinking 1{"entity":"NUMBER", "role": "glasses"} glass of water.
+    - Add [1]{"entity":"NUMBER", "role": "glasses"} glass of water to my water intake.
+    - 1{"entity":"NUMBER", "role": "glasses"} glass of water consumed.
 
 
 # - intent: height

@@ -1,7 +1,7 @@
 from typing import Text, List, Any, Dict
 
 from rasa_sdk import Tracker, FormValidationAction, Action
-from rasa_sdk.events import EventType, SlotSet, FollowupAction
+from rasa_sdk.events import EventType, SlotSet, FollowupAction, UserUtteranceReverted
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.types import DomainDict
 from dotenv import load_dotenv, find_dotenv
@@ -1389,7 +1389,7 @@ class action_QN_response(Action):
         user_id = str((tracker.current_state())["sender_id"])
 
 
-        if int(user_id) not in user_ids.values:
+        if user_id not in user_ids.values:
             dispatcher.utter_message(text = "There is no historical data available about you at the moment.")
             return []
         days=30
@@ -1434,3 +1434,66 @@ class action_QN_response(Action):
             peaks_valleys,response = pipeline.Run(ques_id)
             print(response)
             dispatcher.utter_message(text = response)
+
+
+class action_water_intake(Action):
+    def name(self) -> Text:
+        return "action_water_intake"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+        print(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="glasses"), None)
+        water_intake = (tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="glasses"), None)
+
+        if water_intake:
+            user_db.healthRecords.insert_one({"userId":user_id, 'type': 'DRINK', 'payload': {'glasses' : float(water_intake), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 
+                'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+            dispatcher.utter_message(text = "Water glasses count updated.")
+            return []
+        else:
+            dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try telling me your water intake level in number of glasses drank.")
+            return []
+
+class action_list_questions(Action):
+    def name(self) -> Text:
+        return "action_list_questions"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        filename = "UpdatedDatasetFitBit.csv"
+        fitbit_df = pd.read_csv(filename);
+        user_ids = fitbit_df.iloc[:, 1]
+
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+
+        if user_id not in user_ids.values:
+            dispatcher.utter_message("Currently there is no historical data available about you at the moment. \n\
+                Keep updating your data on daily basis to get answers to questions like:\n\
+                Ask me to predict your weight.\n\
+                If you are not achieving your goal ask me questions such as:\n\
+                Why am I not losing weight?\n\
+                Why am I not gaining weight?\n\
+                I will then be able to troubleshoot it for you.")
+        else:
+            dispatcher.utter_message("You can ask me questions about the quality of your body functions for example:\n\
+                Ask me to predict your weight.\n\
+                If you are not achieving your goal ask me questions such as:\n\
+                Why am I not losing weight?\n\
+                Why am I not gaining weight?\n\
+                I will then troubleshoot it for you.")
+
+
+
+# Fallback, what to respond when the bot does not understand what user is saying
+
+class ActionDefaultFallback(Action):
+    def name(self) -> Text:
+        return "action_default_fallback"
+    def run(self, dispatcher, tracker, domain):
+
+        ## Telling the user that the last message intent was not clear.
+ 
+        message = "I’m sorry I didn’t understand, I’m still learning please try rephrasing your sentence."
+        dispatcher.utter_message(text=message)
+        # undo last user interaction
+        return [UserUtteranceReverted()]
