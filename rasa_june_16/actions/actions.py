@@ -30,6 +30,7 @@ def get_mongo_database():
     client = pymongo.MongoClient(MONGODB_URL)
     return client.get_default_database()
 
+get_mongo_database()
 
 class action_validate_user(Action): 
     def name(self) -> Text:
