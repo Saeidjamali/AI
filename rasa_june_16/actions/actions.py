@@ -1509,6 +1509,7 @@ class action_water_intake(Action):
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
         print(next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="glasses"), None))
+        measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
         water_intake = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="glasses"), None)
         if water_intake:
             user_db.healthRecords.insert_one({"userId":user_id, 'type': 'DRINK', 'payload': {'glasses' : float(water_intake), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)},
