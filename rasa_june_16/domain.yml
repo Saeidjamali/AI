@@ -38,6 +38,10 @@ intents:
 - QN9_10
 - QN11
 - water_intake
+- diet
+- diet_type
+- plan
+- finish_meal
 entities:
 - NUMBER
 - unit
@@ -51,6 +55,7 @@ entities:
 - QUANTITY
 - CARDINAL
 - ORG
+- diet
 
 slots:
   height1:
@@ -215,6 +220,17 @@ slots:
         - active_loop: simple_user_form
           requested_slot: diseases
 
+  diet_type:
+    type: text
+    influence_conversation: true
+    mappings:
+    - type: from_entity
+      intent: diet_type
+      entity: diet
+      conditions:
+      - active_loop: diet_form
+        requested_slot: diet_type
+
 
 
 forms:
@@ -232,6 +248,9 @@ forms:
       - eating
       - likeFood
       - diseases
+  diet_form:
+    required_slots:
+      - diet_type
 
 
 responses:
@@ -324,6 +343,9 @@ responses:
     - text: "I am created by intellithing, a Uk based tech startup."
   utter_answer_method:
     - text: "I analyze the stream of your data as well as your historical data from smart devices. "
+  utter_ask_diet_type:
+    - text: "Amazing! What type of diet are you thinking about?\n
+              Low-carb, keto or high-protein"
   utter_quote:
     - text: This quote by Theodore Roosevelt might help ':' Do what you can, with what you have, where you are.”, and I would suggest find the little things around you that makes you feel good.
 actions:
@@ -342,4 +364,8 @@ actions:
 - action_QN_response
 - action_list_questions
 - action_water_intake
+- validate_diet_form
+- action_get_shopping_list
+- action_give_plan
+- action_finish_meal
 - action_default_fallback

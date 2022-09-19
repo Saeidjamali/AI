@@ -223,6 +223,32 @@ rules:
   - intent: water_intake
   - action: action_water_intake
 
+- rule: Activate Diet Form
+  steps:
+    - intent: diet
+    - action: diet_form
+    - active_loop: diet_form
+
+- rule: Submit Diet Planner
+  condition:
+    - active_loop: diet_form
+  steps:
+    - action: diet_form
+    - active_loop: null
+    - slot_was_set:
+      - requested_slot: null
+    - action: action_get_shopping_list
+
+- rule: give meal
+  steps:
+    - intent: plan
+    - action: action_give_plan
+
+- rule: Finish Meal
+  steps:
+    - intent: finish_meal
+    - action: action_finish_meal
+
 # Fallback when the chatbot does not understand user message.
 - rule: Fallback
   steps:

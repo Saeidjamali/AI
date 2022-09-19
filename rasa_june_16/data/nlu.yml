@@ -813,6 +813,125 @@ nlu:
     - I am drinking 1{"entity":"NUMBER", "role": "glasses"} glass of water.
     - Add [1]{"entity":"NUMBER", "role": "glasses"} glass of water to my water intake.
     - 1{"entity":"NUMBER", "role": "glasses"} glass of water consumed.
+    - Add [1]{"entity":"NUMBER", "role":"glasses"} glass of water to my water intake
+    - I drank [1]{"entity":"NUMBER", "role":"glasses"} glass of water
+    - Add [2]{"entity":"NUMBER", "role":"glasses"} glasses of water to my water intake
+    - Add [1]{"entity":"NUMBER", "role": "glasses"} drink of water to my water intake
+    - I had [1]{"entity":"NUMBER", "role": "glasses"} glass of water
+    - I drank [1]{"entity":"NUMBER", "role": "glasses"} glass of water
+    - I am drinking 1{"entity":"NUMBER", "role": "glasses"} glass of water
+    - Add [1]{"entity":"NUMBER", "role": "glasses"} glass of water to my water intake
+    - 1{"entity":"NUMBER", "role": "glasses"} glass of water consumed
+
+- intent: diet
+  examples: |
+    - I’m thinking of going on a diet.
+    - I am thinking of going on a diet.
+    - I'm considering going on a diet.
+    - I am thinking about starting a diet. 
+    - I am considering a diet.
+    - I think I should go on a diet. 
+    - I feel like I should start a diet.
+
+- intent: diet_type
+  examples: |
+    - I’d like a [keto]{"entity":"diet"} diet.
+    - I'd like to try the [keto]{"entity":"diet"} diet.
+    - I could use a [keto]{"entity":"diet"} diet.
+    - A [keto]{"entity":"diet"} diet would be nice.
+    - A [ketogenic]{"entity":"diet", "value":"keto"} diet sounds good to me.
+    - I'd like to try a [ketogenic]{"entity":"diet", "value":"keto"} diet.
+    - I’d like a [low-carb]{"entity":"low-carb"} diet.
+    - I'd like to try the [low-carb]{"entity":"low-carb"} diet.
+    - I could use a [low-carb]{"entity":"low-carb"} diet.
+    - A [low-carb]{"entity":"low-carb"} diet would be nice.
+    - A [low-carbs]{"entity":"low-carb"} diet sounds good to me.
+    - I'd like to try a [low-carbs]{"entity":"low-carb"} diet.
+    - A [low-carbohydrate]{"entity":"low-carb"} diet sounds good to me.
+    - I'd like to try a [low-carbohydrate]{"entity":"low-carb"} diet.
+    - I’d like a [high-protein]{"entity":"diet"} diet.
+    - I'd like to try the [high-protein]{"entity":"diet"} diet.
+    - I could use a [high-protein]{"entity":"diet"} diet.
+    - A [high-protein]{"entity":"diet"} diet would be nice.
+    - A [high-protien]{"entity":"diet", "value": "high-protein"} diet sounds good to me.
+    - I'd like to try a [high-protien]{"entity":"diet", "value":"high-protein"} diet.
+    - I’d like a [high protein]{"entity":"diet","value":"high-protein"} diet
+    - I'd like to try the [high protein]{"entity":"diet","value":"high-protein"} diet
+    - I could use a [high protein]{"entity":"diet","value":"high-protein"} diet
+    - A [high protein]{"entity":"diet","value":"high-protein"} diet would be nice
+    - A [high protien]{"entity":"diet","value":"high-protein"} diet sounds good to me
+    - I'd like to try a [high protien]{"entity":"diet", "value":"high-protein"} diet
+    - I’d like a [keto]{"entity":"diet"} diet
+    - I'd like to try the [keto]{"entity":"diet"} diet
+    - I could use a [keto]{"entity":"diet"} diet
+    - A [keto]{"entity":"diet"} diet would be nice
+    - A [ketogenic]{"entity":"diet", "value":"keto"} diet sounds good to me
+    - I'd like to try a [ketogenic]{"entity":"diet", "value":"keto"} diet
+    - I’d like a [low-carb]{"entity":"low-carb"} diet
+    - I'd like to try the [low-carb]{"entity":"low-carb"} diet
+    - I could use a [low-carb]{"entity":"low-carb"} diet
+    - A [low-carb]{"entity":"low-carb"} diet would be nice
+    - A [low-carbs]{"entity":"low-carb"} diet sounds good to me
+    - I'd like to try a [low-carbs]{"entity":"low-carb"} diet
+    - A [low-carbohydrate]{"entity":"low-carb"} diet sounds good to me
+    - I'd like to try a [low-carbohydrate]{"entity":"low-carb"} diet
+    - I’d like a [high-protein]{"entity":"diet"} diet
+    - I'd like to try the [high-protein]{"entity":"diet"} diet
+    - I could use a [high-protein]{"entity":"diet"} diet
+    - A [high-protein]{"entity":"diet"} diet would be nice
+    - A [high-protien]{"entity":"diet", "value": "high-protein"} diet sounds good to me
+    - I'd like to try a [high-protien]{"entity":"diet", "value":"high-protein"} diet
+    - [keto]{"entity":"diet"}
+    - [low-carb]{"entity":"diet"}
+    - [high-protein]{"entity":"diet"}
+
+- intent: plan
+  examples: |
+    - I bought the ingredients. Give me a [lunch]{"entity":"plan"} plan.
+    - I purchased the ingredients. Give me a menu for [lunch]{"entity":"plan"}.
+    - I got the ingredients. Give me a [lunch]{"entity":"plan"} package.
+    - I got the ingredients. provide me a [lunch]{"entity":"plan"} plan.
+    - I have purchased the ingredients. Provide me with a [lunch]{"entity":"plan"} plan.
+    - I bought the ingredients. Get me a [lunch]{"entity":"plan"} package.
+    - I bought the ingredients. Give me a [breakfast]{"entity":"plan"} plan.
+    - I purchased the ingredients. Give me a menu for [breakfast]{"entity":"plan"}.
+    - I got the ingredients. Give me a [breakfast]{"entity":"plan"} package.
+    - I got the ingredients. provide me a [breakfast]{"entity":"plan"} plan.
+    - I have purchased the ingredients. Provide me with a [breakfast]{"entity":"plan"} plan.
+    - I bought the ingredients. Get me a [breakfast]{"entity":"plan"} package.
+    - I bought the ingredients. Give me a [dinner]{"entity":"plan"} plan.
+    - I purchased the ingredients. Give me a menu for [dinner]{"entity":"plan"}.
+    - I got the ingredients. Give me a [dinner]{"entity":"plan"} package.
+    - I got the ingredients. provide me a [dinner]{"entity":"plan"} plan.
+    - I have purchased the ingredients. Provide me with a [dinner]{"entity":"plan"} plan.
+    - I bought the ingredients. Get me a [dinner]{"entity":"plan"} package.
+    - I bought the ingredients. Give me a [snack]{"entity":"plan", "value":"snacks"} plan.
+    - I purchased the ingredients. Give me a menu for [snack]{"entity":"plan", "value":"snacks"}.
+    - I got the ingredients. Give me a [snack]{"entity":"plan", "value":"snacks"} package.
+    - I got the ingredients. provide me a [snack]{"entity":"plan", "value":"snacks"} plan.
+    - I have purchased the ingredients. Provide me with a [snack]{"entity":"plan", "value":"snacks"} plan.
+    - I bought the ingredients. Get me a [snack]{"entity":"plan", "value":"snacks"} package.
+    - I bought the ingredients. Give me a [snacks]{"entity":"plan"} plan.
+    - I purchased the ingredients. Give me a menu for [snacks]{"entity":"plan"}.
+    - I got the ingredients. Give me a [snacks]{"entity":"plan"} package.
+    - I got the ingredients. provide me a [snacks]{"entity":"plan"} plan.
+    - I have purchased the ingredients. Provide me with a [snacks]{"entity":"plan"} plan.
+    - I bought the ingredients. Get me a [snacks]{"entity":"plan"} package.
+
+- intent: finish_meal
+  examples: |
+    - I finished the meal! It was delicious.
+    - I'm done eating! It was delicious.
+    - I finished the meal! I enjoyed it.
+    - The meal was over! It was wonderful.
+    - I completed my food! It was scrumptious.
+    - I ate the meal! It was delectable.
+    - I finished the meal! It was delicious
+    - I'm done eating! It was delicious
+    - I finished the meal! I enjoyed it
+    - The meal was over! It was wonderful
+    - I completed my food! It was scrumptious
+    - I ate the meal! It was delectable
 
 
 # - intent: height

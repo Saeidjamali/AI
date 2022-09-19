@@ -15,7 +15,17 @@ import datetime
 from dateutil import parser
 from copy import deepcopy
 from bson.objectid import ObjectId
+import ast
 pd.options.mode.chained_assignment = None
+from time import sleep
+from random import randint
+
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email import encoders
+import threading
 # get_ipython().run_line_magic('matplotlib', 'inline')
 
 # ALLOWED_PIZZA_SIZES = ["small", "medium", "large", "extra-large", "extra large", "s", "m", "l", "xl"]
@@ -31,6 +41,48 @@ def get_mongo_database():
     return client.get_default_database()
 
 get_mongo_database()
+
+def send_email(email_recipient,
+               email_subject,
+               email_message,
+               attachment_location=''):
+    email_mime_sender = 'viki@intellithing.tech'
+    email_sender = 'viki@intellithing.tech'
+    email_password = 'Dev301-d=1az'
+
+    msg = MIMEMultipart()
+    msg['From'] = email_mime_sender
+    msg['To'] = email_recipient
+    msg['Subject'] = email_subject
+
+    success = False
+
+    msg.attach(MIMEText(email_message, 'plain'))
+
+    if attachment_location != '':
+      filename = os.path.basename(attachment_location)
+      attachment = open(attachment_location, "rb")
+      part = MIMEBase('application', 'octet-stream')
+      part.set_payload(attachment.read())
+      encoders.encode_base64(part)
+      part.add_header('Content-Disposition',
+                      "attachment; filename= %s" % filename)
+      msg.attach(part)
+
+    try:
+      server = smtplib.SMTP_SSL('smtp.mail.us-west-2.awsapps.com', 465)
+      server.ehlo()
+      # server.starttls()
+      server.login(email_sender, email_password)
+      text = msg.as_string()
+      server.sendmail(email_sender, email_recipient, text)
+      print('Email sent to %s' % email_recipient)
+      server.quit()
+      success = True
+    except:
+      print("SMTP server connection error")
+      success = False
+    return success
 
 class action_validate_user(Action): 
     def name(self) -> Text:
@@ -1499,6 +1551,340 @@ class action_QN_response(Action):
             peaks_valleys,response = pipeline.Run(ques_id)
             print(response)
             dispatcher.utter_message(text = response)
+
+
+class MealPlanner:
+    def __init__(self, data, dietPlan, specific, budget, days=7):
+        self.data = data
+        self.dietPlan = dietPlan
+        self.specific = specific
+        self.budget = budget
+        
+        
+        self.specific = self.specific.replace(',','|')
+        user_data =  self.data[self.data.Type.str.lower().str.contains(self.dietPlan)]
+        user_data = user_data[user_data.specific.str.lower().str.contains(self.specific)]
+        
+        user_data.rename(columns = {'meal-type':'meal_type'}, inplace = True)
+        user_data['calories'] = user_data['calories'].astype('str').str.extractall('(\d+)').unstack().fillna('').sum(axis=1).astype(int)
+        
+        if user_data.empty:
+            print('Issue in diet plan name, food preference, or budget. Unable to get data with given conditions.')
+            return
+        
+        self.types=user_data.groupby('meal_type')
+        
+        two = 0.2 * int(self.budget)
+        three = 0.3 * int(self.budget)
+        four = 0.4 * int(self.budget)
+        five = 0.05 * int(self.budget)
+        cal = 0
+        plan=[]
+        self.N=int(days)+1
+        try:
+            for i in range(1,self.N):
+                cal=0
+                for meal,detail in self.types:
+                    if meal == 'Breakfast':
+                        df = detail.query('calories >= @two and calories <= @three').sample()
+                    elif meal == 'Lunch' or meal == 'Dinner':
+                        df = detail.query('calories >= @three and calories <= @four').sample()
+                    else:
+                        df = detail.query('calories >= @five and calories <= (@five+@five)').sample()
+
+                    if (int(df['calories']) + cal) <= (1.2*int(budget)):
+                        cal += int(df['calories'])
+                        df['Day'] = i
+                        plan.append(df)
+                    else:
+                        j=0
+                        while (int(df['calories']) + cal) > (1.2*int(budget)):
+                            if meal == 'Breakfast':
+                                df = detail.query('calories >= @two and calories <= @three').sample()
+                            elif meal == 'Lunch' or meal == 'Dinner':
+                                df = detail.query('calories >= @three and calories <= @four').sample()
+                            else:
+                                df = detail.query('calories >= @five and calories <= (@five+@five)').sample()
+                            j +=1
+                            if (int(df['calories']) + cal) <= (1.2*int(budget)):
+                                cal += int(df['calories'])
+                                df['Day'] = i
+                                plan.append(df)
+                                break
+                            if j>=len(detail):
+                                break
+
+            self.meal_plan = pd.concat(plan)
+        except Exception as exp:
+            print('Not enough meals are available for given specifications.')
+            
+    
+    def getMealPlanner(self):
+        return self.meal_plan
+    
+    def getShoppingList(self):
+        ingred = []
+        for ing in self.meal_plan['Ingredients']:
+            ingred.append(list(ast.literal_eval(ing)))
+        
+        ingredient = []
+        for ing in ingred:
+            method=''
+            for i in range(len(ing)):
+
+                s=''
+                if len(ing[i]) > 1:
+                    for j in range(1,len(ing[i])):
+                        if ing[i][j]!=' ':
+                            s += ' '+''.join(ing[i][j])
+
+        #         print(s)
+                method += s+'\n'
+            #print(method)
+            ingredient.append(method)
+            
+        shoping_list = set()
+        for i in range(len(self.meal_plan)):
+            shoping=set(ingredient[i].split('\n'))
+            for val in shoping:
+                shoping_list.add(val)
+        
+        shoping_list = list(shoping_list)
+        shoping_list = [val.lstrip() for val in shoping_list]
+        shoping_list = [val.lstrip(',') for val in shoping_list]
+        shoping_list = [val.lstrip() for val in shoping_list]
+        shop_list='\n'.join(shoping_list)
+        
+        return shop_list
+    
+    def getMealDetails(self,day,dietType, meal_df):
+        dietType = dietType.capitalize()
+        mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
+        
+        return mealDetail
+    
+    def getAlternateMeal(self, day, dietType):
+        dietType = dietType.capitalize()
+        two = 0.2 * int(self.budget)
+        three = 0.3 * int(self.budget)
+        four = 0.4 * int(self.budget)
+        five = 0.05 * int(self.budget)
+        
+        group = self.types.get_group(dietType)
+        
+        if dietType == 'Breakfast':
+            meal = group.query('calories >= @two and calories <= @three').sample()
+            
+        elif dietType == 'Lunch' :
+            meal = group.query('calories >= @three and calories <= @four').sample()
+            
+        elif dietType == 'Dinner':
+            meal = group.query('calories >= @three and calories <= @four').sample()
+            
+        else:
+            meal = group.query('calories >= @five and calories <= (@five+@five)').sample()
+        
+        meal['Day']=day
+        
+        self.meal_plan.drop(self.meal_plan.query('Day == @day and meal_type== @dietType').index,inplace = True)
+        self.meal_plan = pd.concat([self.meal_plan, meal], ignore_index = True, axis = 0)
+        
+        return meal
+
+class ValidateDietForm(FormValidationAction):
+    def name(self) -> Text:
+        return "validate_diet_form"
+
+    def validate_diet_type(
+            self,
+            slot_value: Any,
+            dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: DomainDict,
+    ) -> Dict[Text, Any]:
+        if not slot_value:
+            dispatcher.utter_message(text=f"I’m sorry I didn’t understand, I’m still learning please try telling me your diet type differently.")
+            return {"diet_type": None}
+        elif slot_value in ['keto', 'low-carb', 'high-protein']:
+            dispatcher.utter_message(text=f"Noted! You have chosen {slot_value} as your diet type.")
+            return {"diet_type": slot_value}
+        else:
+            dispatcher.utter_message(text=f"Seems like you have typed incorrect diet type. I’m still learning please try saying it differently.")
+            return {"diet_type": None}
+
+    # def validate_calories_budget(
+    #         self,
+    #         slot_value: Any,
+    #         dispatcher: CollectingDispatcher,
+    #         tracker: Tracker,
+    #         domain: DomainDict,
+    # ) -> Dict[Text, Any]:
+    # if not slot_value:
+    #     dispatcher.utter_message(text=f"I’m sorry I didn’t understand, I’m still learning please try telling me your diet type differently.")
+    #     return {"diet_type": None}
+    # else:
+    #     dispatcher.utter_message(text=f"Noted! Your calories budget is {slot_value}.")
+    #     return {"calories_budget": slot_value}
+
+
+class ActionGetShoppingList(Action):
+    def name(self) -> Text:
+        return "action_get_shopping_list"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+        # mealplan_file = user_id + '_mealPlan.csv'
+
+        user_db = get_mongo_database()
+
+        data = pd.read_csv('FinalFoodDatabase_V1.csv')
+        diet_type = tracker.get_slot('diet_type')
+        user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
+        email = user_record['email']
+        eating_db = user_record['userInfo']['eating'] ## Will give values: 'VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN'
+        eating_dict = {'VEGAN': 'vegan', 'VEGETARIAN': 'vegetarian', 'NON_VEGETARIAN': 'high-protein,dairy-free'}
+        eating = eating_dict.get(eating_db, None)
+        # eating = tracker.get_slot('eating') ## Need to get this value from database so that it is updated always.
+        # eating = 'vegetarian'
+        #calories_budget = int(tracker.get_slot('calories_budget'))
+        calories_budget = 2000
+        print(diet_type, eating)
+        planner = MealPlanner(data, diet_type, eating, calories_budget, 7)
+        print(planner)
+        if not planner.meal_plan.empty:
+            for i in range(len(planner.meal_plan)):
+                user_db.userMeals.insert_one({"user_id":user_id, 'day_created': date.today(),'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
+                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : planner.meal_plan['net-carbs'].iat[i], 'type' : planner.meal_plan['type'].iat[i],
+                     'calories' : planner.meal_plan['calories'].iat[i], 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : planner.meal_plan['serving'].iat[i], 
+                     'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i], 
+                     'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
+                     'link': planner.meal_plan['link'].iat[i], 'day': planner.meal_plan['Day'].iat[i]})
+            shop_list = planner.getShoppingList()
+            print(shop_list)
+            email_subject = 'Diet Plan Shopping List'
+            raw_email_message = shop_list
+            email_message = raw_email_message ## We can use the raw email message here as it is in string datatype
+            threading.Thread(target = send_email, args = (email, email_subject, email_message, '')).start()
+            # status = send_email('sdin.bscs15seecs@seecs.edu.pk', email_subject, email_message, '')
+            #sleep(randint(1, 3))
+            # planner.meal_plan.to_csv(mealplan_file)
+            # if status:
+            dispatcher.utter_message(text = "Sure, I emailed you a shopping list that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.")
+            # else:
+            #     dispatcher.utter_message(text = "Sure, Meal plan has been created for you that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.\nThe shopping list could not be emailed to you for the time being.")
+        else:
+            dispatcher.utter_message(text = "Meal plan can not be created for the time being as per your requirements.\n\
+             I am really sorry for the inconvinience, keep using the app and in future we will have more data and will be able to accomodate your requirements.")
+
+class ActionGivePlan(Action):
+    def name(self) -> Text:
+        return "action_give_plan"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+        user_db = get_mongo_database()
+
+        plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+        # mealplan_file = user_id + '_mealPlan.csv'
+        # if os.path.exists(mealplan_file):
+        #     meal_df = pd.read_csv(mealplan_file)
+        user_meals = user_db.userMeals.find({"user_id": user_id})
+        if user_meals.count() > 0:
+            print('list of user meals\n')
+            for meal in user_meals:
+                print(meal)
+        else:
+            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+                I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
+            return []
+        if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
+            dietType = plan.capitalize()
+            userMeals.update_many({'user_id' : user_id}, {'$set': {'last_meal':dietType}})
+            day = ((date.today() - user_meals[0]['day_created']).days + 1)    ## Need to get the day from current day minus day meal plan was created.
+            #mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
+            for meal in user_meals:
+                if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
+                    print('Meal given to user: ', meal)
+                    break
+            #lunch = planner.getMealDetails(day, plan, meal_df)
+            lunch_name = meal['name'] + '(' + str(meal['calories']) + 'kcal)'   ## Lunch Name and Calories from the userMeals database
+            lunch_ingridients = meal['ingredients']     ## Lunch Ingredients from the userMeals database
+            lunch_method = meal['method']   ## Lunch method from the userMeals database
+            dispatcher.utter_message(text = f"Your {meal['meal_type']} today is below. If you don’t like the meal ask me for another one instead.")
+            dispatcher.utter_message(text = lunch_name)
+            dispatcher.utter_message(text = 'The ingredients you need are:\n')
+            dispatcher.utter_message(text = lunch_ingridients)
+            dispatcher.utter_message(text = "Here is how to prepare it. Once you finish eating let me know and I count your calories and nutrition.")
+            dispatcher.utter_message(text = lunch_method)
+
+        else:
+            dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try asking about your meal type differently.")
+
+class ActionFinishMeal(Action):
+    def name(self) -> Text:
+        return "action_finish_meal"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+        user_db = get_mongo_database()
+
+        ## Need the last meal taken here along with the day.
+        user_meals = user_db.userMeals.find({"user_id": user_id})
+        if user_meals.count() > 0:
+            last_plan = userMeals[0]['last_meal'];
+        else:
+            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+                I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
+            return []
+        day = ((date.today() - user_meals[0]['day_created']).days + 1)    ## Need to get this day from current day minus day meal plan was created.
+        # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
+        for meal in user_meals:
+                if (user_meals['day'] == day and user_meals['meal_type'] == last_plan):
+                    print('Meal given to user: ', meal)
+                    break
+        dispatcher.utter_message(text = "Great! Your nutrition intake for this meal is:\n")
+        print()
+        lunch_nutrients = meal['Nutrients'] + '–' + str(meal['calories']) + 'kcal'   ## Lunch Nutrients and Calories from the mealplan dataframe
+        dispatcher.utter_message(text = lunch_nutrients)
+
+class ActionNutritionYesterday(Action): ## Under Process.
+    def name(self) -> Text:
+        return "action_nutrition_yesterday"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+        mealplan_file = user_id + '_mealPlan.csv'
+        if os.path.exists(mealplan_file):
+            meal_df = pd.read_csv(mealplan_file)
+        else:
+            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+                I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
+            return []
+        day = 1 ## Need to get the last day here.
+        net_carbs = 0
+        proteins = 0
+        fats = 0
+        fiber = 0
+        total_carbs = 0
+        plans = ['breakfast', 'lunch', 'snacks', 'dinner']
+        for plan in plans:
+            dietType = plan.capitalize()
+            mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
+            net_carbs = net_carbs + int(mealDetail['Nutrients'].iat[0].split('\'')[3].strip().split('g')[0])
+            proteins = proteins + int(mealDetail['Nutrients'].iat[0].split('\'')[9].strip().split('g')[0])
+            fats = fats + int(mealDetail['Nutrients'].iat[0].split('\'')[15].strip().split('g')[0])
+            fiber = fiber + int(mealDetail['Nutrients'].iat[0].split('\'')[21].strip().split('g')[0])
+            total_carbs = total_carbs + int(mealDetail['Nutrients'].iat[0].split('\'')[25].strip().split('g')[0])
 
 
 class action_water_intake(Action):
