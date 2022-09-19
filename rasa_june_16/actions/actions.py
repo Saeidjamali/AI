@@ -1806,7 +1806,7 @@ class ActionGivePlan(Action):
         if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
             dietType = plan.capitalize()
             userMeals.update_many({'user_id' : user_id}, {'$set': {'last_meal':dietType}})
-            day = ((date.today() - user_meals[0]['day_created']).days + 1)    ## Need to get the day from current day minus day meal plan was created.
+            day = ((date.today() - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
             #mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
             for meal in user_meals:
                 if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
@@ -1844,7 +1844,7 @@ class ActionFinishMeal(Action):
             dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
-        day = ((date.today() - user_meals[0]['day_created']).days + 1)    ## Need to get this day from current day minus day meal plan was created.
+        day = ((date.today() - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
         # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
         for meal in user_meals:
                 if (user_meals['day'] == day and user_meals['meal_type'] == last_plan):
@@ -1852,7 +1852,7 @@ class ActionFinishMeal(Action):
                     break
         dispatcher.utter_message(text = "Great! Your nutrition intake for this meal is:\n")
         print()
-        lunch_nutrients = meal['Nutrients'] + '–' + str(meal['calories']) + 'kcal'   ## Lunch Nutrients and Calories from the mealplan dataframe
+        lunch_nutrients = meal['nutrients'] + '–' + str(meal['calories']) + 'kcal'   ## Lunch Nutrients and Calories from the mealplan dataframe
         dispatcher.utter_message(text = lunch_nutrients)
 
 class ActionNutritionYesterday(Action): ## Under Process.
@@ -1863,28 +1863,39 @@ class ActionNutritionYesterday(Action): ## Under Process.
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
 
-        mealplan_file = user_id + '_mealPlan.csv'
-        if os.path.exists(mealplan_file):
-            meal_df = pd.read_csv(mealplan_file)
+        user_db = get_mongo_database()
+
+        ## Need the last meal taken here along with the day.
+        user_meals = user_db.userMeals.find({"user_id": user_id})
+        if user_meals.count() > 0:
+            last_plan = userMeals[0]['last_meal'];
         else:
             dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
-        day = 1 ## Need to get the last day here.
+        day = ((date.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
+        if day == 0:
+            dispatcher.utter_message('Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
+                You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
+            return []
         net_carbs = 0
         proteins = 0
         fats = 0
         fiber = 0
         total_carbs = 0
-        plans = ['breakfast', 'lunch', 'snacks', 'dinner']
+        plans = ['breakfast', 'dinner', 'lunch', 'snacks']
         for plan in plans:
             dietType = plan.capitalize()
-            mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
-            net_carbs = net_carbs + int(mealDetail['Nutrients'].iat[0].split('\'')[3].strip().split('g')[0])
-            proteins = proteins + int(mealDetail['Nutrients'].iat[0].split('\'')[9].strip().split('g')[0])
-            fats = fats + int(mealDetail['Nutrients'].iat[0].split('\'')[15].strip().split('g')[0])
-            fiber = fiber + int(mealDetail['Nutrients'].iat[0].split('\'')[21].strip().split('g')[0])
-            total_carbs = total_carbs + int(mealDetail['Nutrients'].iat[0].split('\'')[25].strip().split('g')[0])
+            # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
+            
+            for meal in user_meals:
+                if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
+                    print('Meal given to user: ', meal)
+                    net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
+                    proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
+                    fats = fats + int(mealDetail['nutrients'].iat[0].split('\'')[15].strip().split('g')[0])
+                    fiber = fiber + int(mealDetail['nutrients'].iat[0].split('\'')[21].strip().split('g')[0])
+                    total_carbs = total_carbs + int(mealDetail['nutrients'].iat[0].split('\'')[25].strip().split('g')[0])
 
 
 class action_water_intake(Action):
