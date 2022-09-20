@@ -1842,7 +1842,7 @@ class ActionFinishMeal(Action):
         user_meals = user_db.userMeals.find({"user_id": user_id})
         if user_meals.count() > 0:
             last_plan_check = user_db.userMeals.find({"user_id":user_id, "last_meal":{"$exists":True}})
-            if last_plan_check.count > 0:
+            if last_plan_check.count() > 0:
                 last_plan = userMeals[0]['last_meal'];
             else:
                 dispatcher.utter_message('You have not asked for a meal plan yet, so I am not sure what your last meal was, if you want to create one then try typing something like:\n\
@@ -1912,8 +1912,8 @@ class ActionNutritionYesterday(Action): ## Under Process.
         proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
         fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
         dispatcher.utter_message(text = "Your nutrition intake for yesterday is:\n")
-        message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + 
-        str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' +
+        message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + \
+        str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' + \
         str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
         dispatcher.utter_message(text = message)
 
@@ -2011,8 +2011,8 @@ class ActionNutritionWeek(Action): ## Under Process.
         proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
         fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
         dispatcher.utter_message(text = "Your nutrition intake for yesterday is:\n")
-        message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + 
-        str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' +
+        message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + \
+        str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' + \
         str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
         dispatcher.utter_message(text = message)
 
