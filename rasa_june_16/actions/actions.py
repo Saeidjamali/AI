@@ -11,6 +11,7 @@ import pandas as pd # data analysis
 import matplotlib.pyplot as plt # data visualization
 import pyaf.ForecastEngine as autof
 import os
+from datetime import date
 import datetime
 from dateutil import parser
 from copy import deepcopy
@@ -1743,7 +1744,7 @@ class ActionGetShoppingList(Action):
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
         email = user_record['email']
         eating_db = user_record['userInfo']['eating'] ## Will give values: 'VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN'
-        eating_dict = {'VEGAN': 'vegan', 'VEGETARIAN': 'vegetarian', 'NON_VEGETARIAN': 'high-protein,dairy-free'}
+        eating_dict = {'VEGAN': 'vegan', 'VEGETARIAN': 'vegetarian', 'NON_VEGETARIAN': 'high-protien,dairy-free'}
         eating = eating_dict.get(eating_db, None)
         # eating = tracker.get_slot('eating') ## Need to get this value from database so that it is updated always.
         # eating = 'vegetarian'
@@ -1755,7 +1756,7 @@ class ActionGetShoppingList(Action):
         if not planner.meal_plan.empty:
             for i in range(len(planner.meal_plan)):
                 user_db.userMeals.insert_one({"user_id":user_id, 'day_created': date.today(),'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
-                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : planner.meal_plan['net-carbs'].iat[i], 'type' : planner.meal_plan['type'].iat[i],
+                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : planner.meal_plan['net-carbs'].iat[i], 'type' : planner.meal_plan['Type'].iat[i],
                      'calories' : planner.meal_plan['calories'].iat[i], 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : planner.meal_plan['serving'].iat[i], 
                      'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i], 
                      'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
@@ -1799,6 +1800,7 @@ class ActionGivePlan(Action):
             print('list of user meals\n')
             for meal in user_meals:
                 print(meal)
+                print('\n')
         else:
             dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
@@ -1839,7 +1841,12 @@ class ActionFinishMeal(Action):
         ## Need the last meal taken here along with the day.
         user_meals = user_db.userMeals.find({"user_id": user_id})
         if user_meals.count() > 0:
-            last_plan = userMeals[0]['last_meal'];
+            last_plan_check = user_db.userMeals.find({"user_id":user_id, "last_meal":{"$exists":True}})
+            if last_plan_check.count > 0:
+                last_plan = userMeals[0]['last_meal'];
+            else:
+                dispatcher.utter_message('You have not asked for a meal plan yet, so I am not sure what your last meal was, if you want to create one then try typing something like:\n\
+                \'I bought the ingredients. Give me a lunch plan.\'\n And I will give a meal plan for you as per your diet type and requested meal. Then I\'ll be able to calculate your nutritonal intake.')
         else:
             dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
@@ -1851,7 +1858,6 @@ class ActionFinishMeal(Action):
                     print('Meal given to user: ', meal)
                     break
         dispatcher.utter_message(text = "Great! Your nutrition intake for this meal is:\n")
-        print()
         lunch_nutrients = meal['nutrients'] + '–' + str(meal['calories']) + 'kcal'   ## Lunch Nutrients and Calories from the mealplan dataframe
         dispatcher.utter_message(text = lunch_nutrients)
 
@@ -1868,7 +1874,10 @@ class ActionNutritionYesterday(Action): ## Under Process.
         ## Need the last meal taken here along with the day.
         user_meals = user_db.userMeals.find({"user_id": user_id})
         if user_meals.count() > 0:
-            last_plan = userMeals[0]['last_meal'];
+            print('list of user meals\n')
+            for meal in user_meals:
+                print(meal)
+                print('\n')
         else:
             dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
@@ -1883,6 +1892,7 @@ class ActionNutritionYesterday(Action): ## Under Process.
         fats = 0
         fiber = 0
         total_carbs = 0
+        calories = 0
         plans = ['breakfast', 'dinner', 'lunch', 'snacks']
         for plan in plans:
             dietType = plan.capitalize()
@@ -1893,12 +1903,121 @@ class ActionNutritionYesterday(Action): ## Under Process.
                     print('Meal given to user: ', meal)
                     net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
                     proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
-                    fats = fats + int(mealDetail['nutrients'].iat[0].split('\'')[15].strip().split('g')[0])
-                    fiber = fiber + int(mealDetail['nutrients'].iat[0].split('\'')[21].strip().split('g')[0])
-                    total_carbs = total_carbs + int(mealDetail['nutrients'].iat[0].split('\'')[25].strip().split('g')[0])
+                    fats = fats + int(meal['nutrients'].split('\'')[15].strip().split('g')[0])
+                    fiber = fiber + int(meal['nutrients'].split('\'')[21].strip().split('g')[0])
+                    total_carbs = total_carbs + int(meal['nutrients'].split('\'')[25].strip().split('g')[0])
+                    calories = calories + int(meal['calories'])
+                    break
+        net_carbs_percentage = int(float(net_carbs/(net_carbs + proteins + fats)) * 100.0)
+        proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
+        fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
+        dispatcher.utter_message(text = "Your nutrition intake for yesterday is:\n")
+        message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + 
+        str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' +
+        str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
+        dispatcher.utter_message(text = message)
+
+class ActionMealNutritionYesterday(Action): ## Under Process.
+    def name(self) -> Text:
+        return "action_meal_nutrition_yesterday"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+        user_db = get_mongo_database()
+
+        ## Need the last meal taken here along with the day.
+        user_meals = user_db.userMeals.find({"user_id": user_id})
+        plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
+
+        plans = ['breakfast', 'dinner', 'lunch', 'snacks']
+        if plan not in plans:
+            dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try asking about your meal type differently.")
+            return []
+
+        dietType = plan.capitalize()
+        if user_meals.count() > 0:
+            print('list of user meals\n')
+            for meal in user_meals:
+                print(meal)
+                print('\n')
+        else:
+            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+                I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
+            return []
+        day = ((date.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
+        if day == 0:
+            dispatcher.utter_message('Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
+                You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
+            return []
+        for meal in user_meals:
+                if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
+                    print('Meal given to user: ', meal)
+                    break
+        dispatcher.utter_message(text = f"Your nutrition intake for yesterday {dietType} meal was:\n")
+        lunch_nutrients = meal['nutrients'] + '–' + str(meal['calories']) + 'kcal'   ## Lunch Nutrients and Calories from the mealplan dataframe
+        dispatcher.utter_message(text = lunch_nutrients)
+
+class ActionNutritionWeek(Action): ## Under Process.
+    def name(self) -> Text:
+        return "action_nutrition_week"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+        user_db = get_mongo_database()
+
+        ## Need the last meal taken here along with the day.
+        user_meals = user_db.userMeals.find({"user_id": user_id})
+        if user_meals.count() > 0:
+            print('list of user meals\n')
+            for meal in user_meals:
+                print(meal)
+                print('\n')
+        else:
+            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+                I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
+            return []
+        current_day = ((date.today() - user_meals[0]['day_created']).days + 1) ## Getting the previous day here.
+        if current_day <=7:
+            dispatcher.utter_message('Your diet plan is not yet completed, I am sorry I unable to give you your nutrition intake for the whole week/diet plan.\n\
+                You can come after eating the meals according to your plan and completing the whole week plan and then I\'ll be able to tell you your nutritional intake for the whole week/diet plan.')
+            return []
+        net_carbs = 0
+        proteins = 0
+        fats = 0
+        fiber = 0
+        total_carbs = 0
+        calories = 0
+        plans = ['breakfast', 'dinner', 'lunch', 'snacks']
+        for day in range(1, 8):
+            for plan in plans:
+                dietType = plan.capitalize()
+                # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
+            
+                for meal in user_meals:
+                    if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
+                        print('Meal given to user: ', meal)
+                        net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
+                        proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
+                        fats = fats + int(meal['nutrients'].split('\'')[15].strip().split('g')[0])
+                        fiber = fiber + int(meal['nutrients'].split('\'')[21].strip().split('g')[0])
+                        total_carbs = total_carbs + int(meal['nutrients'].split('\'')[25].strip().split('g')[0])
+                        calories = calories + int(meal['calories'])
+                        break
+        net_carbs_percentage = int(float(net_carbs/(net_carbs + proteins + fats)) * 100.0)
+        proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
+        fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
+        dispatcher.utter_message(text = "Your nutrition intake for yesterday is:\n")
+        message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + 
+        str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' +
+        str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
+        dispatcher.utter_message(text = message)
 
 
-class action_water_intake(Action):
+class ActionWaterIntake(Action):
     def name(self) -> Text:
         return "action_water_intake"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
