@@ -11,7 +11,6 @@ import pandas as pd # data analysis
 import matplotlib.pyplot as plt # data visualization
 import pyaf.ForecastEngine as autof
 import os
-from datetime import date
 import datetime
 from dateutil import parser
 from copy import deepcopy
@@ -1753,9 +1752,10 @@ class ActionGetShoppingList(Action):
         print(diet_type, eating)
         planner = MealPlanner(data, diet_type, eating, calories_budget, 7)
         print(planner)
+        day_created = datetime.datetime.today()
         if not planner.meal_plan.empty:
             for i in range(len(planner.meal_plan)):
-                user_db.userMeals.insert_one({"user_id":user_id, 'day_created': date.today(),'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
+                user_db.userMeals.insert_one({"user_id":user_id, 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
                     'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : planner.meal_plan['net-carbs'].iat[i], 'type' : planner.meal_plan['Type'].iat[i],
                      'calories' : planner.meal_plan['calories'].iat[i], 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : planner.meal_plan['serving'].iat[i], 
                      'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i], 
@@ -1808,7 +1808,7 @@ class ActionGivePlan(Action):
         if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
             dietType = plan.capitalize()
             userMeals.update_many({'user_id' : user_id}, {'$set': {'last_meal':dietType}})
-            day = ((date.today() - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
+            day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
             #mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
             for meal in user_meals:
                 if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
@@ -1851,7 +1851,7 @@ class ActionFinishMeal(Action):
             dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
-        day = ((date.today() - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
+        day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
         # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
         for meal in user_meals:
                 if (user_meals['day'] == day and user_meals['meal_type'] == last_plan):
@@ -1882,7 +1882,7 @@ class ActionNutritionYesterday(Action): ## Under Process.
             dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
-        day = ((date.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
+        day = ((datetime.datetime.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
         if day == 0:
             dispatcher.utter_message('Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
                 You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
@@ -1946,7 +1946,7 @@ class ActionMealNutritionYesterday(Action): ## Under Process.
             dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
-        day = ((date.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
+        day = ((datetime.datetime.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
         if day == 0:
             dispatcher.utter_message('Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
                 You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
@@ -1980,7 +1980,7 @@ class ActionNutritionWeek(Action): ## Under Process.
             dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
-        current_day = ((date.today() - user_meals[0]['day_created']).days + 1) ## Getting the previous day here.
+        current_day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1) ## Getting the previous day here.
         if current_day <=7:
             dispatcher.utter_message('Your diet plan is not yet completed, I am sorry I unable to give you your nutrition intake for the whole week/diet plan.\n\
                 You can come after eating the meals according to your plan and completing the whole week plan and then I\'ll be able to tell you your nutritional intake for the whole week/diet plan.')
