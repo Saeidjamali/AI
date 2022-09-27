@@ -1812,6 +1812,7 @@ class ActionGetShoppingList(Action):
         user_db = get_mongo_database()
 
         data = pd.read_csv('FinalFoodDatabase_V1.csv')
+        diet_type = tracker.get_slot('diet_type')
         if user_db.userMeals.find({'user_id':user_id}).count()>0:
             user_meals = user_db.userMeals.find({"user_id": user_id})
             day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1)
@@ -1822,7 +1823,6 @@ class ActionGetShoppingList(Action):
                 return [SlotSet("diet_type", None)]
             else:
                 user_db.userMeals.delete_many({"user_id": user_id})
-        diet_type = tracker.get_slot('diet_type')
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
         email = user_record['email']
         eating_db = user_record['userInfo']['eating'] ## Will give values: 'VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN'
