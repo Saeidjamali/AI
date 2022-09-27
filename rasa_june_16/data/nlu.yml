@@ -1064,7 +1064,7 @@ nlu:
     - I need to alter my diet to [low-carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
     - I need to change my diet to [Low-Carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
     - I need to change my diet to [Low-Carb]{"entity":"diet", "role": "diet2", "value":"low-carb"}
-    - I need to modify my diet to [Keto]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I need to modify my diet to [Keto]{"entity":"diet", "role": "diet2", "value":"keto"}
     - Change my preferred diet plan from [keto]{"entity":"diet", "role": "diet1"} to [low-carb]{"entity":"diet", "role": "diet2"}
     - modify my preferred diet plan from [low-carb]{"entity":"diet", "role": "diet1"} to [high-protein]{"entity":"diet", "role": "diet2"}
     - alter my preferred diet plan from [high-protein]{"entity":"diet", "role": "diet2"} to [keto]{"entity":"diet", "role": "diet2"}
