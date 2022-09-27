@@ -42,6 +42,10 @@ intents:
 - diet_type
 - plan
 - finish_meal
+- nutrition_yesterday
+- meal_nutrition_yesterday
+- nutrition_week
+- change_diet_plan
 entities:
 - NUMBER
 - unit
@@ -56,6 +60,7 @@ entities:
 - CARDINAL
 - ORG
 - diet
+- plan
 
 slots:
   height1:
@@ -367,5 +372,9 @@ actions:
 - validate_diet_form
 - action_get_shopping_list
 - action_give_plan
+- action_change_diet_plan
 - action_finish_meal
+- action_nutrition_yesterday
+- action_meal_nutrition_yesterday
+- action_nutrition_week
 - action_default_fallback

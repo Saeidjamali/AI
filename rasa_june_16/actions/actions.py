@@ -575,7 +575,7 @@ class action_change_weight(Action):
             weight = weight_initial.split(' ')[0]
             user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.weight': float(weight)}})
             user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-            user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')})
+            user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')})
             return[SlotSet('weight', value)]
 
 class action_change_stressLevel(Action):
@@ -598,7 +598,7 @@ class action_change_stressLevel(Action):
         dispatcher.utter_message(text=f"OK! Seems like your stress Level is {value}({stressLevel.get(value,None)}).")
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.stressLevel': int(value)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': int(value), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': int(value), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'),  'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')})
         return[SlotSet("stressLevel", stressLevel.get(value,None))]
 
 class action_change_age(Action):
@@ -765,7 +765,7 @@ class action_change_height(Action):
                         height = height_initial.split(' ')[0]
                     user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.height': float(height)}})
                     user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
                     return [SlotSet("height1", value), SlotSet("height2", 0)]
             else:
                 if float(value) < 1:
@@ -788,7 +788,7 @@ class action_change_height(Action):
                         height = height_initial.split(' ')[0]
                     user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.height': float(height)}})
                     user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
                     return [SlotSet("height1", value), SlotSet("height2", 0)]
         else:
             if float(value) < 80:
@@ -808,7 +808,7 @@ class action_change_height(Action):
                 height = height_initial.split(' ')[0]
                 user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.height': float(height)}})
                 user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-                user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
 
                 return [SlotSet("height1", value), SlotSet("height2", 0)]
 
@@ -872,9 +872,9 @@ class action_store_db(Action): ## custom action function for storing user inform
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.likeFood': likeFood.get((str(tracker.get_slot('likeFood'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.goal': goal.get((str(tracker.get_slot('userGoal'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
         #dispatcher.utter_message(text = f"your data is stored in the database.")
         print((user_db.users.find_one({"_id": ObjectId(user_id)})))
         # mydict = { "user_id": str(tracker.current_state()["sender_id"]), "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
@@ -1616,6 +1616,7 @@ class MealPlanner:
 
             self.meal_plan = pd.concat(plan)
         except Exception as exp:
+            self.meal_plan = None
             print('Not enough meals are available for given specifications.')
             
     
@@ -1727,6 +1728,78 @@ class ValidateDietForm(FormValidationAction):
     #     return {"calories_budget": slot_value}
 
 
+class ActionChangeDietPlan(Action):
+    def name(self) -> Text:
+        return "action_change_diet_plan"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+        # mealplan_file = user_id + '_mealPlan.csv'
+
+        user_db = get_mongo_database()
+
+        data = pd.read_csv('FinalFoodDatabase_V1.csv')
+
+        slot_value = next(tracker.get_latest_entity_values(entity_type="diet", entity_role="diet2"), None)
+        if not slot_value:
+            dispatcher.utter_message(text=f"I’m sorry I didn’t understand, I’m still learning please try telling me your diet type differently.")
+            return {"diet_type": None}
+        elif slot_value in ['keto', 'low-carb', 'high-protein']:
+            user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
+            if dietType in user_record["userInfo"]:
+                if user_db['users']['userInfo']['dietType'] == slot_value:
+                    dispatcher.utter_message(text = f'You already have a {dietType} plan, if you want to create one for another diet type then try typing something like:\n\
+                Change my diet plan from keto to low-carb.\n And I will create one for you as per your new diet type.')
+
+            user_db.userMeals.delete_many({"user_id": user_id})
+            dispatcher.utter_message(text=f"Noted! You have chosen {slot_value} as your diet type.")
+            diet_type = slot_value
+            user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
+            email = user_record['email']
+            eating_db = user_record['userInfo']['eating'] ## Will give values: 'VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN'
+            eating_dict = {'VEGAN': 'vegan', 'VEGETARIAN': 'vegetarian', 'NON_VEGETARIAN': 'high-protien,dairy-free'}
+            eating = eating_dict.get(eating_db, None)
+            # eating = tracker.get_slot('eating') ## Need to get this value from database so that it is updated always.
+            # eating = 'vegetarian'
+            #calories_budget = int(tracker.get_slot('calories_budget'))
+            calories_budget = 2000
+            print(diet_type, eating)
+            planner = MealPlanner(data, diet_type, eating, calories_budget, 7)
+            print(planner)
+            day_created = datetime.datetime.today()
+            if planner.meal_plan is not None:
+                for i in range(len(planner.meal_plan)):
+                    user_db.userMeals.insert_one({"user_id":user_id, 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
+                        'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
+                         'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]), 
+                         'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i], 
+                         'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
+                         'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
+                shop_list = planner.getShoppingList()
+                user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
+                print(shop_list)
+                email_subject = 'Diet Plan Shopping List'
+                raw_email_message = shop_list
+                email_message = raw_email_message ## We can use the raw email message here as it is in string datatype
+                threading.Thread(target = send_email, args = (email, email_subject, email_message, '')).start()
+                # status = send_email('sdin.bscs15seecs@seecs.edu.pk', email_subject, email_message, '')
+                #sleep(randint(1, 3))
+                # planner.meal_plan.to_csv(mealplan_file)
+                # if status:
+                dispatcher.utter_message(text = "Sure, I emailed you a shopping list that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.")
+                return [SlotSet("diet_type", None)]
+                # else:
+                #     dispatcher.utter_message(text = "Sure, Meal plan has been created for you that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.\nThe shopping list could not be emailed to you for the time being.")
+            else:
+                dispatcher.utter_message(text = "Meal plan can not be created for the time being as per your requirements.\n\
+                 I am really sorry for the inconvinience, keep using the app and in future we will have more data and will be able to accomodate your requirements.")
+                return [SlotSet("diet_type", None)]
+        else:
+            dispatcher.utter_message(text=f"Seems like you have typed incorrect diet type. I’m still learning please try saying it differently.")
+            return {"diet_type": None}
+
+
 class ActionGetShoppingList(Action):
     def name(self) -> Text:
         return "action_get_shopping_list"
@@ -1739,6 +1812,16 @@ class ActionGetShoppingList(Action):
         user_db = get_mongo_database()
 
         data = pd.read_csv('FinalFoodDatabase_V1.csv')
+        if user_db.userMeals.find({'user_id':user_id}).count()>0:
+            user_meals = user_db.userMeals.find({"user_id": user_id})
+            day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1)
+            if day <= 7:
+                dispatcher.utter_message(text = f"You already are on a {diet_type} diet plan and currently on day number{day}\n\
+                    Say things like “give me a breakfast plan”. And I will be able to give you your meal plan.\n\
+                    If you want to change the diet type then try typing something like \'change my diet type from keto to low-carb\' and I'll give you a new diet plan.")
+                return [SlotSet("diet_type", None)]
+            else:
+                user_db.userMeals.delete_many({"user_id": user_id})
         diet_type = tracker.get_slot('diet_type')
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
         email = user_record['email']
@@ -1753,14 +1836,15 @@ class ActionGetShoppingList(Action):
         planner = MealPlanner(data, diet_type, eating, calories_budget, 7)
         print(planner)
         day_created = datetime.datetime.today()
-        if not planner.meal_plan.empty:
+        if planner.meal_plan is not None:
             for i in range(len(planner.meal_plan)):
                 user_db.userMeals.insert_one({"user_id":user_id, 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
-                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : planner.meal_plan['net-carbs'].iat[i], 'type' : planner.meal_plan['Type'].iat[i],
-                     'calories' : planner.meal_plan['calories'].iat[i], 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : planner.meal_plan['serving'].iat[i], 
+                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
+                     'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]), 
                      'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i], 
                      'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
-                     'link': planner.meal_plan['link'].iat[i], 'day': planner.meal_plan['Day'].iat[i]})
+                     'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
+            user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
             shop_list = planner.getShoppingList()
             print(shop_list)
             email_subject = 'Diet Plan Shopping List'
@@ -1772,11 +1856,13 @@ class ActionGetShoppingList(Action):
             # planner.meal_plan.to_csv(mealplan_file)
             # if status:
             dispatcher.utter_message(text = "Sure, I emailed you a shopping list that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.")
+            return [SlotSet("diet_type", None)]
             # else:
             #     dispatcher.utter_message(text = "Sure, Meal plan has been created for you that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.\nThe shopping list could not be emailed to you for the time being.")
         else:
             dispatcher.utter_message(text = "Meal plan can not be created for the time being as per your requirements.\n\
              I am really sorry for the inconvinience, keep using the app and in future we will have more data and will be able to accomodate your requirements.")
+            return [SlotSet("diet_type", None)]
 
 class ActionGivePlan(Action):
     def name(self) -> Text:
@@ -1789,8 +1875,6 @@ class ActionGivePlan(Action):
         user_db = get_mongo_database()
 
         plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
-        print(str((tracker.current_state())["sender_id"]))
-        user_id = str((tracker.current_state())["sender_id"])
 
         # mealplan_file = user_id + '_mealPlan.csv'
         # if os.path.exists(mealplan_file):
@@ -1802,16 +1886,16 @@ class ActionGivePlan(Action):
                 print(meal)
                 print('\n')
         else:
-            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+            dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
         if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
             dietType = plan.capitalize()
-            userMeals.update_many({'user_id' : user_id}, {'$set': {'last_meal':dietType}})
+            user_db.userMeals.update_many({'user_id' : user_id}, {'$set': {'last_meal':dietType}})
             day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
             #mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
             for meal in user_meals:
-                if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
+                if (meal['day'] == day and meal['meal_type'] == dietType):
                     print('Meal given to user: ', meal)
                     break
             #lunch = planner.getMealDetails(day, plan, meal_df)
@@ -1845,16 +1929,17 @@ class ActionFinishMeal(Action):
             if last_plan_check.count() > 0:
                 last_plan = userMeals[0]['last_meal'];
             else:
-                dispatcher.utter_message('You have not asked for a meal plan yet, so I am not sure what your last meal was, if you want to create one then try typing something like:\n\
+                dispatcher.utter_message(text = 'You have not asked for a meal plan yet, so I am not sure what your last meal was, if you want to create one then try typing something like:\n\
                 \'I bought the ingredients. Give me a lunch plan.\'\n And I will give a meal plan for you as per your diet type and requested meal. Then I\'ll be able to calculate your nutritonal intake.')
+                return []
         else:
-            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+            dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
         day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
         # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
         for meal in user_meals:
-                if (user_meals['day'] == day and user_meals['meal_type'] == last_plan):
+                if (meals['day'] == day and meals['meal_type'] == last_plan):
                     print('Meal given to user: ', meal)
                     break
         dispatcher.utter_message(text = "Great! Your nutrition intake for this meal is:\n")
@@ -1879,12 +1964,12 @@ class ActionNutritionYesterday(Action): ## Under Process.
                 print(meal)
                 print('\n')
         else:
-            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+            dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
         day = ((datetime.datetime.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
         if day == 0:
-            dispatcher.utter_message('Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
+            dispatcher.utter_message(text = 'Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
                 You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
             return []
         net_carbs = 0
@@ -1899,7 +1984,7 @@ class ActionNutritionYesterday(Action): ## Under Process.
             # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
             
             for meal in user_meals:
-                if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
+                if (meals['day'] == day and meals['meal_type'] == dietType):
                     print('Meal given to user: ', meal)
                     net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
                     proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
@@ -1943,16 +2028,16 @@ class ActionMealNutritionYesterday(Action): ## Under Process.
                 print(meal)
                 print('\n')
         else:
-            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+            dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
         day = ((datetime.datetime.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
         if day == 0:
-            dispatcher.utter_message('Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
+            dispatcher.utter_message(text = 'Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
                 You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
             return []
         for meal in user_meals:
-                if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
+                if (meals['day'] == day and meals['meal_type'] == dietType):
                     print('Meal given to user: ', meal)
                     break
         dispatcher.utter_message(text = f"Your nutrition intake for yesterday {dietType} meal was:\n")
@@ -1977,12 +2062,12 @@ class ActionNutritionWeek(Action): ## Under Process.
                 print(meal)
                 print('\n')
         else:
-            dispatcher.utter_message('You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+            dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
         current_day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1) ## Getting the previous day here.
         if current_day <=7:
-            dispatcher.utter_message('Your diet plan is not yet completed, I am sorry I unable to give you your nutrition intake for the whole week/diet plan.\n\
+            dispatcher.utter_message(text = 'Your diet plan is not yet completed, I am sorry I unable to give you your nutrition intake for the whole week/diet plan.\n\
                 You can come after eating the meals according to your plan and completing the whole week plan and then I\'ll be able to tell you your nutritional intake for the whole week/diet plan.')
             return []
         net_carbs = 0
@@ -1998,7 +2083,7 @@ class ActionNutritionWeek(Action): ## Under Process.
                 # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
             
                 for meal in user_meals:
-                    if (user_meals['day'] == day and user_meals['meal_type'] == dietType):
+                    if (meals['day'] == day and meals['meal_type'] == dietType):
                         print('Meal given to user: ', meal)
                         net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
                         proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
@@ -2016,6 +2101,34 @@ class ActionNutritionWeek(Action): ## Under Process.
         str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
         dispatcher.utter_message(text = message)
 
+# class ActionAddCalories(Action):
+#     def name(self) -> Text:
+#         return "action_add_calories"
+#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#         print(str((tracker.current_state())["sender_id"]))
+#         user_id = str((tracker.current_state())["sender_id"])
+
+#         user_db = get_mongo_database()
+
+#         plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
+#         if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
+#             calories = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="calories"),None)
+#             if calories:
+#                 calories = int(calories)
+#                 print(calories)
+#                 print(plan.capitalize())
+#                 meal_type = plan.capitalize()
+#                 day_created = datetime.datetime.today()
+#                 user_db.userMeals.insert_one({"user_id":user_id, 'day_created': day_created, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories)})
+#                 user_meals_calories = userdb.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN'})
+#                 if user_meals_calories:
+#                     calories = calories + user_meals_calories['payload']['calories']
+#                     user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(calories), 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
+#                 user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES', 'payload': {'calories' : int(calories)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+
+
+
+
 
 class ActionWaterIntake(Action):
     def name(self) -> Text:
@@ -2028,7 +2141,7 @@ class ActionWaterIntake(Action):
         measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
         water_intake = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="glasses"), None)
         if water_intake:
-            user_db.healthRecords.insert_one({"userId":user_id, 'type': 'DRINK', 'payload': {'glasses' : float(water_intake), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)},
+            user_db.healthRecords.insert_one({"userId":user_id, 'type': 'DRINK', 'payload': {'glasses' : float(water_intake), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'),
                 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
             dispatcher.utter_message(text = "Water glasses count updated.")
             return []
@@ -2049,7 +2162,7 @@ class action_list_questions(Action):
 
 
         if user_id not in user_ids.values:
-            dispatcher.utter_message("Currently there is no historical data available about you at the moment. \n\
+            dispatcher.utter_message(text = "Currently there is no historical data available about you at the moment. \n\
                 Keep updating your data on daily basis to get answers to questions like:\n\
                 Ask me to predict your weight.\n\
                 If you are not achieving your goal ask me questions such as:\n\
@@ -2057,7 +2170,7 @@ class action_list_questions(Action):
                 Why am I not gaining weight?\n\
                 I will then be able to troubleshoot it for you.")
         else:
-            dispatcher.utter_message("You can ask me questions about the quality of your body functions for example:\n\
+            dispatcher.utter_message(text = "You can ask me questions about the quality of your body functions for example:\n\
                 Ask me to predict your weight.\n\
                 If you are not achieving your goal ask me questions such as:\n\
                 Why am I not losing weight?\n\

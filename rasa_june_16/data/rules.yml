@@ -244,10 +244,31 @@ rules:
     - intent: plan
     - action: action_give_plan
 
+- rule: Change in diet plan
+  steps:
+  - intent: change_diet_plan
+  - action: action_change_diet_plan
+
 - rule: Finish Meal
   steps:
     - intent: finish_meal
     - action: action_finish_meal
+
+- rule: Nutrition Yesterday
+  steps:
+    - intent: nutrition_yesterday
+    - action: action_nutrition_yesterday
+
+- rule: Meal Nutrition Yesterday
+  steps:
+    - intent: meal_nutrition_yesterday
+    - action: action_meal_nutrition_yesterday
+
+- rule: Nutrition Week
+  steps:
+    - intent: nutrition_week
+    - action: action_nutrition_week
+
 
 # Fallback when the chatbot does not understand user message.
 - rule: Fallback

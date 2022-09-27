@@ -841,14 +841,14 @@ nlu:
     - A [keto]{"entity":"diet"} diet would be nice.
     - A [ketogenic]{"entity":"diet", "value":"keto"} diet sounds good to me.
     - I'd like to try a [ketogenic]{"entity":"diet", "value":"keto"} diet.
-    - I’d like a [low-carb]{"entity":"low-carb"} diet.
-    - I'd like to try the [low-carb]{"entity":"low-carb"} diet.
-    - I could use a [low-carb]{"entity":"low-carb"} diet.
-    - A [low-carb]{"entity":"low-carb"} diet would be nice.
-    - A [low-carbs]{"entity":"low-carb"} diet sounds good to me.
-    - I'd like to try a [low-carbs]{"entity":"low-carb"} diet.
-    - A [low-carbohydrate]{"entity":"low-carb"} diet sounds good to me.
-    - I'd like to try a [low-carbohydrate]{"entity":"low-carb"} diet.
+    - I’d like a [low-carb]{"entity":"diet"} diet.
+    - I'd like to try the [low-carb]{"entity":"diet"} diet.
+    - I could use a [low-carb]{"entity":"diet"} diet.
+    - A [low-carb]{"entity":"diet"} diet would be nice.
+    - A [low-carbs]{"entity":"diet", "value":"low-carb"} diet sounds good to me.
+    - I'd like to try a [low-carbs]{"entity":"diet","value":"low-carb"} diet.
+    - A [low-carbohydrate]{"entity":"diet","value":"low-carb"} diet sounds good to me.
+    - I'd like to try a [low-carbohydrate]{"entity":"diet", "value": "low-carb"} diet.
     - I’d like a [high-protein]{"entity":"diet"} diet.
     - I'd like to try the [high-protein]{"entity":"diet"} diet.
     - I could use a [high-protein]{"entity":"diet"} diet.
@@ -867,14 +867,14 @@ nlu:
     - A [keto]{"entity":"diet"} diet would be nice
     - A [ketogenic]{"entity":"diet", "value":"keto"} diet sounds good to me
     - I'd like to try a [ketogenic]{"entity":"diet", "value":"keto"} diet
-    - I’d like a [low-carb]{"entity":"low-carb"} diet
-    - I'd like to try the [low-carb]{"entity":"low-carb"} diet
-    - I could use a [low-carb]{"entity":"low-carb"} diet
-    - A [low-carb]{"entity":"low-carb"} diet would be nice
-    - A [low-carbs]{"entity":"low-carb"} diet sounds good to me
-    - I'd like to try a [low-carbs]{"entity":"low-carb"} diet
-    - A [low-carbohydrate]{"entity":"low-carb"} diet sounds good to me
-    - I'd like to try a [low-carbohydrate]{"entity":"low-carb"} diet
+    - I’d like a [low-carb]{"entity":"diet"} diet
+    - I'd like to try the [low-carb]{"entity":"diet"} diet
+    - I could use a [low-carb]{"entity":"diet"} diet
+    - A [low-carb]{"entity":"diet"} diet would be nice
+    - A [low-carbs]{"entity":"diet"} diet sounds good to me
+    - I'd like to try a [low-carbs]{"entity":"diet", "value":"low-carb"} diet
+    - A [low-carbohydrate]{"entity":"diet", "value":"low-carb"} diet sounds good to me
+    - I'd like to try a [low-carbohydrate]{"entity":"diet", "value":"low-carb"} diet
     - I’d like a [high-protein]{"entity":"diet"} diet
     - I'd like to try the [high-protein]{"entity":"diet"} diet
     - I could use a [high-protein]{"entity":"diet"} diet
@@ -884,6 +884,12 @@ nlu:
     - [keto]{"entity":"diet"}
     - [low-carb]{"entity":"diet"}
     - [high-protein]{"entity":"diet"}
+    - [Keto]{"entity":"diet", "value":"keto"}
+    - [Low-Carb]{"entity":"diet", "value":"low-carb"}
+    - [Low-carb]{"entity":"diet", "value":"low-carb"}
+    - [High-protein]{"entity":"diet", "value":"high-protein"}
+    - [high-protien]{"entity":"diet", "value":"high-protein"}
+    - [High-Protein]{"entity":"diet", "value":"high-protein"}
 
 - intent: plan
   examples: |
@@ -932,6 +938,145 @@ nlu:
     - The meal was over! It was wonderful
     - I completed my food! It was scrumptious
     - I ate the meal! It was delectable
+
+- intent: nutrition_yesterday
+  examples: |
+    - How much was my nutrition intake all day yesterday?
+    - What have I been eating all day yesterday?
+    - What has been my nutritional intake throughout yesterday?
+    - What was my nutritional intake for the entire day yesterday?
+    - What was my dietary intake all day yesterday?
+    - How much food did I consume yesterday?
+    - How much was my nutrition intake all day yesterday
+    - What have I been eating all day yesterday
+    - What has been my nutritional intake throughout yesterday
+    - What was my nutritional intake for the entire day yesterday
+    - What was my dietary intake all day yesterday
+    - How much food did I consume yesterday
+
+- intent: meal_nutrition_yesterday
+  examples: |
+    - How much was my total of nutrition intake yesterday for breakfast{"entity":"plan"}?
+    - What was my total nutrition yesterday for breakfast{"entity":"plan"}?
+    - What was my total dietary intake yesterday for breakfast{"entity":"plan"}?
+    - What was my total nutritional contribution yesterday for breakfast{"entity":"plan"}?
+    - How much nutrients did I consume overall for breakfast{"entity":"plan"} yesterday?
+    - How much nutrition did I consume overall during breakfast{"entity":"plan"} yesterday?
+    - How much was my total of nutrition intake yesterday for lunch{"entity":"plan"}?
+    - What was my total nutrition yesterday for lunch{"entity":"plan"}?
+    - What was my total dietary intake yesterday for lunch{"entity":"plan"}?
+    - What was my total nutritional contribution yesterday for lunch{"entity":"plan"}?
+    - How much nutrients did I consume overall for lunch{"entity":"plan"} yesterday?
+    - How much nutrition did I consume overall during lunch{"entity":"plan"} yesterday?
+    - How much was my total of nutrition intake yesterday for dinner{"entity":"plan"}?
+    - What was my total nutrition yesterday for dinner{"entity":"plan"}?
+    - What was my total dietary intake yesterday for dinner{"entity":"plan"}?
+    - What was my total nutritional contribution yesterday for dinner{"entity":"plan"}?
+    - How much nutrients did I consume overall for dinner{"entity":"plan"} yesterday?
+    - How much nutrition did I consume overall during dinner{"entity":"plan"} yesterday?
+    - How much was my total of nutrition intake yesterday for snack{"entity":"plan","value":"snacks"}?
+    - What was my total nutrition yesterday for snack{"entity":"plan","value":"snacks"}?
+    - What was my total dietary intake yesterday for snack{"entity":"plan","value":"snacks"}?
+    - What was my total nutritional contribution yesterday for snack{"entity":"plan","value":"snacks"}?
+    - How much nutrients did I consume overall for snack{"entity":"plan","value":"snacks"} yesterday?
+    - How much nutrition did I consume overall during snack{"entity":"plan","value":"snacks"} yesterday?
+    - How much was my total of nutrition intake yesterday for snacks{"entity":"plan"}?
+    - What was my total nutrition yesterday for snacks{"entity":"plan"}?
+    - What was my total dietary intake yesterday for snacks{"entity":"plan"}?
+    - What was my total nutritional contribution yesterday for snacks{"entity":"plan"}?
+    - How much nutrients did I consume overall for snacks{"entity":"plan"} yesterday?
+    - How much nutrition did I consume overall during snacks{"entity":"plan"} yesterday?
+    - How much was my total of nutrition intake yesterday for breakfast{"entity":"plan"}
+    - What was my total nutrition yesterday for breakfast{"entity":"plan"}
+    - What was my total dietary intake yesterday for breakfast{"entity":"plan"}
+    - What was my total nutritional contribution yesterday for breakfast{"entity":"plan"}
+    - How much nutrients did I consume overall for breakfast{"entity":"plan"} yesterday
+    - How much nutrition did I consume overall during breakfast{"entity":"plan"} yesterday
+    - How much was my total of nutrition intake yesterday for lunch{"entity":"plan"}
+    - What was my total nutrition yesterday for lunch{"entity":"plan"}
+    - What was my total dietary intake yesterday for lunch{"entity":"plan"}
+    - What was my total nutritional contribution yesterday for lunch{"entity":"plan"}
+    - How much nutrients did I consume overall for lunch{"entity":"plan"} yesterday
+    - How much nutrition did I consume overall during lunch{"entity":"plan"} yesterday
+    - How much was my total of nutrition intake yesterday for dinner{"entity":"plan"}
+    - What was my total nutrition yesterday for dinner{"entity":"plan"}
+    - What was my total dietary intake yesterday for dinner{"entity":"plan"}
+    - What was my total nutritional contribution yesterday for dinner{"entity":"plan"}
+    - How much nutrients did I consume overall for dinner{"entity":"plan"} yesterday
+    - How much nutrition did I consume overall during dinner{"entity":"plan"} yesterday
+    - How much was my total of nutrition intake yesterday for snack{"entity":"plan","value":"snacks"}
+    - What was my total nutrition yesterday for snack{"entity":"plan","value":"snacks"}
+    - What was my total dietary intake yesterday for snack{"entity":"plan","value":"snacks"}
+    - What was my total nutritional contribution yesterday for snack{"entity":"plan","value":"snacks"}
+    - How much nutrients did I consume overall for snack{"entity":"plan","value":"snacks"} yesterday
+    - How much nutrition did I consume overall during snack{"entity":"plan","value":"snacks"} yesterday
+    - How much was my total of nutrition intake yesterday for snacks{"entity":"plan"}
+    - What was my total nutrition yesterday for snacks{"entity":"plan"}
+    - What was my total dietary intake yesterday for snacks{"entity":"plan"}
+    - What was my total nutritional contribution yesterday for snacks{"entity":"plan"}
+    - How much nutrients did I consume overall for snacks{"entity":"plan"} yesterday
+    - How much nutrition did I consume overall during snacks{"entity":"plan"} yesterday
+
+- intent: nutrition_week
+  examples: |
+    - How was my nutrition intake all week?
+    - How was my weekly nutritional intake?
+    - How was my diet throughout the week?
+    - How was my nutritional consumption all week?
+    - How did I do with my diet over the week?
+    - What was my nutritional intake all week?
+    - How was my nutrition intake all week
+    - How was my weekly nutritional intake
+    - How was my diet throughout the week
+    - How was my nutritional consumption all week
+    - How did I do with my diet over the week
+    - What was my nutritional intake all week
+
+- intent: change_diet_plan
+  examples:  |
+    - Change my diet plan from [keto]{"entity":"diet", "role": "diet1"} to [low-carb]{"entity":"diet", "role": "diet2"}
+    - modify my diet plan from [low-carb]{"entity":"diet", "role": "diet1"} to [high-protein]{"entity":"diet", "role": "diet2"}
+    - alter my diet plan from [high-protein]{"entity":"diet", "role": "diet1"} to [keto]{"entity":"diet", "role": "diet2"}
+    - I want to change my diet plan from [low-carb]{"entity":"diet", "role": "diet1"} to [keto]{"entity":"diet", "role": "diet2"}
+    - I want to modify my diet plan from [high-protein]{"entity":"diet", "role": "diet1"} to [low-carb]{"entity":"diet", "role": "diet2"}
+    - I want to alter my diet plan from [keto]{"entity":"diet", "role": "diet1"} to [high-protein]{"entity":"diet", "role": "diet2"}
+    - I would like to change my diet from [Keto]{"entity":"diet", "role": "diet1", "value":"keto"} to [low-carb]{"entity":"diet", "role": "diet2"}
+    - I would like to modify my diet from [low-carbs]{"entity":"diet", "role": "diet1", "value":"low-carb"} to [high-protein]{"entity":"diet", "role": "diet2"}}
+    - I would like to alter my diet from [High-Protein]{"entity":"diet", "role": "diet1", "value":"high-protein"} to [keto]{"entity":"diet", "role": "diet1"}
+    - I need to change my diet from [keto]{"entity":"diet", "role": "diet1"} to [High-Protein]{"entity":"diet", "role": "diet2", "value":"high-protein"}
+    - I need to alter my diet from [low-carb]{"entity":"diet", "role": "diet1", "value":"low-carb"} to [Keto]{"entity":"diet", "role": "diet2", "value":"keto"}
+    - I need to modify my diet from [high-protein]{"entity":"diet", "role": "diet1"} to [low-carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I need to modify my diet plan from [keto]{"entity":"diet", "role": "diet1"} to [Low-Carb]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I want to change my diet plan from [high-protein]{"entity":"diet", "role": "diet1"} to [Low-Carb]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I would like to modify my diet plan from [keto]{"entity":"diet", "role": "diet1"} to [Low-Carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I want to alter my diet from [high-protein]{"entity":"diet", "role": "diet1"} to [Low-Carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - Change my diet plan to [low-carb]{"entity":"diet", "role": "diet2"}
+    - modify my diet plan to [high-protein]{"entity":"diet", "role": "diet2"}
+    - please change my diet plan to [keto]{"entity":"diet", "role": "diet2"}
+    - I want to change my diet plan to [high-protien]{"entity":"diet", "role": "diet2", "value":"high-protein"}
+    - I want to modify my diet plan to [Keto]{"entity":"diet", "role": "diet2", "value":"keto"}
+    - I want to alter my diet plan to [low-carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I would like to change my diet to [low-carb]{"entity":"diet", "role": "diet2"}
+    - I would like to modify my diet to [high-protein]{"entity":"diet", "role": "diet2"}
+    - I would like to change my diet to [High-Protein]{"entity":"diet", "role": "diet2", "value":"high-protein"}
+    - I would like to alter my diet to [keto]{"entity":"diet", "role": "diet2"}
+    - I need to change my diet to [high-protien]{"entity":"diet", "role": "diet2", "value":"high-protein"}
+    - I need to alter my diet to [low-carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I need to change my diet to [Low-Carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I need to change my diet to [Low-Carb]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I need to modify my diet to [Keto]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - Change my preferred diet plan from [keto]{"entity":"diet", "role": "diet1"} to [low-carb]{"entity":"diet", "role": "diet2"}
+    - modify my preferred diet plan from [low-carb]{"entity":"diet", "role": "diet1"} to [high-protein]{"entity":"diet", "role": "diet2"}
+    - alter my preferred diet plan from [high-protein]{"entity":"diet", "role": "diet2"} to [keto]{"entity":"diet", "role": "diet2"}
+    - I want to change my preferred diet plan from [keto]{"entity":"diet", "role": "diet1"} to [High-Protein]{"entity":"diet", "role": "diet2","value":"high-protein"}
+    - I want to modify my preferred diet plan from [Low-Carb]{"entity":"diet", "role": "diet1","value":"low-carb"} to [Keto]{"entity":"diet", "role": "diet2","value":"keto"}
+    - I want to alter my preferred diet from [high-protien]{"entity":"diet", "role": "diet1","value":"high-protein"} to [low-carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
+    - I would like to change my preferred diet from [keto]{"entity":"diet", "role": "diet1"} to [low-carb]{"entity":"diet", "role": "diet2"}
+    - I would like to modify my preferred diet from [low-carb]{"entity":"diet", "role": "diet1"} to [high-protein]{"entity":"diet", "role": "diet2"}
+    - I would like to alter my preferred diet from [high-protien]{"entity":"diet", "role": "diet1"} to [keto]{"entity":"diet", "role": "diet2"}
+    - I need to change my preferred diet from [keto]{"entity":"diet", "role": "diet1"} to [high-protein]{"entity":"diet", "role": "diet2"}
+    - I need to alter my preferred diet from [low-carb]{"entity":"diet", "role": "diet1"} to [keto]{"entity":"diet", "role": "diet2"}
+    - I need to modify my preferred diet from [high-protein]{"entity":"diet", "role": "diet1"} to [low-carb]{"entity":"diet", "role": "diet2"}
 
 
 # - intent: height
