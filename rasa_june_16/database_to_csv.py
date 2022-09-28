@@ -48,13 +48,13 @@ def print_database():
 				print(calories_burned)
 				calories = calories_burned + randrange(100)
 				target = randrange(2)
-				user_main = user_db.users.find_one({'_id': ObjectId(user_id)})
+				user_main = user_db.users.find_one({'_id': ObjectId(user_id), 'userInfo.goal':{'$exists': True}})
 				if user_main:
 					print(user_main)
 					goal_db = user_main['userInfo']['goal']
 					goal_dict = { 'LOSE_WEIGHT':'lose', 'GAIN_WEIGHT':'gain', 'MAINTAIN_WEIGHT':'maintain'}
 					goal = goal_dict.get(goal_db,None)
-					user_records = user_db.healthRecords.find({'userId': user_id, 'type':'WEIGHT'})
+					user_records = user_db.healthRecords.find({'userId': user_id, 'type':'WEIGHT', 'payload.weight':{'$exists': True}})
 					if user_records.count()>0:
 						found = False
 						for user_record in user_records:
