@@ -58,6 +58,7 @@ def print_database():
 					if user_records.count()>0:
 						found = False
 						for user_record in user_records:
+							print(user_record)
 							if str(user_record['createdAt'].date()) == timestamp_string:
 								weight = user_record['userInfo']['payload']['weight']
 			# 			# calorie_record = user_db.healthRecords.find_one({'user_id': user_id , 'type':'CALORIES_IN'})
