@@ -37,7 +37,7 @@ def print_database():
 				print(record)
 				user_id = record['userId']
 				user_id = str(user_id)
-				sleep = record['sleepTotalTime']
+				sleep = randrange(8)
 				calories_burned = record['calorie']
 				steps = record['step']
 				timestamp = record['date']
