@@ -1506,7 +1506,9 @@ class action_QN_response(Action):
         user_ids = fitbit_df.iloc[:, 1]
 
         print(str((tracker.current_state())["sender_id"]))
-        user_id = 1503960366
+        user_id = str((tracker.current_state())["sender_id"])
+        if user_id == '6308fc7f7bf459378df7b48d':
+            user_id = 1503960366
 
 
         if user_id not in user_ids.values:
@@ -2164,6 +2166,8 @@ class action_list_questions(Action):
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
         user_id = 1503960366
+        if user_id == '6308fc7f7bf459378df7b48d':
+            user_id = 1503960366
 
 
         if user_id not in user_ids.values:
