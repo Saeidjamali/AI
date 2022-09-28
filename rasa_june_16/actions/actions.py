@@ -2165,7 +2165,6 @@ class action_list_questions(Action):
 
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
-        user_id = 1503960366
         if user_id == '6308fc7f7bf459378df7b48d':
             user_id = 1503960366
 
