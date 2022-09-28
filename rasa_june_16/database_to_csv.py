@@ -41,8 +41,8 @@ def print_database():
 				calories_burned = record['calorie']
 				steps = record['step']
 				timestamp = record['date']
-				timestamp = timestamp.strftime('%Y-%m-%d')
-				print(timestamp)
+				timestamp_string = timestamp.strftime('%Y-%m-%d')
+				print(timestamp_string)
 				print(user_id)
 				print(sleep)
 				print(calories_burned)
@@ -57,11 +57,12 @@ def print_database():
 					if user_records.count()>0:
 						found = False
 						for user_record in user_records:
-							if user_record['timestamp'].date() == timestamp:
+							if str(user_record['createdAt'].date()) == timestamp_string:
 								weight = record['userInfo']['payload']['weight']
 			# 			# calorie_record = user_db.healthRecords.find_one({'user_id': user_id , 'type':'CALORIES_IN'})
 			# 			# if calorie_record:
-								list_data = [user_id, date_today, steps, calories_burned, calories,sleep, target, goal, weight]
+								date_csv = timestamp.strftime('%d/%m/%Y')
+								list_data = [user_id, date_csv, steps, calories_burned, calories,sleep, target, goal, weight]
 								writer_object = csv.writer(f_object)
 								writer_object.writerow(list_data)
 								found = True
