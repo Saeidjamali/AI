@@ -50,7 +50,8 @@ def print_database():
 				target = randrange(2)
 				user_main = user_db.users.find_one({'_id': ObjectId(user_id)})
 				if user_main:
-					goal_db = record['userInfo']['goal']
+					print(user_main)
+					goal_db = user_main['userInfo']['goal']
 					goal_dict = { 'LOSE_WEIGHT':'lose', 'GAIN_WEIGHT':'gain', 'MAINTAIN_WEIGHT':'maintain'}
 					goal = goal_dict.get(goal_db,None)
 					user_records = user_db.healthRecords.find({'userId': user_id, 'type':'WEIGHT'})
@@ -58,7 +59,7 @@ def print_database():
 						found = False
 						for user_record in user_records:
 							if str(user_record['createdAt'].date()) == timestamp_string:
-								weight = record['userInfo']['payload']['weight']
+								weight = user_record['userInfo']['payload']['weight']
 			# 			# calorie_record = user_db.healthRecords.find_one({'user_id': user_id , 'type':'CALORIES_IN'})
 			# 			# if calorie_record:
 								date_csv = timestamp.strftime('%d/%m/%Y')
