@@ -35,37 +35,45 @@ def print_database():
 		if records.count() > 0:
 			for record in records:
 				print(record)
-		# 		user_id = record['userId']
-		# 		sleep = record['sleepTotalTime']
-		# 		calories_burned = record['calorie']
-		# 		steps = record['step']
-		# 		timestamp = record['timestamp']
-		# 		date_today = timestamp.date()
-		# 		print(date_today)
-		# 		print(user_id)
-		# 		print(sleep)
-		# 		print(calories_burned)
-		# 		if datetime.datetime.today().date() == date_today:
-		# 			found = True
-		# 		else:
-		# 			found = False
-		# 		if found == True:
-		# 			user_record = user_db.users.find_one({'_id': ObjectId(user_id)})
-		# 			if user_record:
-		# 				weight = record['userInfo']['weight']
-		# 				goal_db = record['userInfo']['goal']
-		# 				goal_dict = { 'LOSE_WEIGHT':'lose', 'GAIN_WEIGHT':'gain', 'MAINTAIN_WEIGHT':'maintain'}
-		# 				goal = goal_dict.get(goal_db,None)
-
-		# 			# calorie_record = user_db.healthRecords.find_one({'user_id': user_id , 'type':'CALORIES_IN'})
-		# 			# if calorie_record:
-		# 				calories = calories_burned + randrange(100)
-		# 				target = randrange(2)
-		# 				list_data = [user_id, date_today, steps, calories_burned, calories,sleep, target, goal, weight]
-		# 				writer_object = csv.writer(f_object)
-		# 				writer_object.writerow(list_data)
-
-		# f_object.close()
+				user_id = record['userId']
+				user_id = str(user_id)
+				sleep = record['sleepTotalTime']
+				calories_burned = record['calorie']
+				steps = record['step']
+				timestamp = record['date']
+				timestamp = timestamp.strftime('%Y-%m-%d')
+				print(timestamp)
+				print(user_id)
+				print(sleep)
+				print(calories_burned)
+				calories = calories_burned + randrange(100)
+				target = randrange(2)
+				user_main = user_db.users.find_one({'_id': ObjectId(user_id)})
+				if user_main:
+					goal_db = record['userInfo']['goal']
+					goal_dict = { 'LOSE_WEIGHT':'lose', 'GAIN_WEIGHT':'gain', 'MAINTAIN_WEIGHT':'maintain'}
+					goal = goal_dict.get(goal_db,None)
+					user_records = user_db.healthRecords.find({'userId': user_id, 'type':'WEIGHT'})
+					if user_records.count()>0:
+						found = False
+						for user_record in user_records:
+							if user_record['timestamp'].date() == timestamp:
+								weight = record['userInfo']['payload']['weight']
+			# 			# calorie_record = user_db.healthRecords.find_one({'user_id': user_id , 'type':'CALORIES_IN'})
+			# 			# if calorie_record:
+								list_data = [user_id, date_today, steps, calories_burned, calories,sleep, target, goal, weight]
+								writer_object = csv.writer(f_object)
+								writer_object.writerow(list_data)
+								found = True
+						if found == False:
+							print('No record found for user in healthRecords for weight:', user_id)
+					else:
+						print('no healthRecord found for user:', user_id)
+				else:
+					print('no entry for user n \'users\' collection\n')
+		else:
+			print('No record in step Daily data\n')
+		f_object.close()
 
 
 
