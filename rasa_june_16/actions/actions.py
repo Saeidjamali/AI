@@ -26,6 +26,8 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 import threading
+from database_to_csv import print_database
+
 # get_ipython().run_line_magic('matplotlib', 'inline')
 
 # ALLOWED_PIZZA_SIZES = ["small", "medium", "large", "extra-large", "extra large", "s", "m", "l", "xl"]
@@ -41,6 +43,7 @@ def get_mongo_database():
     return client.get_default_database()
 
 get_mongo_database()
+print_database()
 
 def send_email(email_recipient,
                email_subject,
