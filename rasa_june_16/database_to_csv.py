@@ -34,37 +34,38 @@ def print_database():
 	with open("updated_fitbit_dataset.csv", mode = "a") as f_object:
 		if records.count() > 0:
 			for record in records:
-				user_id = record['user_id']
-				sleep = record['sleepTotalTime']
-				calories_burned = record['calorie']
-				steps = record['step']
-				timestamp = record['timestamp']
-				date_today = timestamp.date()
-				print(date_today)
-				print(user_id)
-				print(sleep)
-				print(calories_burned)
-				if datetime.datetime.today().date() == date_today:
-					found = True
-				else:
-					found = False
-				if found == True:
-					user_record = user_db.users.find_one({'_id': ObjectId(user_id)})
-					if user_record:
-						weight = record['userInfo']['weight']
-						goal_db = record['userInfo']['goal']
-						goal_dict = { 'LOSE_WEIGHT':'lose', 'GAIN_WEIGHT':'gain', 'MAINTAIN_WEIGHT':'maintain'}
-						goal = goal_dict.get(goal_db,None)
+				print(record)
+		# 		user_id = record['userId']
+		# 		sleep = record['sleepTotalTime']
+		# 		calories_burned = record['calorie']
+		# 		steps = record['step']
+		# 		timestamp = record['timestamp']
+		# 		date_today = timestamp.date()
+		# 		print(date_today)
+		# 		print(user_id)
+		# 		print(sleep)
+		# 		print(calories_burned)
+		# 		if datetime.datetime.today().date() == date_today:
+		# 			found = True
+		# 		else:
+		# 			found = False
+		# 		if found == True:
+		# 			user_record = user_db.users.find_one({'_id': ObjectId(user_id)})
+		# 			if user_record:
+		# 				weight = record['userInfo']['weight']
+		# 				goal_db = record['userInfo']['goal']
+		# 				goal_dict = { 'LOSE_WEIGHT':'lose', 'GAIN_WEIGHT':'gain', 'MAINTAIN_WEIGHT':'maintain'}
+		# 				goal = goal_dict.get(goal_db,None)
 
-					# calorie_record = user_db.healthRecords.find_one({'user_id': user_id , 'type':'CALORIES_IN'})
-					# if calorie_record:
-						calories = calories_burned + randrange(100)
-						target = randrange(2)
-						list_data = [user_id, date_today, steps, calories_burned, calories,sleep, target, goal, weight]
-						writer_object = csv.writer(f_object)
-						writer_object.writerow(list_data)
+		# 			# calorie_record = user_db.healthRecords.find_one({'user_id': user_id , 'type':'CALORIES_IN'})
+		# 			# if calorie_record:
+		# 				calories = calories_burned + randrange(100)
+		# 				target = randrange(2)
+		# 				list_data = [user_id, date_today, steps, calories_burned, calories,sleep, target, goal, weight]
+		# 				writer_object = csv.writer(f_object)
+		# 				writer_object.writerow(list_data)
 
-		f_object.close()
+		# f_object.close()
 
 
 
