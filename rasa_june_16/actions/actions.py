@@ -26,7 +26,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 import threading
-from database_to_csv import print_database
+from database_to_csv import print_database, download_from_bucket,print_csv_shape
 
 # get_ipython().run_line_magic('matplotlib', 'inline')
 
@@ -43,7 +43,16 @@ def get_mongo_database():
     return client.get_default_database()
 
 get_mongo_database()
+
+print_csv_shape()
+
+download_from_bucket()
 print_database()
+
+
+print("LINE 50")
+
+print_csv_shape()
 
 def send_email(email_recipient,
                email_subject,
@@ -993,6 +1002,7 @@ class Questions:
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
                             response = "You have improper sleep pattern in the last"+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+
                         else:
                             response = "Your body performance and habits seem to be great. I didn’t spot any issue."
             return response
@@ -1443,9 +1453,9 @@ class Pipeline:
         self.id = id
         self.days = days
         self.goal = goal
-        df_updated= pd.read_csv("UpdatedDatasetFitBit.csv")
+        df_updated= pd.read_csv("updated_fitbit_dataset.csv")
         domain = df_updated.groupby('id')
-        self.user=domain.get_group(id)
+        self.user=domain.get_group(str(id))
         self.user= self.user[-days:]
     
     def FindPeaksValleys(self):
@@ -1501,21 +1511,28 @@ class action_QN_response(Action):
     def name(self) -> Text:
         return "action_QN_response"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        filename = "UpdatedDatasetFitBit.csv"
-        fitbit_df = pd.read_csv(filename);
+        filename = "updated_fitbit_dataset.csv"
+        user_db = get_mongo_database()
+        fitbit_df = pd.read_csv(filename)
         user_ids = fitbit_df.iloc[:, 1]
 
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
-        if user_id == '6308fc7f7bf459378df7b48d':
-            user_id = 1503960366
+        # if user_id == '6308fc7f7bf459378df7b48d':
+        #     user_id = str(1503960366)
 
 
         if user_id not in user_ids.values:
             dispatcher.utter_message(text = "There is no historical data available about you at the moment.")
             return []
         days=30
-        goal=0
+        user_main_goal = user_db.users.find_one({'_id': ObjectId(user_id), 'userInfo.goal':{'$exists': True}})
+        goal_dict = { 'LOSE_WEIGHT':0, 'GAIN_WEIGHT':1, 'MAINTAIN_WEIGHT':0}
+        if user_main_goal:
+            goal=user_main_goal['userInfo']['goal']
+            goal=goal_dict[goal]
+        else:
+            goal=0
         pipeline= Pipeline(user_id,days,goal)
 
 
@@ -2159,14 +2176,14 @@ class action_list_questions(Action):
     def name(self) -> Text:
         return "action_list_questions"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        filename = "UpdatedDatasetFitBit.csv"
+        filename = "updated_fitbit_dataset.csv"
         fitbit_df = pd.read_csv(filename);
         user_ids = fitbit_df.iloc[:, 1]
 
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
-        if user_id == '6308fc7f7bf459378df7b48d':
-            user_id = 1503960366
+        # if user_id == '6308fc7f7bf459378df7b48d':
+        #     user_id = str(1503960366)
 
 
         if user_id not in user_ids.values:
