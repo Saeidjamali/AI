@@ -1514,7 +1514,7 @@ class action_QN_response(Action):
         filename = "updated_fitbit_dataset.csv"
         user_db = get_mongo_database()
         fitbit_df = pd.read_csv(filename)
-        user_ids = fitbit_df.iloc[:, 1]
+        user_ids = fitbit_df.iloc[:, 0]
 
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
