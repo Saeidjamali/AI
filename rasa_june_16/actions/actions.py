@@ -1536,9 +1536,9 @@ class action_QN_response(Action):
         pipeline= Pipeline(user_id,days,goal)
 
 
-        if str(tracker.latest_message['intent'].get('name')) == "QN1":
-            ques_id=1
         if str(tracker.latest_message['intent'].get('name')) == "QN2":
+            ques_id=1
+        if str(tracker.latest_message['intent'].get('name')) == "QN1":
             ques_id=2
         if str(tracker.latest_message['intent'].get('name')) == "QN3":
             ques_id=3
