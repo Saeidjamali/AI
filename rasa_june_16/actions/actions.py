@@ -978,9 +978,9 @@ class Questions:
                             response = "You have high activity level in the last "+str(len(peaks_valleys['peaks_steps']))+" days, you have taken fewer calories in "+str(len(peaks_valleys['valleys_calin']))+" days. These are affecting your weight gain journey."
                     else:
                         if len(peaks_valleys['valleys_sleep'])>2 or len(peaks_valleys['peaks_sleep'])>2:
-                            response = "You have high activity level in the last "+str(len(peaks_valleys['peask_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peaks_steps']))+" days, and you have improper sleep pattern in "+str(len(peaks_valleys['peaks_sleep'])+len(peaks_valleys['valleys_sleep']))+" days. These are affecting your weight gain journey."
                         else:
-                            response = "You have high activity level in the last "+str(len(peaks_valleys['peak_ssteps']))+" days that is affecting your weight gaining performance."
+                            response = "You have high activity level in the last "+str(len(peaks_valleys['peaks_steps']))+" days that is affecting your weight gaining performance."
             else:
                 if len(peaks_valleys['peaks_cal'])>3:
                     if len(peaks_valleys['valleys_calin'])>3:
