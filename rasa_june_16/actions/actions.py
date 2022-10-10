@@ -1779,6 +1779,9 @@ class ActionChangeDietPlan(Action):
             diet_type = slot_value
             user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
             email = user_record['email']
+            print(user_record['email'])
+            print(user_record['userInfo'])
+            print(user_record['userInfo']['eating'])
             eating_db = user_record['userInfo']['eating'] ## Will give values: 'VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN'
             eating_dict = {'VEGAN': 'vegan', 'VEGETARIAN': 'vegetarian', 'NON_VEGETARIAN': 'high-protien,dairy-free'}
             eating = eating_dict.get(eating_db, None)
