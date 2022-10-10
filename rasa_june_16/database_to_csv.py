@@ -15,6 +15,7 @@ import csv
 import numpy as np
 import pandas as pd
 import boto3
+import botocore
 from copy import deepcopy
 
 load_dotenv(find_dotenv())
@@ -33,8 +34,12 @@ def print_csv_shape():
 
 
 def download_from_bucket():
-	s3.Bucket(S3_BUCKET).download_file(Key='viki_userdata/updated_fitbit_dataset.csv', Filename='updated_fitbit_dataset.csv')
-	print("==========NEW BUCKET CSV SIZE===========",pd.read_csv('updated_fitbit_dataset.csv').shape)
+    try:
+	    s3.Bucket(S3_BUCKET).download_file(Key='viki_userdata/updated_fitbit_dataset.csv', Filename='updated_fitbit_dataset.csv')
+	    print("==========NEW BUCKET CSV SIZE===========",pd.read_csv('updated_fitbit_dataset.csv').shape)
+    except botocore.exceptions.ClientError:
+        print("Error downloading dataset from S3, using default one...")
+        pass
 
 
 def get_mongo_database():
