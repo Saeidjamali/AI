@@ -27,6 +27,8 @@ from email.mime.base import MIMEBase
 from email import encoders
 import threading
 from database_to_csv import print_database, download_from_bucket,print_csv_shape
+import logging
+logger = logging.getLogger(__name__)
 
 # get_ipython().run_line_magic('matplotlib', 'inline')
 
@@ -1851,6 +1853,13 @@ class ActionGetShoppingList(Action):
                 user_db.userMeals.delete_many({"user_id": user_id})
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
         email = user_record['email']
+        dispatcher.utter_message
+        print(user_record['email'])
+        print(user_record['userInfo'])
+        print(user_record['userInfo']['eating'])
+        logger.debug("User email:", user_record['email'])
+        logger.debug("User Info:", user_record['userInfo'])
+        dispatcher.utter_message(text = f"user info is: {user_record['userInfo']}")
         eating_db = user_record['userInfo']['eating'] ## Will give values: 'VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN'
         eating_dict = {'VEGAN': 'vegan', 'VEGETARIAN': 'vegetarian', 'NON_VEGETARIAN': 'high-protien,dairy-free'}
         eating = eating_dict.get(eating_db, None)
