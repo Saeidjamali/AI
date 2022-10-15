@@ -1770,8 +1770,8 @@ class ActionChangeDietPlan(Action):
             dispatcher.utter_message(text=f"I’m sorry I didn’t understand, I’m still learning please try telling me your diet type differently.")
             return {"diet_type": None}
         elif slot_value in ['keto', 'low-carb', 'high-protein']:
-            user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
-            if dietType in user_record["userInfo"]:
+            user_record = user_db.users.find_one({"_id": ObjectId(user_id), 'userInfo.dietType':{'$exists': True}})
+            if user_record:
                 if user_db['users']['userInfo']['dietType'] == slot_value:
                     dispatcher.utter_message(text = f'You already have a {dietType} plan, if you want to create one for another diet type then try typing something like:\n\
                 Change my diet plan from keto to low-carb.\n And I will create one for you as per your new diet type.')
