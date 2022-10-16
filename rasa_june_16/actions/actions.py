@@ -1757,7 +1757,6 @@ class ActionChangeDietPlan(Action):
         return "action_change_diet_plan"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-        return []
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
         # mealplan_file = user_id + '_mealPlan.csv'
@@ -1791,33 +1790,33 @@ class ActionChangeDietPlan(Action):
             # eating = tracker.get_slot('eating') ## Need to get this value from database so that it is updated always.
             # eating = 'vegetarian'
             #calories_budget = int(tracker.get_slot('calories_budget'))
-            calories_budget = 2000
-            print(diet_type, eating)
-            planner = MealPlanner(data, diet_type, eating, calories_budget, 7)
-            print(planner)
-            day_created = datetime.datetime.today()
-            if planner.meal_plan is not None:
-                for i in range(len(planner.meal_plan)):
-                    user_db.userMeals.insert_one({"user_id":user_id, 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
-                        'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
-                         'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]), 
-                         'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i], 
-                         'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
-                         'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
-                shop_list = planner.getShoppingList()
-                user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
-                print(shop_list)
-                email_subject = 'Diet Plan Shopping List'
-                raw_email_message = shop_list
-                email_message = raw_email_message ## We can use the raw email message here as it is in string datatype
-                threading.Thread(target = send_email, args = (email, email_subject, email_message, '')).start()
-                # status = send_email('sdin.bscs15seecs@seecs.edu.pk', email_subject, email_message, '')
-                #sleep(randint(1, 3))
-                # planner.meal_plan.to_csv(mealplan_file)
-                # if status:
-                dispatcher.utter_message(text = "Sure, I emailed you a shopping list that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.")
-                return [SlotSet("diet_type", None)]
-                # else:
+            # calories_budget = 2000
+            # print(diet_type, eating)
+            # planner = MealPlanner(data, diet_type, eating, calories_budget, 7)
+            # print(planner)
+            # day_created = datetime.datetime.today()
+            # if planner.meal_plan is not None:
+            #     for i in range(len(planner.meal_plan)):
+            #         user_db.userMeals.insert_one({"user_id":user_id, 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
+            #             'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
+            #              'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]), 
+            #              'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i], 
+            #              'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
+            #              'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
+            #     shop_list = planner.getShoppingList()
+            #     user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
+            #     print(shop_list)
+            #     email_subject = 'Diet Plan Shopping List'
+            #     raw_email_message = shop_list
+            #     email_message = raw_email_message ## We can use the raw email message here as it is in string datatype
+            #     threading.Thread(target = send_email, args = (email, email_subject, email_message, '')).start()
+            #     # status = send_email('sdin.bscs15seecs@seecs.edu.pk', email_subject, email_message, '')
+            #     #sleep(randint(1, 3))
+            #     # planner.meal_plan.to_csv(mealplan_file)
+            #     # if status:
+            #     dispatcher.utter_message(text = "Sure, I emailed you a shopping list that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.")
+            #     return [SlotSet("diet_type", None)]
+            #     # else:
                 #     dispatcher.utter_message(text = "Sure, Meal plan has been created for you that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.\nThe shopping list could not be emailed to you for the time being.")
             else:
                 dispatcher.utter_message(text = "Meal plan can not be created for the time being as per your requirements.\n\
