@@ -2151,6 +2151,7 @@ class ActionSendShoppingList(Action): ## Under Process.
         if user_record:
             shop_list = user_record["userInfo"]["shopList"]
             print(shop_list)
+            email = user_record['email']
             email_subject = 'Diet Plan Shopping List'
             raw_email_message = shop_list
             email_message = raw_email_message ## We can use the raw email message here as it is in string datatype
