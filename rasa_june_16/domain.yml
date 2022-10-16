@@ -46,6 +46,7 @@ intents:
 - meal_nutrition_yesterday
 - nutrition_week
 - change_diet_plan
+- shopping_list
 entities:
 - NUMBER
 - unit
@@ -378,3 +379,4 @@ actions:
 - action_meal_nutrition_yesterday
 - action_nutrition_week
 - action_default_fallback
+- action_send_shopping_list

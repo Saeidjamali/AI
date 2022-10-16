@@ -1805,6 +1805,7 @@ class ActionChangeDietPlan(Action):
                          'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
                 shop_list = planner.getShoppingList()
                 user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
+                user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.shopList': str(shop_list)}})
                 print(shop_list)
                 email_subject = 'Diet Plan Shopping List'
                 raw_email_message = shop_list
@@ -1840,8 +1841,8 @@ class ActionGetShoppingList(Action):
 
         data = pd.read_csv('FinalFoodDatabase_V1.csv')
         diet_type = tracker.get_slot('diet_type')
-        if user_db.userMeals.find({'user_id':user_id}).count()>0:
-            user_meals = user_db.userMeals.find({"user_id": user_id})
+        if len(list(user_db.userMeals.find({'user_id':user_id})))>0:
+            user_meals = list(user_db.userMeals.find({"user_id": user_id}))
             day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1)
             day_number = 7 - day
             if day <= 7:
@@ -1881,6 +1882,7 @@ class ActionGetShoppingList(Action):
                      'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
             user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
             shop_list = planner.getShoppingList()
+            user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.shopList': str(shop_list)}})
             print(shop_list)
             email_subject = 'Diet Plan Shopping List'
             raw_email_message = shop_list
@@ -2135,6 +2137,33 @@ class ActionNutritionWeek(Action): ## Under Process.
         str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' + \
         str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
         dispatcher.utter_message(text = message)
+
+class ActionSendShoppingList(Action): ## Under Process.
+    def name(self) -> Text:
+        return "action_send_shopping_list"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+        user_db = get_mongo_database()
+        user_record = user_db.users.find_one({"_id": ObjectId(user_id), "userInfo.shopList":{"$exists":True}})
+        if user_record:
+            shop_list = user_record["userInfo"]["shopList"]
+            print(shop_list)
+            email_subject = 'Diet Plan Shopping List'
+            raw_email_message = shop_list
+            email_message = raw_email_message ## We can use the raw email message here as it is in string datatype
+            threading.Thread(target = send_email, args = (email, email_subject, email_message, '')).start()
+            # status = send_email('sdin.bscs15seecs@seecs.edu.pk', email_subject, email_message, '')
+            #sleep(randint(1, 3))
+            # planner.meal_plan.to_csv(mealplan_file)
+            # if status:
+            dispatcher.utter_message(text = "I have sent you the shopping list once again according to your diet plan.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.")
+        else:
+            dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
+                I\'m thiking of going on a diet.\n And I will create one for you as per your diet type then email you the shopping list.')
+
 
 # class ActionAddCalories(Action):
 #     def name(self) -> Text:

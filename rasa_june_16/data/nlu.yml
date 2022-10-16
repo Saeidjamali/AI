@@ -1080,6 +1080,24 @@ nlu:
     - I need to alter my preferred diet from [low-carb]{"entity":"diet", "role": "diet1"} to [keto]{"entity":"diet", "role": "diet2"}
     - I need to modify my preferred diet from [high-protein]{"entity":"diet", "role": "diet1"} to [low-carb]{"entity":"diet", "role": "diet2"}
 
+- intent: shopping_list
+  examples: |
+    - Send me the shopping list again.
+    - I need the shopping list.
+    - Get me that shopping list.
+    - E-mail me the shopping list.
+    - e-mail me the shopping list.
+    - Send me the shopping list again
+    - I need the shopping list
+    - Get me that shopping list
+    - E-mail me the shopping list
+    - e-mail me the shopping list
+    - Can you please send me the shopping list again.
+    - Can you e-mail me the shopping list.
+    - Can you send me the grocery list.
+    - Can you please send me the shopping list again
+    - Can you e-mail me the shopping list
+    - Can you send me the grocery list
 
 # - intent: height
 #   examples: |
