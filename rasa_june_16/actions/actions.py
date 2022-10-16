@@ -1974,7 +1974,7 @@ class ActionFinishMeal(Action):
         day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
         # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
         for meal in user_meals:
-                if (meals['day'] == day and meals['meal_type'] == last_plan):
+                if (meal['day'] == day and meal['meal_type'] == last_plan):
                     print('Meal given to user: ', meal)
                     break
         dispatcher.utter_message(text = "Great! Your nutrition intake for this meal is:\n")
