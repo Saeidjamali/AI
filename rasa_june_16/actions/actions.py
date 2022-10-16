@@ -1774,7 +1774,7 @@ class ActionChangeDietPlan(Action):
             user_record = user_db.users.find_one({"_id": ObjectId(user_id), 'userInfo.dietType':{'$exists': True}})
             diet_type = slot_value
             if diet_type == 'low-carb':
-                diet_type = 'low-carb'
+                diet_type = 'low carb'
             if user_record:
                 if user_db['users']['userInfo']['dietType'] == diet_type:
                     dispatcher.utter_message(text = f'You already have a {diet_type} plan, if you want to create one for another diet type then try typing something like:\n\
