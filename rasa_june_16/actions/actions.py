@@ -1962,7 +1962,7 @@ class ActionFinishMeal(Action):
         if user_meals.count() > 0:
             last_plan_check = user_db.userMeals.find({"user_id":user_id, "last_meal":{"$exists":True}})
             if last_plan_check.count() > 0:
-                last_plan = userMeals[0]['last_meal'];
+                last_plan = user_meals[0]['last_meal'];
             else:
                 dispatcher.utter_message(text = 'You have not asked for a meal plan yet, so I am not sure what your last meal was, if you want to create one then try typing something like:\n\
                 \'I bought the ingredients. Give me a lunch plan.\'\n And I will give a meal plan for you as per your diet type and requested meal. Then I\'ll be able to calculate your nutritonal intake.')
