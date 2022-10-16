@@ -1818,7 +1818,7 @@ class ActionChangeDietPlan(Action):
                 #sleep(randint(1, 3))
                 # planner.meal_plan.to_csv(mealplan_file)
                 # if status:
-                dispatcher.utter_message(text = "Sure, I emailed you a shopping list that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.")
+                dispatcher.utter_message(text = "I emailed you a shopping list that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.")
                 return [SlotSet("diet_type", None)]
                 # else:
                 #     dispatcher.utter_message(text = "Sure, Meal plan has been created for you that will last for 7 days.Once you have the ingredients ask me for meal plans. Say things like “give me a breakfast plan”.\nThe shopping list could not be emailed to you for the time being.")

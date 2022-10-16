@@ -925,6 +925,41 @@ nlu:
     - I got the ingredients. provide me a [snacks]{"entity":"plan"} plan.
     - I have purchased the ingredients. Provide me with a [snacks]{"entity":"plan"} plan.
     - I bought the ingredients. Get me a [snacks]{"entity":"plan"} package.
+    - Give me a [lunch]{"entity":"plan"} plan.
+    - Give me [lunch]{"entity":"plan"}.
+    - Give me a menu for [lunch]{"entity":"plan"}.
+    - Give me a [lunch]{"entity":"plan"} package.
+    - Provide me a [lunch]{"entity":"plan"} plan.
+    - Provide me with a [lunch]{"entity":"plan"} plan.
+    - Get me a [lunch]{"entity":"plan"} package.
+    - Give me [breakfast]{"entity":"plan"}.
+    - Give me a [breakfast]{"entity":"plan"} plan.
+    - Give me a menu for [breakfast]{"entity":"plan"}.
+    - Give me a [breakfast]{"entity":"plan"} package.
+    - Provide me a [breakfast]{"entity":"plan"} plan.
+    - Provide me with a [breakfast]{"entity":"plan"} plan.
+    - Get me a [breakfast]{"entity":"plan"} package.
+    - Give me a [dinner]{"entity":"plan"} plan.
+    - Give me [dinner]{"entity":"plan"}.
+    - Give me a menu for [dinner]{"entity":"plan"}.
+    - Give me a [dinner]{"entity":"plan"} package.
+    - Provide me a [dinner]{"entity":"plan"} plan.
+    - Provide me with a [dinner]{"entity":"plan"} plan.
+    - Get me a [dinner]{"entity":"plan"} package.
+    - Give me a [snack]{"entity":"plan", "value":"snacks"} plan.
+    - Give me [snack]{"entity":"plan", "value":"snacks"}.
+    - Give me a menu for [snack]{"entity":"plan", "value":"snacks"}.
+    - Give me a [snack]{"entity":"plan", "value":"snacks"} package.
+    - Provide me a [snack]{"entity":"plan", "value":"snacks"} plan.
+    - Provide me with a [snack]{"entity":"plan", "value":"snacks"} plan.
+    - Get me a [snack]{"entity":"plan", "value":"snacks"} package.
+    - Give me a [snacks]{"entity":"plan"} plan.
+    - Give me [snacks]{"entity":"plan"}.
+    - Give me a menu for [snacks]{"entity":"plan"}.
+    - Give me a [snacks]{"entity":"plan"} package.
+    - Provide me a [snacks]{"entity":"plan"} plan.
+    - Provide me with a [snacks]{"entity":"plan"} plan.
+    - Get me a [snacks]{"entity":"plan"} package.
 
 - intent: finish_meal
   examples: |
