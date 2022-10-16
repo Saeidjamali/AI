@@ -269,6 +269,11 @@ rules:
     - intent: nutrition_week
     - action: action_nutrition_week
 
+- rule: Send Shopping List
+  steps:
+  - intent: shopping_list
+  - action: action_send_shopping_list
+
 
 # Fallback when the chatbot does not understand user message.
 - rule: Fallback
