@@ -1787,6 +1787,8 @@ class ActionChangeDietPlan(Action):
             eating_db = user_record['userInfo']['eating'] ## Will give values: 'VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN'
             eating_dict = {'VEGAN': 'vegan', 'VEGETARIAN': 'vegetarian', 'NON_VEGETARIAN': 'high-protien,dairy-free'}
             eating = eating_dict.get(eating_db, None)
+            if 1:
+                dispatcher.utter_message(text = "It is in change diet")
             # eating = tracker.get_slot('eating') ## Need to get this value from database so that it is updated always.
             # eating = 'vegetarian'
             #calories_budget = int(tracker.get_slot('calories_budget'))
@@ -1863,6 +1865,8 @@ class ActionGetShoppingList(Action):
         eating_db = user_record['userInfo']['eating'] ## Will give values: 'VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN'
         eating_dict = {'VEGAN': 'vegan', 'VEGETARIAN': 'vegetarian', 'NON_VEGETARIAN': 'high-protien,dairy-free'}
         eating = eating_dict.get(eating_db, None)
+        if 1:
+                dispatcher.utter_message(text = "It is in actual function")
         # eating = tracker.get_slot('eating') ## Need to get this value from database so that it is updated always.
         # eating = 'vegetarian'
         #calories_budget = int(tracker.get_slot('calories_budget'))
