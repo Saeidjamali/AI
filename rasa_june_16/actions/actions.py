@@ -1757,6 +1757,7 @@ class ActionChangeDietPlan(Action):
         return "action_change_diet_plan"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        return []
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
         # mealplan_file = user_id + '_mealPlan.csv'
