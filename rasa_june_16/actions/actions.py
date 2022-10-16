@@ -1958,8 +1958,8 @@ class ActionFinishMeal(Action):
         user_db = get_mongo_database()
 
         ## Need the last meal taken here along with the day.
-        user_meals = user_db.userMeals.find({"user_id": user_id})
-        if user_meals.count() > 0:
+        user_meals = list(user_db.userMeals.find({"user_id": user_id}))
+        if len(user_meals) > 0:
             last_plan_check = user_db.userMeals.find({"user_id":user_id, "last_meal":{"$exists":True}})
             if last_plan_check.count() > 0:
                 last_plan = user_meals[0]['last_meal'];
@@ -1992,8 +1992,8 @@ class ActionNutritionYesterday(Action): ## Under Process.
         user_db = get_mongo_database()
 
         ## Need the last meal taken here along with the day.
-        user_meals = user_db.userMeals.find({"user_id": user_id})
-        if user_meals.count() > 0:
+        user_meals = list(user_db.userMeals.find({"user_id": user_id}))
+        if len(user_meals) > 0:
             print('list of user meals\n')
             for meal in user_meals:
                 print(meal)
@@ -2048,7 +2048,7 @@ class ActionMealNutritionYesterday(Action): ## Under Process.
         user_db = get_mongo_database()
 
         ## Need the last meal taken here along with the day.
-        user_meals = user_db.userMeals.find({"user_id": user_id})
+        user_meals = list(user_db.userMeals.find({"user_id": user_id}))
         plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
 
         plans = ['breakfast', 'dinner', 'lunch', 'snacks']
@@ -2057,7 +2057,7 @@ class ActionMealNutritionYesterday(Action): ## Under Process.
             return []
 
         dietType = plan.capitalize()
-        if user_meals.count() > 0:
+        if len(user_meals) > 0:
             print('list of user meals\n')
             for meal in user_meals:
                 print(meal)
@@ -2090,8 +2090,8 @@ class ActionNutritionWeek(Action): ## Under Process.
         user_db = get_mongo_database()
 
         ## Need the last meal taken here along with the day.
-        user_meals = user_db.userMeals.find({"user_id": user_id})
-        if user_meals.count() > 0:
+        user_meals = list(user_db.userMeals.find({"user_id": user_id}))
+        if len(user_meals) > 0:
             print('list of user meals\n')
             for meal in user_meals:
                 print(meal)
