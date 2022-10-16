@@ -1915,7 +1915,7 @@ class ActionGivePlan(Action):
         # if os.path.exists(mealplan_file):
         #     meal_df = pd.read_csv(mealplan_file)
         user_meals = list(user_db.userMeals.find({"user_id": user_id}))
-        if user_meals.count() > 0:
+        if len(user_meals) > 0:
             print('list of user meals\n')
             for meal in user_meals:
                 print(meal)
