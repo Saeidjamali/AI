@@ -1914,7 +1914,7 @@ class ActionGivePlan(Action):
         # mealplan_file = user_id + '_mealPlan.csv'
         # if os.path.exists(mealplan_file):
         #     meal_df = pd.read_csv(mealplan_file)
-        user_meals = user_db.userMeals.find({"user_id": user_id})
+        user_meals = list(user_db.userMeals.find({"user_id": user_id}))
         if user_meals.count() > 0:
             print('list of user meals\n')
             for meal in user_meals:
