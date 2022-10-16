@@ -1593,6 +1593,7 @@ class MealPlanner:
         user_data['calories'] = user_data['calories'].astype('str').str.extractall('(\d+)').unstack().fillna('').sum(axis=1).astype(int)
         
         if user_data.empty:
+            self.meal_plan = None
             print('Issue in diet plan name, food preference, or budget. Unable to get data with given conditions.')
             return
         
@@ -1771,14 +1772,16 @@ class ActionChangeDietPlan(Action):
             return {"diet_type": None}
         elif slot_value in ['keto', 'low-carb', 'high-protein']:
             user_record = user_db.users.find_one({"_id": ObjectId(user_id), 'userInfo.dietType':{'$exists': True}})
+            diet_type = slot_value
+            if diet_type == 'low-carb':
+                diet_type = 'low-carb'
             if user_record:
-                if user_db['users']['userInfo']['dietType'] == slot_value:
-                    dispatcher.utter_message(text = f'You already have a {dietType} plan, if you want to create one for another diet type then try typing something like:\n\
+                if user_db['users']['userInfo']['dietType'] == diet_type:
+                    dispatcher.utter_message(text = f'You already have a {diet_type} plan, if you want to create one for another diet type then try typing something like:\n\
                 Change my diet plan from keto to low-carb.\n And I will create one for you as per your new diet type.')
 
             user_db.userMeals.delete_many({"user_id": user_id})
             dispatcher.utter_message(text=f"Noted! You have chosen {slot_value} as your diet type.")
-            diet_type = slot_value
             user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
             email = user_record['email']
             print(user_record['email'])
@@ -1841,6 +1844,8 @@ class ActionGetShoppingList(Action):
 
         data = pd.read_csv('FinalFoodDatabase_V1.csv')
         diet_type = tracker.get_slot('diet_type')
+        if diet_type == 'low-carb':
+            diet_type = 'low carb'
         if len(list(user_db.userMeals.find({'user_id':user_id})))>0:
             user_meals = list(user_db.userMeals.find({"user_id": user_id}))
             day = ((datetime.datetime.today() - user_meals[0]['day_created']).days + 1)
@@ -1860,7 +1865,6 @@ class ActionGetShoppingList(Action):
         print(user_record['userInfo']['eating'])
         logger.debug("User email:", user_record['email'])
         logger.debug("User Info:", user_record['userInfo'])
-        dispatcher.utter_message(text = f"user info is: {user_record['userInfo']}")
         eating_db = user_record['userInfo']['eating'] ## Will give values: 'VEGAN', 'VEGETARIAN', 'NON_VEGETARIAN'
         eating_dict = {'VEGAN': 'vegan', 'VEGETARIAN': 'vegetarian', 'NON_VEGETARIAN': 'high-protien,dairy-free'}
         eating = eating_dict.get(eating_db, None)
