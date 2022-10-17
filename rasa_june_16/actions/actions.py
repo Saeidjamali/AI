@@ -2075,7 +2075,7 @@ class ActionMealNutritionYesterday(Action): ## Under Process.
         day = ((datetime.datetime.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
         print('\ndate today: ', datetime.datetime.today())
         print('\ndate meal plan was created: ', user_meals[0]['day_created'])
-        print('final day': day)
+        print('\nfinal day: ', day)
         if day == 0:
             dispatcher.utter_message(text = 'Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
                 You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
