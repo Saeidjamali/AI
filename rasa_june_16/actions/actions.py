@@ -1808,7 +1808,7 @@ class ActionChangeDietPlan(Action):
                          'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
                 shop_list = planner.getShoppingList()
                 user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
-                user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.shopList': str(shop_list)}})
+                user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.shopList': str(shop_list), 'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
                 print(shop_list)
                 email_subject = 'Diet Plan Shopping List'
                 raw_email_message = shop_list
@@ -1886,7 +1886,7 @@ class ActionGetShoppingList(Action):
                      'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
             user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
             shop_list = planner.getShoppingList()
-            user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.shopList': str(shop_list)}})
+            user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.shopList': str(shop_list), 'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
             print(shop_list)
             email_subject = 'Diet Plan Shopping List'
             raw_email_message = shop_list
@@ -2073,6 +2073,9 @@ class ActionMealNutritionYesterday(Action): ## Under Process.
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
         day = ((datetime.datetime.today() - user_meals[0]['day_created']).days) ## Getting the previous day here.
+        print('\ndate today: ', datetime.datetime.today())
+        print('\ndate meal plan was created: ', user_meals[0]['day_created'])
+        print('final day': day)
         if day == 0:
             dispatcher.utter_message(text = 'Your diet plan started today, I am sorry I unable to give you your nutrition intake about yesterday.\n\
                 You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
@@ -2170,30 +2173,37 @@ class ActionSendShoppingList(Action): ## Under Process.
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type then email you the shopping list.')
 
 
-# class ActionAddCalories(Action):
-#     def name(self) -> Text:
-#         return "action_add_calories"
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-#         print(str((tracker.current_state())["sender_id"]))
-#         user_id = str((tracker.current_state())["sender_id"])
+class ActionAddCalories(Action):
+    def name(self) -> Text:
+        return "action_add_calories"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
 
-#         user_db = get_mongo_database()
+        user_db = get_mongo_database()
 
-#         plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
-#         if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
-#             calories = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="calories"),None)
-#             if calories:
-#                 calories = int(calories)
-#                 print(calories)
-#                 print(plan.capitalize())
-#                 meal_type = plan.capitalize()
-#                 day_created = datetime.datetime.today()
-#                 user_db.userMeals.insert_one({"user_id":user_id, 'day_created': day_created, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories)})
-#                 user_meals_calories = userdb.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN'})
-#                 if user_meals_calories:
-#                     calories = calories + user_meals_calories['payload']['calories']
-#                     user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(calories), 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-#                 user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES', 'payload': {'calories' : int(calories)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
+        if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
+            calories = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="calories"),None)
+            if calories:
+                calories = int(calories)
+                print(calories)
+                print(plan.capitalize())
+                meal_type = plan.capitalize()
+                day_created = datetime.datetime.today()
+                user_meal_record = user_db.userMeals.find_one({"user_id":user_id, 'type': 'CALORIES'})
+                user_db.userMeals.insert_one({"user_id":user_id, 'day_created': day_created, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories)})
+                user_meals_calories = userdb.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN'})
+                if user_meals_calories:
+                    calories = calories + user_meals_calories['payload']['calories']
+                    user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(calories), 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
+                user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES', 'payload': {'calories' : int(calories)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+            else:
+                dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try typing your meal type(breakfast/lunch/snacks/dinner) differently.")
+                return []
+        else:
+            dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try typing your calorie intake differently.")
+            return []
 
 
 
