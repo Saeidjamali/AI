@@ -2028,7 +2028,7 @@ class ActionNutritionYesterday(Action): ## Under Process.
             # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
             
             for meal in user_meals:
-                if (meals['day'] == day and meals['meal_type'] == dietType):
+                if (meal['day'] == day and meal['meal_type'] == dietType):
                     print('Meal given to user: ', meal)
                     net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
                     proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
@@ -2084,7 +2084,7 @@ class ActionMealNutritionYesterday(Action): ## Under Process.
                 You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
             return []
         for meal in user_meals:
-                if (meals['day'] == day and meals['meal_type'] == dietType):
+                if (meal['day'] == day and meal['meal_type'] == dietType):
                     print('Meal given to user: ', meal)
                     break
         dispatcher.utter_message(text = f"Your nutrition intake for yesterday {dietType} meal was:\n")
@@ -2130,7 +2130,7 @@ class ActionNutritionWeek(Action): ## Under Process.
                 # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
             
                 for meal in user_meals:
-                    if (meals['day'] == day and meals['meal_type'] == dietType):
+                    if (meal['day'] == day and meal['meal_type'] == dietType):
                         print('Meal given to user: ', meal)
                         net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
                         proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
