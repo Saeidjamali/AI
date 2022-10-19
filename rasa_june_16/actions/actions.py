@@ -1961,18 +1961,18 @@ class ActionGivePlan(Action):
             dispatcher.utter_message(text = lunch_method)
             meal_type = dietType
             user_meal_record = user_db.userMeals.find_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'date': date_today})  ## Finding whether the meal against current date is already present or not
-                if user_meal_record:
+            if user_meal_record:
+                return []
+            else:
+                user_db.userMeals.insert_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories), 'nutrients': meal['nutrients'], 'date': date_today})
+                user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
+                if user_meals_calories:
+                    total_calories = calories + user_meals_calories['payload']['calories']
+                    user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(total_calories), 'payload.date': date_today, 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
                     return []
                 else:
-                    user_db.userMeals.insert_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories), 'nutrients': meal['nutrients'], 'date': date_today})
-                    user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
-                    if user_meals_calories:
-                        total_calories = calories + user_meals_calories['payload']['calories']
-                        user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(total_calories), 'payload.date': date_today, 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-                        return []
-                    else:
-                        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
-                        return []
+                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                    return []
         else:
             dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try asking about your meal type differently.")
 
@@ -1993,8 +1993,8 @@ class ActionFinishMeal(Action):
         if len(user_meals) > 0:
             last_plan_check = user_db.userMeals.find({"user_id":user_id, 'type':'MEAL_PLAN', "last_meal":{"$exists":True}})
             if last_plan_check.count() > 0:
-                if date_today == user_meals[0]['last_meal_date']
-                    last_plan = user_meals[0]['last_meal'];
+                if date_today == user_meals[0]['last_meal_date']:
+                    last_plan = user_meals[0]['last_meal']
                 else:
                     dispatcher.utter_message(text = 'You have not asked for a meal/meal plan today, so I am not sure what your last meal was, if you want to ask for one then try typing something like:\n\
                 \'I bought the ingredients. Give me a lunch plan.\'\n And I will give a meal plan for you as per your diet type and requested meal. Then I\'ll be able to calculate your nutritonal intake.')
@@ -2319,7 +2319,7 @@ class ActionRemoveCalories(Action):
                 user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
                 total_calories = user_meals_calories['payload']['calories'] - calories
                 user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(total_calories), 'payload.date': date_today, 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-                dispatcher.utter_message(text = f'Sure, Removed. This brings your all day calorie intake to {user_meals_calories['payload']['calories']} kcal')
+                dispatcher.utter_message(text = f"Sure, Removed. This brings your all day calorie intake to {user_meals_calories['payload']['calories']} kcal")
             else:
                 dispatcher.utter_message(text = f" You do not have anything for your {plan} calories. If you want to add {plan} calories then try typing something like:\n\
                     \'- Viki, add [470] to my today’s {plan} calorie intake.\'' or \'I had a {plan} with [1000] Kcal in it.\'\n And I will be able to add them in your {plan} calories.")
