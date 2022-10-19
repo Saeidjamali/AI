@@ -1802,7 +1802,7 @@ class ActionChangeDietPlan(Action):
             day_created = datetime.datetime.combine(day_created, datetime.time.min)
             if planner.meal_plan is not None:
                 for i in range(len(planner.meal_plan)):
-                    user_db.userMeals.insert_one({"user_id":user_id, 'type': 'MEAL_PLAN' 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i],
+                    user_db.userMeals.insert_one({"user_id":user_id, 'type': 'MEAL_PLAN', 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i],
                     'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
                     'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]),
                     'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i],
