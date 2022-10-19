@@ -1802,12 +1802,12 @@ class ActionChangeDietPlan(Action):
             day_created = datetime.datetime.combine(day_created, datetime.time.min)
             if planner.meal_plan is not None:
                 for i in range(len(planner.meal_plan)):
-                    user_db.userMeals.insert_one({"user_id":user_id, 'type': 'MEAL_PLAN' 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
-                        'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
-                         'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]), 
-                         'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i], 
-                         'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
-                         'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
+                    user_db.userMeals.insert_one({"user_id":user_id, 'type': 'MEAL_PLAN' 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i],
+                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
+                    'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]),
+                    'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i],
+                    'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
+                    'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
                 shop_list = planner.getShoppingList()
                 user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
                 user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.shopList': str(shop_list), 'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
@@ -1863,7 +1863,6 @@ class ActionGetShoppingList(Action):
                 user_db.userMeals.delete_many({"user_id": user_id, 'type':'MEAL_PLAN'})
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
         email = user_record['email']
-        dispatcher.utter_message
         print(user_record['email'])
         print(user_record['userInfo'])
         print(user_record['userInfo']['eating'])
@@ -1883,12 +1882,12 @@ class ActionGetShoppingList(Action):
         day_created = datetime.datetime.combine(day_created, datetime.time.min)
         if planner.meal_plan is not None:
             for i in range(len(planner.meal_plan)):
-                user_db.userMeals.insert_one({"user_id":user_id,'type':'MEAL_PLAN', 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i], 
+                user_db.userMeals.insert_one({"user_id":user_id,'type':'MEAL_PLAN', 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i],
                     'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
-                     'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]), 
-                     'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i], 
-                     'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
-                     'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
+                    'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]),
+                    'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i],
+                    'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
+                    'link': planner.meal_plan['link'].iat[i], 'day': int(planner.meal_plan['Day'].iat[i])})
             user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.dietType': diet_type}})
             shop_list = planner.getShoppingList()
             user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.shopList': str(shop_list), 'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
