@@ -1169,54 +1169,54 @@ nlu:
 
 - intent: calories_whole_day
   examples: |
-  - How much is my calorie for the whole day?
-  - How much are my calories for the whole day?
-  - How many calories for me all day?
-  - How many calories do I have all day?
-  - How many calories are my total day?
-  - How much is my calorie for the whole day
-  - How much are my calories for the whole day
-  - How many calories for me all day
-  - How many calories do I have all day
-  - How many calories are my total day
+    - How much is my calorie for the whole day?
+    - How much are my calories for the whole day?
+    - How many calories for me all day?
+    - How many calories do I have all day?
+    - How many calories are my total day?
+    - How much is my calorie for the whole day
+    - How much are my calories for the whole day
+    - How many calories for me all day
+    - How many calories do I have all day
+    - How many calories are my total day
 
 - intent: remove_calories
   examples: |
-  - Remove my [breakfast]{"entity":"plan"} calorie.
-  - Please remove my [breakfast]{"entity":"plan"} calories.
-  - Remove my [breakfast]{"entity":"plan"} calories.
-  - Please remove my [breakfast]{"entity":"plan"} calorie.
-  - Cut out my calories for [breakfast]{"entity":"plan"}.
-  - Take away the calories from [breakfast]{"entity":"plan"}.
-  - Take away my calories from [breakfast]{"entity":"plan"}.
-  - Remove my [lunch]{"entity":"plan"} calorie.
-  - Please remove my [lunch]{"entity":"plan"} calories.
-  - Remove my [lunch]{"entity":"plan"} calories.
-  - Please remove my [lunch]{"entity":"plan"} calorie.
-  - Cut out my calories for [lunch]{"entity":"plan"}.
-  - Take away the calories from [lunch]{"entity":"plan"}.
-  - Take away my calories from [lunch]{"entity":"plan"}.
-  - Remove my [snacks]{"entity":"plan"} calorie.
-  - Please remove my [snacks]{"entity":"plan"} calories.
-  - Remove my [snacks]{"entity":"plan"} calories.
-  - Please remove my [snacks]{"entity":"plan"} calorie.
-  - Cut out my calories for [snacks]{"entity":"plan"}.
-  - Take away the calories from [snacks]{"entity":"plan"}.
-  - Take away my calories from [snacks]{"entity":"plan"}.
-  - Remove my [snack]{"entity":"plan","value":"snacks"} calorie.
-  - Please remove my [snack]{"entity":"plan","value":"snacks"} calories.
-  - Remove my [snack]{"entity":"plan","value":"snacks"} calories.
-  - Please remove my [snack]{"entity":"plan","value":"snacks"} calorie.
-  - Cut out my calories for [snack]{"entity":"plan","value":"snacks"}.
-  - Take away the calories from [snack]{"entity":"plan","value":"snacks"}.
-  - Take away my calories from [snack]{"entity":"plan","value":"snacks"}.
-  - Remove my [dinner]{"entity":"plan"} calorie.
-  - Please remove my [dinner]{"entity":"plan"} calories.
-  - Remove my [dinner]{"entity":"plan"} calories.
-  - Please remove my [dinner]{"entity":"plan"} calorie.
-  - Cut out my calories for [dinner]{"entity":"plan"}.
-  - Take away the calories from [dinner]{"entity":"plan"}.
-  - Take away my calories from [dinner]{"entity":"plan"}.
+    - Remove my [breakfast]{"entity":"plan"} calorie.
+    - Please remove my [breakfast]{"entity":"plan"} calories.
+    - Remove my [breakfast]{"entity":"plan"} calories.
+    - Please remove my [breakfast]{"entity":"plan"} calorie.
+    - Cut out my calories for [breakfast]{"entity":"plan"}.
+    - Take away the calories from [breakfast]{"entity":"plan"}.
+    - Take away my calories from [breakfast]{"entity":"plan"}.
+    - Remove my [lunch]{"entity":"plan"} calorie.
+    - Please remove my [lunch]{"entity":"plan"} calories.
+    - Remove my [lunch]{"entity":"plan"} calories.
+    - Please remove my [lunch]{"entity":"plan"} calorie.
+    - Cut out my calories for [lunch]{"entity":"plan"}.
+    - Take away the calories from [lunch]{"entity":"plan"}.
+    - Take away my calories from [lunch]{"entity":"plan"}.
+    - Remove my [snacks]{"entity":"plan"} calorie.
+    - Please remove my [snacks]{"entity":"plan"} calories.
+    - Remove my [snacks]{"entity":"plan"} calories.
+    - Please remove my [snacks]{"entity":"plan"} calorie.
+    - Cut out my calories for [snacks]{"entity":"plan"}.
+    - Take away the calories from [snacks]{"entity":"plan"}.
+    - Take away my calories from [snacks]{"entity":"plan"}.
+    - Remove my [snack]{"entity":"plan","value":"snacks"} calorie.
+    - Please remove my [snack]{"entity":"plan","value":"snacks"} calories.
+    - Remove my [snack]{"entity":"plan","value":"snacks"} calories.
+    - Please remove my [snack]{"entity":"plan","value":"snacks"} calorie.
+    - Cut out my calories for [snack]{"entity":"plan","value":"snacks"}.
+    - Take away the calories from [snack]{"entity":"plan","value":"snacks"}.
+    - Take away my calories from [snack]{"entity":"plan","value":"snacks"}.
+    - Remove my [dinner]{"entity":"plan"} calorie.
+    - Please remove my [dinner]{"entity":"plan"} calories.
+    - Remove my [dinner]{"entity":"plan"} calories.
+    - Please remove my [dinner]{"entity":"plan"} calorie.
+    - Cut out my calories for [dinner]{"entity":"plan"}.
+    - Take away the calories from [dinner]{"entity":"plan"}.
+    - Take away my calories from [dinner]{"entity":"plan"}.
 
 
 # - intent: height
