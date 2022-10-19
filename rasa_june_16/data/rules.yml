@@ -269,6 +269,21 @@ rules:
     - intent: nutrition_week
     - action: action_nutrition_week
 
+- rule: Calories intake
+  steps:
+  - intent: calories_intake
+  - action: action_add_calories
+
+- rule: Calories Whole Day
+  steps:
+  - intent: calories_whole_day
+  - action: action_calories_whole_day
+
+- rule: Remove Calories
+  steps:
+  - intent: remove_calories
+  - action: action_remove_calories
+
 - rule: Send Shopping List
   steps:
   - intent: shopping_list

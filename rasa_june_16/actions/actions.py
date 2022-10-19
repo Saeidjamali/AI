@@ -2193,22 +2193,82 @@ class ActionAddCalories(Action):
                 print(calories)
                 print(plan.capitalize())
                 meal_type = plan.capitalize()
-                day_created = datetime.datetime.today()
-                user_meal_record = user_db.userMeals.find_one({"user_id":user_id, 'type': 'CALORIES'})
-                user_db.userMeals.insert_one({"user_id":user_id, 'day_created': day_created, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories)})
-                user_meals_calories = userdb.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN'})
-                if user_meals_calories:
-                    calories = calories + user_meals_calories['payload']['calories']
-                    user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(calories), 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-                user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES', 'payload': {'calories' : int(calories)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                datetime_today = datetime.datetime.today()
+                date_today = datetime.datetime.combine(datetime_today, datetime.time.min)   ## We have the calories, plan and today's date here.
+                user_meal_record = user_db.userMeals.find_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'date': date_today})  ## Finding whether the meal against current date is already present or not
+                if user_meal_record:
+                    dispatcher.utter_message(text = f"You already have {plan} calories. If you want to remove them and then manually add new calories then try typing:\n\
+                        \'Remove my {plan} calorie\' Then enter the new calories like you have.")
+                    return []
+                else:
+                    user_db.userMeals.insert_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories), 'date': date_today})
+                    user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
+                    if user_meals_calories:
+                        total_calories = calories + user_meals_calories['payload']['calories']
+                        user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(total_calories), 'payload.date': date_today, 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
+                        dispatcher.utter_message(text = f"Sure, {calories} calorie added for {plan}.")
+                        return []
+                    else:
+                        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                        dispatcher.utter_message(text = f"Sure, {calories} calorie added for {plan}.")
+                        return []
             else:
-                dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try typing your meal type(breakfast/lunch/snacks/dinner) differently.")
+                dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try typing your calorie intake differently.")
                 return []
         else:
-            dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try typing your calorie intake differently.")
+            dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try typing your meal type(breakfast/lunch/snacks/dinner) differently.")
             return []
 
+class ActionCaloriesWholeDay(Action):
+    def name(self) -> Text:
+        return "action_calories_whole_day"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
 
+        user_db = get_mongo_database()
+
+        datetime_today = datetime.datetime.today()
+        date_today = datetime.datetime.combine(datetime_today, datetime.time.min)   ## We have the today's date here.
+
+        user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
+        if user_meals_calories:
+            print(user_meals_calories['payload']['calories'])
+            dispatcher.utter_message(text = f"{user_meals_calories['payload']['calories']} Kcal")
+            return []
+        else:
+            dispatcher.utter_message(text = "You have 0 Kcal calories intake for the current day.")
+            return []
+
+class ActionRemoveCalories(Action):
+    def name(self) -> Text:
+        return "action_remove_calories"
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+        print(str((tracker.current_state())["sender_id"]))
+        user_id = str((tracker.current_state())["sender_id"])
+
+        user_db = get_mongo_database()
+
+        plan = next(tracker.get_latest_entity_values(entity_type="plan"), None)
+        if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
+            print(plan.capitalize())
+            meal_type = plan.capitalize()
+            datetime_today = datetime.datetime.today()
+                date_today = datetime.datetime.combine(datetime_today, datetime.time.min)   ## We have the plan and today's date here.
+            user_meal_record = list(user_db.userMeals.find_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'date': date_today}))  ## Finding whether the meal against current date is already present or not
+            if user_meal_record:
+                calories = user_meal_record['calories']
+                user_db.userMeals.delete_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'date': date_today})
+                user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
+                total_calories = user_meals_calories['payload']['calories'] - calories
+                user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(total_calories), 'payload.date': date_today, 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
+                dispatcher.utter_message(text = f'Sure, Removed. This brings your all day calorie intake to {user_meals_calories['payload']['calories']} kcal')
+            else:
+                dispatcher.utter_message(text = f" You do not have anything for your {plan} calories. If you want to add {plan} calories then try typing something like:\n\
+                    \'- Viki, add [470] to my today’s {plan} calorie intake.\'' or \'I had a {plan} with [1000] Kcal in it.\'\n And I will be able to add them in your {plan} calories.")
+        else:
+            dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try typing your meal type(breakfast/lunch/snacks/dinner) differently.")
+            return []
 
 
 

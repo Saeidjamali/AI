@@ -47,6 +47,9 @@ intents:
 - nutrition_week
 - change_diet_plan
 - shopping_list
+- calories_intake
+- calories_whole_day
+- remove_calories
 entities:
 - NUMBER
 - unit
@@ -380,3 +383,6 @@ actions:
 - action_nutrition_week
 - action_default_fallback
 - action_send_shopping_list
+- action_add_calories
+- action_calories_whole_day
+- action_remove_calories
