@@ -1937,11 +1937,15 @@ class ActionGivePlan(Action):
             return []
         if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
             dietType = plan.capitalize()
-            user_db.userMeals.update_many({'user_id' : user_id, 'type':'MEAL_PLAN'}, {'$set': {'last_meal':dietType}})
             date_today = datetime.datetime.today()
             date_today = datetime.datetime.combine(date_today, datetime.time.min)
+            user_db.userMeals.update_many({'user_id' : user_id, 'type':'MEAL_PLAN'}, {'$set': {'last_meal':dietType, 'last_meal_date':date_today}})
             day = ((date_today - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
             #mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
+            if day > 7:
+                dispatcher.utter_message(text = "You are currently not on a meal/diet plan. The previous diet plan has finished. If you want to create a new one then try typing something like:\n\
+                    I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.")
+                return []
             for meal in user_meals:
                 if (meal['day'] == day and meal['meal_type'] == dietType):
                     print('Meal given to user: ', meal)
@@ -1956,7 +1960,20 @@ class ActionGivePlan(Action):
             dispatcher.utter_message(text = lunch_ingridients)
             dispatcher.utter_message(text = "Here is how to prepare it. Once you finish eating let me know and I count your calories and nutrition.")
             dispatcher.utter_message(text = lunch_method)
-
+            meal_type = dietType
+            user_meal_record = user_db.userMeals.find_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'date': date_today})  ## Finding whether the meal against current date is already present or not
+                if user_meal_record:
+                    return []
+                else:
+                    user_db.userMeals.insert_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories), 'nutrients': meal['nutrients'], 'date': date_today})
+                    user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
+                    if user_meals_calories:
+                        total_calories = calories + user_meals_calories['payload']['calories']
+                        user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(total_calories), 'payload.date': date_today, 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
+                        return []
+                    else:
+                        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                        return []
         else:
             dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try asking about your meal type differently.")
 
@@ -1972,21 +1989,30 @@ class ActionFinishMeal(Action):
 
         ## Need the last meal taken here along with the day.
         user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'MEAL_PLAN'}))
+        date_today = datetime.datetime.today()
+        date_today = datetime.datetime.combine(date_today, datetime.time.min)
         if len(user_meals) > 0:
             last_plan_check = user_db.userMeals.find({"user_id":user_id, 'type':'MEAL_PLAN', "last_meal":{"$exists":True}})
             if last_plan_check.count() > 0:
-                last_plan = user_meals[0]['last_meal'];
+                if date_today == user_meals[0]['last_meal_date']
+                    last_plan = user_meals[0]['last_meal'];
+                else:
+                    dispatcher.utter_message(text = 'You have not asked for a meal/meal plan today, so I am not sure what your last meal was, if you want to ask for one then try typing something like:\n\
+                \'I bought the ingredients. Give me a lunch plan.\'\n And I will give a meal plan for you as per your diet type and requested meal. Then I\'ll be able to calculate your nutritonal intake.')
+                return []
             else:
-                dispatcher.utter_message(text = 'You have not asked for a meal plan yet, so I am not sure what your last meal was, if you want to create one then try typing something like:\n\
+                dispatcher.utter_message(text = 'You have not asked for a meal/meal plan yet, so I am not sure what your last meal was, if you want to ask for one then try typing something like:\n\
                 \'I bought the ingredients. Give me a lunch plan.\'\n And I will give a meal plan for you as per your diet type and requested meal. Then I\'ll be able to calculate your nutritonal intake.')
                 return []
         else:
             dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
-        date_today = datetime.datetime.today()
-        date_today = datetime.datetime.combine(date_today, datetime.time.min)
         day = ((date_today - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
+        if day > 7:
+                dispatcher.utter_message(text = "You are currently not on a meal/diet plan. The previous diet plan has finished. If you want to create a new one then try typing something like:\n\
+                    I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.")
+                return []
         # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
         for meal in user_meals:
                 if (meal['day'] == day and meal['meal_type'] == last_plan):
@@ -2007,55 +2033,58 @@ class ActionNutritionYesterday(Action): ## Under Process.
         user_db = get_mongo_database()
 
         ## Need the last meal taken here along with the day.
-        user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'MEAL_PLAN'}))
+        date_today = datetime.datetime.today()
+        date_today = datetime.datetime.combine(date_today, datetime.time.min)
+        date_yesterday = date_today - datetime.timedelta(days = 1)
+        user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES', 'date': date_yesterday}))
+        calories = 0
         if len(user_meals) > 0:
-            print('list of user meals\n')
+            print('list of user meals calories\n')
             for meal in user_meals:
+                calories = calories + int(meal['calories'])
                 print(meal)
                 print('\n')
         else:
-            dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
-                I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
+            dispatcher.utter_message(text = 'You do not have anything stored for your calories and nutritions yet, if you want to get nutritional or calories information then try typing something like:\n\
+                I\'m thiking of going on a diet.\n And I will create a diet plan for you as per your diet type that you can follow or:\n\
+                \'- Viki, add [470] to my today’s breakfast/lunch/snacks/dinner calorie intake.\' or \'I had a breakfast/lunch/snacks/dinner with [1000] Kcal in it.\'\n\
+                for manually adding daily calories that you consume.')
             return []
-        date_today = datetime.datetime.today()
-        date_today = datetime.datetime.combine(date_today, datetime.time.min)
-        day = ((date_today - user_meals[0]['day_created']).days) ## Getting the previous day here.
+        # day = ((date_today - user_meals[0]['day_created']).days) ## Getting the previous day here.
         print('\ndate today: ', date_today)
-        print('\ndate meal plan was created: ', user_meals[0]['day_created'])
-        print('\nfinal day: ', day)
-        if day == 0:
-            dispatcher.utter_message(text = 'Your diet plan started today, I am sorry I am unable to give you your nutrition intake about yesterday.\n\
-                You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
-            return []
-        net_carbs = 0
-        proteins = 0
-        fats = 0
-        fiber = 0
-        total_carbs = 0
-        calories = 0
-        plans = ['breakfast', 'dinner', 'lunch', 'snacks']
-        for plan in plans:
-            dietType = plan.capitalize()
-            # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
+        # print('\ndate meal plan was created: ', user_meals[0]['day_created'])
+        # print('\nfinal day: ', day)
+        # if day == 0:
+        #     dispatcher.utter_message(text = 'Your diet plan started today, I am sorry I am unable to give you your nutrition intake about yesterday.\n\
+        #         You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
+        #     return []
+        user_meals_nutrients = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES', 'date': date_yesterday, "nutrients":{"$exists":True}}))
+        if len(user_meals_nutrients) > 0:
+            net_carbs = 0
+            proteins = 0
+            fats = 0
+            fiber = 0
+            total_carbs = 0
+        # plans = ['breakfast', 'dinner', 'lunch', 'snacks']
+        # for plan in plans:
+        #     dietType = plan.capitalize()
+        #     # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
             
-            for meal in user_meals:
-                if (meal['day'] == day and meal['meal_type'] == dietType):
-                    print('Meal given to user: ', meal)
-                    net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
-                    proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
-                    fats = fats + int(meal['nutrients'].split('\'')[15].strip().split('g')[0])
-                    fiber = fiber + int(meal['nutrients'].split('\'')[21].strip().split('g')[0])
-                    total_carbs = total_carbs + int(meal['nutrients'].split('\'')[25].strip().split('g')[0])
-                    calories = calories + int(meal['calories'])
-                    break
-        net_carbs_percentage = int(float(net_carbs/(net_carbs + proteins + fats)) * 100.0)
-        proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
-        fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
-        dispatcher.utter_message(text = "Your nutrition intake for yesterday is:\n")
-        message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + \
-        str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' + \
-        str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
-        dispatcher.utter_message(text = message)
+            for meal in user_meals_nutrients:
+                print('Meal given to user: ', meal)
+                net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
+                proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
+                fats = fats + int(meal['nutrients'].split('\'')[15].strip().split('g')[0])
+                fiber = fiber + int(meal['nutrients'].split('\'')[21].strip().split('g')[0])
+                total_carbs = total_carbs + int(meal['nutrients'].split('\'')[25].strip().split('g')[0])
+            net_carbs_percentage = int(float(net_carbs/(net_carbs + proteins + fats)) * 100.0)
+            proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
+            fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
+            dispatcher.utter_message(text = "Your nutrition intake for yesterday is:\n")
+            message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + \
+            str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' + \
+            str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
+            dispatcher.utter_message(text = message)
 
 class ActionMealNutritionYesterday(Action): ## Under Process.
     def name(self) -> Text:
@@ -2068,7 +2097,6 @@ class ActionMealNutritionYesterday(Action): ## Under Process.
         user_db = get_mongo_database()
 
         ## Need the last meal taken here along with the day.
-        user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'MEAL_PLAN'}))
         plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
 
         plans = ['breakfast', 'dinner', 'lunch', 'snacks']
@@ -2077,32 +2105,47 @@ class ActionMealNutritionYesterday(Action): ## Under Process.
             return []
 
         dietType = plan.capitalize()
-        if len(user_meals) > 0:
-            print('list of user meals\n')
-            for meal in user_meals:
-                print(meal)
-                print('\n')
-        else:
-            dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
-                I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
-            return []
+        meal_type = dietType
         date_today = datetime.datetime.today()
         date_today = datetime.datetime.combine(date_today, datetime.time.min)
-        day = ((date_today - user_meals[0]['day_created']).days) ## Getting the previous day here.
-        print('\ndate today: ', date_today)
-        print('\ndate meal plan was created: ', user_meals[0]['day_created'])
-        print('\nfinal day: ', day)
-        if day == 0:
-            dispatcher.utter_message(text = 'Your diet plan started today, I am sorry I am unable to give you your nutrition intake about yesterday.\n\
-                You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
+        date_yesterday = date_today - datetime.timedelta(days = 1)
+        user_meal = user_db.userMeals.find_one({"user_id": user_id, 'type':'CALORIES', 'meal_type': meal_type, 'date': date_yesterday})
+        if user_meal:
+            print(user_meal)
+            print('\n')
+        else:
+            dispatcher.utter_message(text = f'You do not have anything stored for your calories and nutritions yet for {meal_type}, if you want to get nutritional or calories information then try typing something like:\n\
+                I\'m thiking of going on a diet.\n And I will create a diet plan for you as per your diet type that you can follow then ask for your {meal_type} by saying:\n\
+                \'Give me a {meal_type} plan\'or say something like:\n\
+                \'- Viki, add [470] to my today’s breakfast/lunch/snacks/dinner calorie intake.\' or \'I had a breakfast/lunch/snacks/dinner with [1000] Kcal in it.\'\n\
+                for manually adding {meal_type} calories that you consume.')
             return []
-        for meal in user_meals:
-                if (meal['day'] == day and meal['meal_type'] == dietType):
-                    print('Meal given to user: ', meal)
-                    break
-        dispatcher.utter_message(text = f"Your nutrition intake for yesterday {dietType} meal was:\n")
-        lunch_nutrients = meal['nutrients'] + '–' + str(meal['calories']) + 'kcal'   ## Lunch Nutrients and Calories from the mealplan dataframe
-        dispatcher.utter_message(text = lunch_nutrients)
+        # date_today = datetime.datetime.today()
+        # date_today = datetime.datetime.combine(date_today, datetime.time.min)
+        # day = ((date_today - user_meals[0]['day_created']).days) ## Getting the previous day here.
+        print('\ndate today: ', date_today)
+        # print('\ndate meal plan was created: ', user_meals[0]['day_created'])
+        # print('\nfinal day: ', day)
+        # if day == 0:
+        #     dispatcher.utter_message(text = 'Your diet plan started today, I am sorry I am unable to give you your nutrition intake about yesterday.\n\
+        #         You can come tomorrow after eating the meals according to your plan today and then I\'ll be able to tell you your nutrition intake for today.')
+        #     return []
+        # for meal in user_meals:
+        #         if (meal['day'] == day and meal['meal_type'] == dietType):
+        #             print('Meal given to user: ', meal)
+        #             break
+        user_meals_nutrients = user_db.userMeals.find_one({"user_id": user_id, 'type':'CALORIES', 'date': date_yesterday, "nutrients":{"$exists":True}})
+        if user_meals_nutrients:
+            dispatcher.utter_message(text = f"Your nutrition intake for yesterday's {meal_type} meal was:\n")
+            lunch_nutrients = user_meals_nutrients['nutrients'] + '–' + str(user_meals_nutrients['calories']) + 'kcal'   ## Nutrients and Calories from the userMeals collection
+            dispatcher.utter_message(text = lunch_nutrients)
+            return []
+        else:
+            dispatcher.utter_message(text = f"Your calorie intake for yesterday's {meal_type} meal was:\n")
+            lunch_nutrients = str(user_meal['calories']) + 'kcal'   ## Calories from the userMeals collection
+            dispatcher.utter_message(text = lunch_nutrients)
+            return []
+
 
 class ActionNutritionWeek(Action): ## Under Process.
     def name(self) -> Text:
