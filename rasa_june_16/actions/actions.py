@@ -1847,7 +1847,7 @@ class ActionGetShoppingList(Action):
         data = pd.read_csv('FinalFoodDatabase_V1.csv')
         diet_type = tracker.get_slot('diet_type')
         user_db.userMeals.delete_many({"user_id": user_id})
-        dispatcher.utter_message{text = f"All meal plans deleted against current id."}
+        dispatcher.utter_message(text = f"All meal plans deleted against current id.")
         return []
         if diet_type == 'low-carb':
             diet_type = 'low carb'
