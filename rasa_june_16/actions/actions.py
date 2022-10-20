@@ -1846,9 +1846,9 @@ class ActionGetShoppingList(Action):
 
         data = pd.read_csv('FinalFoodDatabase_V1.csv')
         diet_type = tracker.get_slot('diet_type')
-        # user_db.userMeals.delete_many({"user_id": user_id})
-        # dispatcher.utter_message(text = f"All meal plans deleted against current id.")
-        # return []
+        user_db.userMeals.delete_many({"user_id": user_id})
+        dispatcher.utter_message(text = f"All meal plans deleted against current id.")
+        return []
         if diet_type == 'low-carb':
             diet_type = 'low carb'
         if len(list(user_db.userMeals.find({'user_id':user_id, 'type':'MEAL_PLAN'})))>0:
@@ -1966,6 +1966,7 @@ class ActionGivePlan(Action):
             meal_type = dietType
             user_meal_record = user_db.userMeals.find_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'date': date_today})  ## Finding whether the meal against current date is already present or not
             if user_meal_record:
+                print('user meal record has calories somehow.')
                 return []
             else:
                 user_db.userMeals.insert_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories), 'nutrients': meal['nutrients'], 'date': date_today})
