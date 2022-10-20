@@ -2312,7 +2312,7 @@ class ActionRemoveCalories(Action):
             meal_type = plan.capitalize()
             datetime_today = datetime.datetime.today()
             date_today = datetime.datetime.combine(datetime_today, datetime.time.min)   ## We have the plan and today's date here.
-            user_meal_record = list(user_db.userMeals.find_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'date': date_today}))  ## Finding whether the meal against current date is already present or not
+            user_meal_record = user_db.userMeals.find_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'date': date_today})  ## Finding whether the meal against current date is already present or not
             if user_meal_record:
                 calories = user_meal_record['calories']
                 user_db.userMeals.delete_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'date': date_today})
