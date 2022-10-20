@@ -1803,7 +1803,7 @@ class ActionChangeDietPlan(Action):
             if planner.meal_plan is not None:
                 for i in range(len(planner.meal_plan)):
                     user_db.userMeals.insert_one({"user_id":user_id, 'type': 'MEAL_PLAN', 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i],
-                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
+                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'diet_type' : planner.meal_plan['Type'].iat[i],
                     'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]),
                     'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i],
                     'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
@@ -1846,6 +1846,9 @@ class ActionGetShoppingList(Action):
 
         data = pd.read_csv('FinalFoodDatabase_V1.csv')
         diet_type = tracker.get_slot('diet_type')
+        user_db.userMeals.delete_many({"user_id": user_id})
+        dispatcher.utter_message{text = f"All meal plans deleted against current id."}
+        return []
         if diet_type == 'low-carb':
             diet_type = 'low carb'
         if len(list(user_db.userMeals.find({'user_id':user_id, 'type':'MEAL_PLAN'})))>0:
@@ -1883,7 +1886,7 @@ class ActionGetShoppingList(Action):
         if planner.meal_plan is not None:
             for i in range(len(planner.meal_plan)):
                 user_db.userMeals.insert_one({"user_id":user_id,'type':'MEAL_PLAN', 'day_created': day_created,'name':planner.meal_plan['name'].iat[i], 'meal_type':planner.meal_plan['meal_type'].iat[i],
-                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'type' : planner.meal_plan['Type'].iat[i],
+                    'specific' : planner.meal_plan['specific'].iat[i], 'net_carbs' : int(planner.meal_plan['net-carbs'].iat[i]), 'diet_type' : planner.meal_plan['Type'].iat[i],
                     'calories' : int(planner.meal_plan['calories'].iat[i]), 'unit' : planner.meal_plan['Unit'].iat[i], 'serving' : int(planner.meal_plan['serving'].iat[i]),
                     'ingredients' : planner.meal_plan['Ingredients'].iat[i], 'nutrients' : planner.meal_plan['Nutrients'].iat[i],
                     'method': planner.meal_plan['Method'].iat[i], 'time': planner.meal_plan['Time'].iat[i], 'difficulty': planner.meal_plan['Difficulty'].iat[i],
