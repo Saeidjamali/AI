@@ -1858,7 +1858,7 @@ class ActionGetShoppingList(Action):
             day = ((date_today - user_meals[0]['day_created']).days + 1)
             day_number = 7 - day
             if day <= 7:
-                dispatcher.utter_message(text = f"You already are on a {diet_type} diet plan and currently on day number {day}\n\
+                dispatcher.utter_message(text = f"You already are on a {user_meals['diet_type']} diet plan and currently on day number {day}\n\
                     Say things like “give me a breakfast plan”. And I will be able to give you your meal plan.\n\
                     If you want to change the diet type then try typing something like \'change my diet type from keto to low-carb\' and I'll give you a new diet plan.")
                 return [SlotSet("diet_type", None)]
