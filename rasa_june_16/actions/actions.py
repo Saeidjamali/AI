@@ -1846,9 +1846,9 @@ class ActionGetShoppingList(Action):
 
         data = pd.read_csv('FinalFoodDatabase_V1.csv')
         diet_type = tracker.get_slot('diet_type')
-        # user_db.userMeals.delete_many({"user_id": user_id})
-        # dispatcher.utter_message(text = f"All meal plans deleted against current id.")
-        # return []
+        user_db.userMeals.delete_many({"user_id": user_id})
+        dispatcher.utter_message(text = f"All meal plans deleted against current id.")
+        return []
         if diet_type == 'low-carb':
             diet_type = 'low carb'
         if len(list(user_db.userMeals.find({'user_id':user_id, 'type':'MEAL_PLAN'})))>0:
@@ -1953,6 +1953,7 @@ class ActionGivePlan(Action):
                     print('Meal given to user: ', meal)
                     break
             #lunch = planner.getMealDetails(day, plan, meal_df)
+            calories = int(meal['calories'])
             lunch_name = meal['name'] + '(' + str(meal['calories']) + 'kcal)'   ## Lunch Name and Calories from the userMeals database
             lunch_ingridients = meal['ingredients']     ## Lunch Ingredients from the userMeals database
             lunch_method = meal['method']   ## Lunch method from the userMeals database
@@ -1970,7 +1971,7 @@ class ActionGivePlan(Action):
                 user_db.userMeals.insert_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories), 'nutrients': meal['nutrients'], 'date': date_today})
                 user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
                 if user_meals_calories:
-                    total_calories = calories + user_meals_calories['payload']['calories']
+                    total_calories = user_meal_record['calories'] + user_meals_calories['payload']['calories']
                     user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(total_calories), 'payload.date': date_today, 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
                     return []
                 else:
