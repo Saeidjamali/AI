@@ -1846,9 +1846,9 @@ class ActionGetShoppingList(Action):
 
         data = pd.read_csv('FinalFoodDatabase_V1.csv')
         diet_type = tracker.get_slot('diet_type')
-        # user_db.userMeals.delete_many({"user_id": user_id})
-        # dispatcher.utter_message(text = f"All meal plans deleted against current id.")
-        # return []
+        user_db.userMeals.delete_many({"user_id": user_id})
+        dispatcher.utter_message(text = f"All meal plans deleted against current id.")
+        return []
         if diet_type == 'low-carb':
             diet_type = 'low carb'
         if len(list(user_db.userMeals.find({'user_id':user_id, 'type':'MEAL_PLAN'})))>0:
@@ -1970,12 +1970,15 @@ class ActionGivePlan(Action):
             else:
                 user_db.userMeals.insert_one({"user_id":user_id, 'type': 'CALORIES', 'meal_type': meal_type, 'calories':int(calories), 'nutrients': meal['nutrients'], 'date': date_today})
                 user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
+                print('user calories in healthRecord:', user_meals_calories)
                 if user_meals_calories:
                     total_calories = user_meal_record['calories'] + user_meals_calories['payload']['calories']
                     user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(total_calories), 'payload.date': date_today, 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
+                    print('Health record was present while giving meal plan')
                     return []
                 else:
                     user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                    print('Health record was not present while giving meal plan')
                     return []
         else:
             dispatcher.utter_message(text = "I’m sorry I didn’t understand, I’m still learning please try asking about your meal type differently.")
@@ -2293,8 +2296,8 @@ class ActionCaloriesWholeDay(Action):
         date_today = datetime.datetime.combine(datetime_today, datetime.time.min)   ## We have the today's date here.
 
         user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
+        print('user calories in healthRecord:', user_meals_calories)
         if user_meals_calories:
-            print(user_meals_calories['payload']['calories'])
             dispatcher.utter_message(text = f"{user_meals_calories['payload']['calories']} Kcal")
             return []
         else:
