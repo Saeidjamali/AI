@@ -259,10 +259,20 @@ rules:
     - intent: nutrition_yesterday
     - action: action_nutrition_yesterday
 
+- rule: Nutrition Today
+  steps:
+    - intent: nutrition_today
+    - action: action_nutrition_today
+
 - rule: Meal Nutrition Yesterday
   steps:
     - intent: meal_nutrition_yesterday
     - action: action_meal_nutrition_yesterday
+
+- rule: Meal Nutrition Today
+  steps:
+    - intent: meal_nutrition_today
+    - action: action_meal_nutrition_today
 
 - rule: Nutrition Week
   steps:

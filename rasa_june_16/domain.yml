@@ -43,7 +43,9 @@ intents:
 - plan
 - finish_meal
 - nutrition_yesterday
+- nutrition_today
 - meal_nutrition_yesterday
+- meal_nutrition_today
 - nutrition_week
 - change_diet_plan
 - shopping_list
@@ -379,7 +381,9 @@ actions:
 - action_change_diet_plan
 - action_finish_meal
 - action_nutrition_yesterday
+- action_nutrition_today
 - action_meal_nutrition_yesterday
+- action_meal_nutrition_today
 - action_nutrition_week
 - action_default_fallback
 - action_send_shopping_list

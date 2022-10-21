@@ -991,6 +991,29 @@ nlu:
     - What was my dietary intake all day yesterday
     - How much food did I consume yesterday
 
+- intent: nutrition_today
+  examples: |
+    - How much was my nutrition intake all day?
+    - How much was my nutrition intake all day today?
+    - What have I been eating all day?
+    - What have I been eating all day today?
+    - What has been my nutritional intake throughout the day?
+    - What was my nutritional intake for the entire day?
+    - What was my nutritional intake for the entire day today?
+    - What was my dietary intake all day?
+    - What was my dietary intake all today?
+    - How much food did I consume today?
+    - How much was my nutrition intake all day
+    - How much was my nutrition intake all day today
+    - What have I been eating all day
+    - What have I been eating all day today
+    - What has been my nutritional intake throughout the day
+    - What was my nutritional intake for the entire day
+    - What was my nutritional intake for the entire day today
+    - What was my dietary intake all day
+    - What was my dietary intake all day today
+    - How much food did I consume today
+
 - intent: meal_nutrition_yesterday
   examples: |
     - How much was my total of nutrition intake yesterday for [breakfast]{"entity":"plan"}?
@@ -1053,6 +1076,110 @@ nlu:
     - What was my total nutritional contribution yesterday for [snacks]{"entity":"plan"}
     - How much nutrients did I consume overall for [snacks]{"entity":"plan"} yesterday
     - How much nutrition did I consume overall during [snacks]{"entity":"plan"} yesterday
+
+- intent: meal_nutrition_today
+  examples: |
+    - How much was my total of nutrition intake today for [breakfast]{"entity":"plan"}?
+    - How much was my total of nutrition intake for [breakfast]{"entity":"plan"}?
+    - What was my total nutrition today for [breakfast]{"entity":"plan"}?
+    - What was my total nutrition for [breakfast]{"entity":"plan"}?
+    - What was my total dietary intake today for [breakfast]{"entity":"plan"}?
+    - What was my total nutritional contribution today for [breakfast]{"entity":"plan"}?
+    - How much nutrients did I consume overall for [breakfast]{"entity":"plan"} today?
+    - How much nutrition did I consume overall during [breakfast]{"entity":"plan"} today?
+    - How much nutrients did I consume overall for [breakfast]{"entity":"plan"}?
+    - How much nutrition did I consume overall during [breakfast]{"entity":"plan"}?
+    - How much was my total of nutrition intake today for [lunch]{"entity":"plan"}?
+    - How much was my total of nutrition intake for [lunch]{"entity":"plan"}?
+    - What was my total nutrition today for [lunch]{"entity":"plan"}?
+    - What was my total nutrition for [lunch]{"entity":"plan"}?
+    - What was my total dietary intake today for [lunch]{"entity":"plan"}?
+    - What was my total nutritional contribution today for [lunch]{"entity":"plan"}?
+    - How much nutrients did I consume overall for [lunch]{"entity":"plan"} today?
+    - How much nutrition did I consume overall during [lunch]{"entity":"plan"} today?
+    - How much nutrients did I consume overall for [lunch]{"entity":"plan"}?
+    - How much nutrition did I consume overall during [lunch]{"entity":"plan"}?
+    - How much was my total of nutrition intake today for [dinner]{"entity":"plan"}?
+    - How much was my total of nutrition intake for [dinner]{"entity":"plan"}?
+    - What was my total nutrition today for [dinner]{"entity":"plan"}?
+    - What was my total nutrition for [dinner]{"entity":"plan"}?
+    - What was my total dietary intake today for [dinner]{"entity":"plan"}?
+    - What was my total nutritional contribution today for [dinner]{"entity":"plan"}?
+    - How much nutrients did I consume overall for [dinner]{"entity":"plan"} today?
+    - How much nutrition did I consume overall during [dinner]{"entity":"plan"} today?
+    - How much nutrients did I consume overall for [dinner]{"entity":"plan"}?
+    - How much nutrition did I consume overall during [dinner]{"entity":"plan"}?
+    - How much was my total of nutrition intake today for [snack]{"entity":"plan","value":"snacks"}?
+    - What was my total nutrition today for [snack]{"entity":"plan","value":"snacks"}?
+    - How much was my total of nutrition intake for [snack]{"entity":"plan","value":"snacks"}?
+    - What was my total nutrition for [snack]{"entity":"plan","value":"snacks"}?
+    - What was my total dietary intake today for [snack]{"entity":"plan","value":"snacks"}?
+    - What was my total nutritional contribution today for [snack]{"entity":"plan","value":"snacks"}?
+    - How much nutrients did I consume overall for [snack]{"entity":"plan","value":"snacks"} today?
+    - How much nutrition did I consume overall during [snack]{"entity":"plan","value":"snacks"} today?
+    - How much nutrients did I consume overall for [snack]{"entity":"plan","value":"snacks"}?
+    - How much nutrition did I consume overall during [snack]{"entity":"plan","value":"snacks"}?
+    - How much was my total of nutrition intake today for [snacks]{"entity":"plan"}?
+    - What was my total nutrition today for [snacks]{"entity":"plan"}?
+    - How much was my total of nutrition intake for [snacks]{"entity":"plan"}?
+    - What was my total nutritionfor [snacks]{"entity":"plan"}?
+    - What was my total dietary intake today for [snacks]{"entity":"plan"}?
+    - What was my total nutritional contribution today for [snacks]{"entity":"plan"}?
+    - How much nutrients did I consume overall for [snacks]{"entity":"plan"} today?
+    - How much nutrition did I consume overall during [snacks]{"entity":"plan"} today?
+    - How much nutrients did I consume overall for [snacks]{"entity":"plan"}?
+    - How much nutrition did I consume overall during [snacks]{"entity":"plan"}?
+    - How much was my total of nutrition intake today for [breakfast]{"entity":"plan"}
+    - How much was my total of nutrition intake for [breakfast]{"entity":"plan"}
+    - What was my total nutrition today for [breakfast]{"entity":"plan"}
+    - What was my total nutrition for [breakfast]{"entity":"plan"}
+    - What was my total dietary intake today for [breakfast]{"entity":"plan"}
+    - What was my total nutritional contribution today for [breakfast]{"entity":"plan"}
+    - How much nutrients did I consume overall for [breakfast]{"entity":"plan"} today
+    - How much nutrition did I consume overall during [breakfast]{"entity":"plan"} today
+    - How much nutrients did I consume overall for [breakfast]{"entity":"plan"}
+    - How much nutrition did I consume overall during [breakfast]{"entity":"plan"}
+    - How much was my total of nutrition intake today for [lunch]{"entity":"plan"}
+    - How much was my total of nutrition intake for [lunch]{"entity":"plan"}
+    - What was my total nutrition today for [lunch]{"entity":"plan"}
+    - What was my total nutrition for [lunch]{"entity":"plan"}
+    - What was my total dietary intake today for [lunch]{"entity":"plan"}
+    - What was my total nutritional contribution today for [lunch]{"entity":"plan"}
+    - How much nutrients did I consume overall for [lunch]{"entity":"plan"} today
+    - How much nutrition did I consume overall during [lunch]{"entity":"plan"} today
+    - How much nutrients did I consume overall for [lunch]{"entity":"plan"}
+    - How much nutrition did I consume overall during [lunch]{"entity":"plan"}
+    - How much was my total of nutrition intake today for [dinner]{"entity":"plan"}
+    - How much was my total of nutrition intake for [dinner]{"entity":"plan"}
+    - What was my total nutrition today for [dinner]{"entity":"plan"}
+    - What was my total nutrition for [dinner]{"entity":"plan"}
+    - What was my total dietary intake today for [dinner]{"entity":"plan"}
+    - What was my total nutritional contribution today for [dinner]{"entity":"plan"}
+    - How much nutrients did I consume overall for [dinner]{"entity":"plan"} today
+    - How much nutrition did I consume overall during [dinner]{"entity":"plan"} today
+    - How much nutrients did I consume overall for [dinner]{"entity":"plan"}
+    - How much nutrition did I consume overall during [dinner]{"entity":"plan"}
+    - How much was my total of nutrition intake today for [snack]{"entity":"plan","value":"snacks"}
+    - What was my total nutrition today for [snack]{"entity":"plan","value":"snacks"}
+    - How much was my total of nutrition intake for [snack]{"entity":"plan","value":"snacks"}
+    - What was my total nutrition for [snack]{"entity":"plan","value":"snacks"}
+    - What was my total dietary intake today for [snack]{"entity":"plan","value":"snacks"}
+    - What was my total nutritional contribution today for [snack]{"entity":"plan","value":"snacks"}
+    - How much nutrients did I consume overall for [snack]{"entity":"plan","value":"snacks"} today
+    - How much nutrition did I consume overall during [snack]{"entity":"plan","value":"snacks"} today
+    - How much nutrients did I consume overall for [snack]{"entity":"plan","value":"snacks"}
+    - How much nutrition did I consume overall during [snack]{"entity":"plan","value":"snacks"}
+    - How much was my total of nutrition intake today for [snacks]{"entity":"plan"}
+    - What was my total nutrition today for [snacks]{"entity":"plan"}
+    - How much was my total of nutrition intake for [snacks]{"entity":"plan"}
+    - What was my total nutritionfor [snacks]{"entity":"plan"}
+    - What was my total dietary intake today for [snacks]{"entity":"plan"}
+    - What was my total nutritional contribution today for [snacks]{"entity":"plan"}
+    - How much nutrients did I consume overall for [snacks]{"entity":"plan"} today
+    - How much nutrition did I consume overall during [snacks]{"entity":"plan"} today
+    - How much nutrients did I consume overall for [snacks]{"entity":"plan"}
+    - How much nutrition did I consume overall during [snacks]{"entity":"plan"}
+    
 
 - intent: nutrition_week
   examples: |
