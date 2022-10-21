@@ -2388,11 +2388,11 @@ class ActionNutritionNDays(Action): ## Under Process.
             for day in range(total_num_days):
                 current_date = date_today - datetime.timedelta(days = day)
                 current_user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES', 'date': current_date}))
-                    if len(current_user_meals) > 0:
-                        for meal in current_user_meals:
-                            calories = calories + int(meal['calories'])
-                    else:
-                        print('current_user_meals was none.')
+                if len(current_user_meals) > 0:
+                    for meal in current_user_meals:
+                        calories = calories + int(meal['calories'])
+                else:
+                    print('current_user_meals was none.')
                 user_meals_nutrients  = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES', 'date': current_date, "nutrients":{"$exists":True}}))
                 if len(user_meals_nutrients) > 0:
                     check =  True
