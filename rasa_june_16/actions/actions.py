@@ -2321,6 +2321,7 @@ class ActionNutritionNDays(Action): ## Under Process.
                 print(meal)
                 print('\n')
         else:
+            print('Length of user meals was less than 0.')
             dispatcher.utter_message(text = f"You don't have anything stored for your nutritions or calories yet in the last {days} days, if you want to get nutritional information then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create a diet plan for you as per your diet type that you can follow for exact nutritional information. Or try typing something like:\n\
                 \'- Viki, add [470] to my today’s breakfast/lunch/snacks/dinner calorie intake.\' or \'I had a breakfast/lunch/snacks/dinner with [1000] Kcal in it.\'\n\
@@ -2352,9 +2353,12 @@ class ActionNutritionNDays(Action): ## Under Process.
                 if len(current_user_meals) > 0:
                     for meal in current_user_meals:
                         calories = calories + int(meal['calories'])
+                else:
+                    print('current_user_meals was none.')
                 user_meals_nutrients  = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES', 'date': current_date, "nutrients":{"$exists":True}}))
                 if len(user_meals_nutrients) > 0:
                     check =  True
+                    print('At-least one meal had nutrients information.')
                     for meal in user_meals_nutrients:
                         net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
                         proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
@@ -2363,6 +2367,7 @@ class ActionNutritionNDays(Action): ## Under Process.
                         total_carbs = total_carbs + int(meal['nutrients'].split('\'')[25].strip().split('g')[0])
             
             if check:
+                print('It computed net_carbs, proteins and fats percentage.')
                 net_carbs_percentage = int(float(net_carbs/(net_carbs + proteins + fats)) * 100.0)
                 proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
                 fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
@@ -2374,6 +2379,7 @@ class ActionNutritionNDays(Action): ## Under Process.
                 return []
 
             else:
+                print('It only had calorie information.')
                 dispatcher.utter_message(text = f"You don\'t have any nutritional information for the last {days} days.\n")
                 dispatcher.utter_message(text = f"Your calorie intake for the last {days} days is {str(calories)} kcal.")
                 return []
@@ -2385,9 +2391,12 @@ class ActionNutritionNDays(Action): ## Under Process.
                     if len(current_user_meals) > 0:
                         for meal in current_user_meals:
                             calories = calories + int(meal['calories'])
+                    else:
+                        print('current_user_meals was none.')
                 user_meals_nutrients  = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES', 'date': current_date, "nutrients":{"$exists":True}}))
                 if len(user_meals_nutrients) > 0:
                     check =  True
+                    print('At-least one meal had nutrients information.')
                     for meal in user_meals_nutrients:
                         net_carbs = net_carbs + int(meal['nutrients'].split('\'')[3].strip().split('g')[0])
                         proteins = proteins + int(meal['nutrients'].split('\'')[9].strip().split('g')[0])
@@ -2395,6 +2404,7 @@ class ActionNutritionNDays(Action): ## Under Process.
                         fiber = fiber + int(meal['nutrients'].split('\'')[21].strip().split('g')[0])
                         total_carbs = total_carbs + int(meal['nutrients'].split('\'')[25].strip().split('g')[0])
             if check:
+                print('It computed net_carbs, proteins and fats percentage.')
                 net_carbs_percentage = int(float(net_carbs/(net_carbs + proteins + fats)) * 100.0)
                 proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
                 fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
