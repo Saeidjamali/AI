@@ -2164,7 +2164,7 @@ class ActionNutritionToday(Action):
             net_carbs_percentage = int(float(net_carbs/(net_carbs + proteins + fats)) * 100.0)
             proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
             fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
-            dispatcher.utter_message(text = "Your nutrition intake for yesterday is:\n")
+            dispatcher.utter_message(text = "Your nutrition intake for today is:\n")
             message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + \
             str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' + \
             str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
@@ -2283,12 +2283,12 @@ class ActionMealNutritionToday(Action):
         #             break
         user_meals_nutrients = user_db.userMeals.find_one({"user_id": user_id, 'type':'CALORIES', 'date': date_today, "nutrients":{"$exists":True}})
         if user_meals_nutrients:
-            dispatcher.utter_message(text = f"Your nutrition intake for yesterday's {meal_type} meal was:\n")
+            dispatcher.utter_message(text = f"Your nutrition intake for today's {meal_type} meal was:\n")
             lunch_nutrients = user_meals_nutrients['nutrients'] + '–' + str(user_meals_nutrients['calories']) + 'kcal'   ## Nutrients and Calories from the userMeals collection
             dispatcher.utter_message(text = lunch_nutrients)
             return []
         else:
-            dispatcher.utter_message(text = f"Your calorie intake for yesterday's {meal_type} meal was:\n")
+            dispatcher.utter_message(text = f"Your calorie intake for today's {meal_type} meal was:\n")
             lunch_nutrients = str(user_meal['calories']) + 'kcal'   ## Calories from the userMeals collection
             dispatcher.utter_message(text = lunch_nutrients)
             return []
