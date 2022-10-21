@@ -1978,7 +1978,7 @@ class ActionGivePlan(Action):
                     print('Health record was present while giving meal plan')
                     return []
                 else:
-                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                    user_db.healthRecords.insert_one({"user_id":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
                     print('Health record was not present while giving meal plan')
                     return []
         else:
@@ -2274,7 +2274,7 @@ class ActionAddCalories(Action):
                         dispatcher.utter_message(text = f"Sure, {calories} calorie added for {plan}.")
                         return []
                     else:
-                        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                        user_db.healthRecords.insert_one({"user_id":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
                         dispatcher.utter_message(text = f"Sure, {calories} calorie added for {plan}.")
                         return []
             else:
