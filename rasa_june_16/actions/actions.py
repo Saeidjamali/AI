@@ -2374,7 +2374,7 @@ class ActionNutritionNDays(Action): ## Under Process.
                 dispatcher.utter_message(text = f"Your nutrition intake for the last {days} days is:\n")
                 message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + \
                 str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' + \
-                str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
+                str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal.'
                 dispatcher.utter_message(text = message)
                 return []
 
@@ -2408,17 +2408,18 @@ class ActionNutritionNDays(Action): ## Under Process.
                 net_carbs_percentage = int(float(net_carbs/(net_carbs + proteins + fats)) * 100.0)
                 proteins_percentage = int(float(proteins/(net_carbs + proteins + fats)) * 100.0)
                 fats_percentage = int(float(fats/(net_carbs + proteins + fats)) * 100.0)
-                dispatcher.utter_message(text = f"Your nutrition intake for the last {days} days is:\n")
+                dispatcher.utter_message(text = f"You don't have enough nutritonal or calories information stored for {days} days.")
+                dispatcher.utter_message(text = f"Here is the stored nutritional information for the last {total_num_days} days:")
                 message = '{\'Net-carbs\': (\' ' + str(net_carbs) + 'g \', \'' + str(net_carbs_percentage) + '%\'), \'Protien\': (\' ' + \
                 str(proteins) + 'g \', \'' + str(proteins_percentage) + '%\'), \'Fat\': (\' ' + str(fats) + 'g \', \'' + str(fats_percentage) + '%\'), \'Fiber\': \''+ str(fiber) + 'g\', \'Total-Carb\': \'' + \
-                str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal'
+                str(total_carbs) + 'g\'} – ' + str(calories) + 'kcal.'
                 dispatcher.utter_message(text = message)
                 return []
 
             else:
                 dispatcher.utter_message(text = f"You don't have enough nutritonal or calories information stored for {days} days.")
                 dispatcher.utter_message(text = f"You don\'t have any nutritional information for the last {days} days as well.\n")
-                dispatcher.utter_message(text = f"Your calorie intake for the last {days} days is {str(calories)} kcal.")
+                dispatcher.utter_message(text = f"Your stored calorie intake for the last {total_num_days} days is {str(calories)} kcal.")
                 return []
         # else:
 
