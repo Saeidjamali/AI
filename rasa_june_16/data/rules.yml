@@ -274,10 +274,10 @@ rules:
     - intent: meal_nutrition_today
     - action: action_meal_nutrition_today
 
-- rule: Nutrition Week
+- rule: Nutrition N Days
   steps:
-    - intent: nutrition_week
-    - action: action_nutrition_week
+    - intent: nutrition_n_days
+    - action: action_nutrition_n_days
 
 - rule: Calories intake
   steps:

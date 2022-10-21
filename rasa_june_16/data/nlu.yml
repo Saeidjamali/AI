@@ -1181,20 +1181,43 @@ nlu:
     - How much nutrition did I consume overall during [snacks]{"entity":"plan"}
     
 
-- intent: nutrition_week
+- intent: nutrition_n_days
   examples: |
-    - How was my nutrition intake all week?
-    - How was my weekly nutritional intake?
-    - How was my diet throughout the week?
-    - How was my nutritional consumption all week?
-    - How did I do with my diet over the week?
-    - What was my nutritional intake all week?
-    - How was my nutrition intake all week
-    - How was my weekly nutritional intake
-    - How was my diet throughout the week
-    - How was my nutritional consumption all week
-    - How did I do with my diet over the week
-    - What was my nutritional intake all week
+    - What was my nutritional intake for the last [7]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What my nutrition intake has been in the last [3]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What my nutritional intake has been for the past [5]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What was my nutritional intake during the past [8]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What my dietary intake has been over the past [9]{"entity":"NUMBER", "role": "nutrition"} days?
+    - How much was my nutritional intake in the last [1]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What my nutrition intake has been over the past [4]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What was my nutrition intake for the last [2]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What was my nutritional intake during the last [6]{"entity":"NUMBER", "role": "nutrition"} days?
+    - How was my nutritional consumption during the last [12]{"entity":"NUMBER", "role": "nutrition"} days?
+    - How did I do with my diet over past [14]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What was my nutritional intake over the last [10]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What was my nutritional intake for the last [11]{"entity":"NUMBER", "role": "nutrition"} days
+    - What my nutrition intake has been in the last [21]{"entity":"NUMBER", "role": "nutrition"} days
+    - What my nutritional intake has been for the past [30]{"entity":"NUMBER", "role": "nutrition"} days
+    - What was my nutritional intake during the past [24]{"entity":"NUMBER", "role": "nutrition"} days
+    - What my dietary intake has been over the past [28]{"entity":"NUMBER", "role": "nutrition"} days
+    - How much was my nutritional intake in the last [35]{"entity":"NUMBER", "role": "nutrition"} days
+    - What my nutrition intake has been over the past [40]{"entity":"NUMBER", "role": "nutrition"} days
+    - What was my nutrition intake for the last [37]{"entity":"NUMBER", "role": "nutrition"} days
+    - What was my nutritional intake during the last [60]{"entity":"NUMBER", "role": "nutrition"} days
+    - How was my nutritional consumption during the last [45]{"entity":"NUMBER", "role": "nutrition"} days
+    - How did I do with my diet over past [52]{"entity":"NUMBER", "role": "nutrition"} days
+    - What was my nutritional intake over the last [69]{"entity":"NUMBER", "role": "nutrition"} days
+    - How was my nutritional consumption during the last [54]{"entity":"NUMBER", "role": "nutrition"} days
+    - How did I do with my diet over past [70]{"entity":"NUMBER", "role": "nutrition"} days
+    - What was my nutritional intake over the last [74]{"entity":"NUMBER", "role": "nutrition"} days
+    - What was my nutritional intake during the last [81]{"entity":"NUMBER", "role": "nutrition"} days?
+    - How was my nutritional consumption during the last [90]{"entity":"NUMBER", "role": "nutrition"} days?
+    - How was my nutritional consumption during the last [97]{"entity":"NUMBER", "role": "nutrition"} days?
+    - How did I do with my diet over past [104]{"entity":"NUMBER", "role": "nutrition"} days?
+    - What was my nutritional intake during the past [115]{"entity":"NUMBER", "role": "nutrition"} days
+    - What my dietary intake has been over the past [120]{"entity":"NUMBER", "role": "nutrition"} days
+    - How much was my nutritional intake in the last [133]{"entity":"NUMBER", "role": "nutrition"} days
+
 
 - intent: change_diet_plan
   examples:  |
