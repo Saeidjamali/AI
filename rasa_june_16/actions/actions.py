@@ -1998,10 +1998,12 @@ class ActionFinishMeal(Action):
         user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'MEAL_PLAN'}))
         date_today = datetime.datetime.today()
         date_today = datetime.datetime.combine(date_today, datetime.time.min)
+        print('inside finish meal function')
         if len(user_meals) > 0:
             last_plan_check = user_db.userMeals.find({"user_id":user_id, 'type':'MEAL_PLAN', "last_meal":{"$exists":True}})
             if last_plan_check.count() > 0:
                 if date_today == user_meals[0]['last_meal_date']:
+                    print('Inside completely')
                     last_plan = user_meals[0]['last_meal']
                 else:
                     dispatcher.utter_message(text = 'You have not asked for a meal/meal plan today, so I am not sure what your last meal was, if you want to ask for one then try typing something like:\n\
@@ -2021,10 +2023,14 @@ class ActionFinishMeal(Action):
                     I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.")
                 return []
         # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
+        print('Now it should give nutritional information.')
         for meal in user_meals:
                 if (meal['day'] == day and meal['meal_type'] == last_plan):
                     print('Meal given to user: ', meal)
                     break
+        if meal:
+            print('Meal information:', meal)
+            print('Nutritional information:', meal['nutrients'], meal['calories'])
         dispatcher.utter_message(text = "Great! Your nutrition intake for this meal is:\n")
         lunch_nutrients = meal['nutrients'] + '–' + str(meal['calories']) + 'kcal'   ## Lunch Nutrients and Calories from the mealplan dataframe
         dispatcher.utter_message(text = lunch_nutrients)
