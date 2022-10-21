@@ -2308,7 +2308,7 @@ class ActionNutritionNDays(Action): ## Under Process.
         print('Inside historical week long/month long nutritional intake function.')
         date_today = datetime.datetime.today()
         date_today = datetime.datetime.combine(date_today, datetime.time.min)
-        user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES'}).sort('payload.date', pymongo.DESCENDING))
+        user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES'}).sort('date', pymongo.DESCENDING))
         days = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="nutrition"),None)
         if days:
             days = int(days)
@@ -2333,7 +2333,7 @@ class ActionNutritionNDays(Action): ## Under Process.
         #     dispatcher.utter_message(text = 'Your diet plan is not yet completed, I am sorry I am unable to give you your nutrition intake for the whole week/diet plan.\n\
         #         You can come after eating the meals according to your plan and completing the whole week plan and then I\'ll be able to tell you your nutritional intake for the whole week/diet plan.')
         #     return []
-        initial_date = user_meals[(len(user_meals) - 1)]['payload']['date']
+        initial_date = user_meals[(len(user_meals) - 1)]['date']
         total_num_days = ((date_today - initial_date).days) + 1
         print('Number of days since record keeping started:', total_num_days)
         print('Days user asked for:', days)
