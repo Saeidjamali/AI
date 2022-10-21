@@ -2008,23 +2008,26 @@ class ActionFinishMeal(Action):
                     last_plan = user_meals[0]['last_meal']
                     print(last_plan)
                 else:
+                    print('Date today was not equal.')
                     dispatcher.utter_message(text = 'You have not asked for a meal/meal plan today, so I am not sure what your last meal was, if you want to ask for one then try typing something like:\n\
                 \'I bought the ingredients. Give me a lunch plan.\'\n And I will give a meal plan for you as per your diet type and requested meal. Then I\'ll be able to calculate your nutritonal intake.')
                 return []
             else:
+                print('Last plan didn\'t exist.')
                 dispatcher.utter_message(text = 'You have not asked for a meal/meal plan yet, so I am not sure what your last meal was, if you want to ask for one then try typing something like:\n\
                 \'I bought the ingredients. Give me a lunch plan.\'\n And I will give a meal plan for you as per your diet type and requested meal. Then I\'ll be able to calculate your nutritonal intake.')
                 return []
         else:
+            print('Meal plan was not created.')
             dispatcher.utter_message(text = 'You do not have a meal/diet plan yet, if you want to create one then try typing something like:\n\
                 I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.')
             return []
+        print('It was here, after every elses but still didn\'t go below.')
         day = ((date_today - user_meals[0]['day_created']).days + 1)    ## Getting the meal day from current day minus day meal plan was created.
         if day > 7:
                 dispatcher.utter_message(text = "You are currently not on a meal/diet plan. The previous diet plan has finished. If you want to create a new one then try typing something like:\n\
                     I\'m thiking of going on a diet.\n And I will create one for you as per your diet type.")
                 return []
-        # mealDetail = meal_df.query('Day == @day and meal_type == @dietType')
         print('Now it should give nutritional information.')
         for meal in user_meals:
                 if (meal['day'] == day and meal['meal_type'] == last_plan):
