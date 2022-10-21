@@ -2327,6 +2327,7 @@ class ActionRemoveCalories(Action):
                 user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
                 total_calories = user_meals_calories['payload']['calories'] - calories
                 user_db.healthRecords.update_one({"user_id": user_id, 'type': 'CALORIES_IN'}, {'$set': {'payload.calories': int(total_calories), 'payload.date': date_today, 'updated_at': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
+                user_meals_calories = user_db.healthRecords.find_one({"user_id":user_id, 'type':'CALORIES_IN', 'payload.date': date_today})
                 dispatcher.utter_message(text = f"Sure, Removed. This brings your all day calorie intake to {user_meals_calories['payload']['calories']} kcal")
             else:
                 dispatcher.utter_message(text = f" You do not have anything for your {plan} calories. If you want to add {plan} calories then try typing something like:\n\
