@@ -791,39 +791,39 @@ nlu:
 
 - intent: QN11
   examples: |
-    - Forecast my weight in the next [30]{"entity":"NUMBER", "role": "predict"} days
-    - Estimate my weight in the following [15]{"entity":"NUMBER", "role": "predict"} days
-    - What will be my weight in next [5]{"entity":"NUMBER", "role": "predict"} days
-    - Compute my weight in next [23]{"entity":"NUMBER", "role": "predict"} days
-    - Calculate my weight in the next [45]{"entity":"NUMBER", "role": "predict"} days
-    - Predict my weight in the next [30]{"entity":"NUMBER", "role": "predict"} days
-    - Forecast my weight in the next [30]{"entity":"NUMBER", "role": "predict"} days?
-    - Estimate my weight in the following [15]{"entity":"NUMBER", "role": "predict"} days?
-    - What will be my weight in next [5]{"entity":"NUMBER", "role": "predict"} days?
-    - Compute my weight in next [23]{"entity":"NUMBER", "role": "predict"} days?
-    - Calculate my weight in the next [45]{"entity":"NUMBER", "role": "predict"} days?
-    - Predict my weight in the next [30]{"entity":"NUMBER", "role": "predict"} days?
+    - Forecast my weight in the next [30]{"entity":"NUMBER"} days
+    - Estimate my weight in the following [15]{"entity":"NUMBER"} days
+    - What will be my weight in next [5]{"entity":"NUMBER"} days
+    - Compute my weight in next [23]{"entity":"NUMBER"} days
+    - Calculate my weight in the next [45]{"entity":"NUMBER"} days
+    - Predict my weight in the next [30]{"entity":"NUMBER"} days
+    - Forecast my weight in the next [30]{"entity":"NUMBER"} days?
+    - Estimate my weight in the following [15]{"entity":"NUMBER"} days?
+    - What will be my weight in next [5]{"entity":"NUMBER"} days?
+    - Compute my weight in next [23]{"entity":"NUMBER"} days?
+    - Calculate my weight in the next [45]{"entity":"NUMBER"} days?
+    - Predict my weight in the next [30]{"entity":"NUMBER"} days?
 
 - intent: water_intake
   examples: |
-    - Add [1]{"entity":"NUMBER", "role":"glasses"} glass of water to my water intake.
-    - I drank [1]{"entity":"NUMBER", "role":"glasses"} glass of water.
-    - Add [2]{"entity":"NUMBER", "role":"glasses"} glasses of water to my water intake.
-    - Add [1]{"entity":"NUMBER", "role": "glasses"} drink of water to my water intake.
-    - I had [1]{"entity":"NUMBER", "role": "glasses"} glass of water.
-    - I drank [1]{"entity":"NUMBER", "role": "glasses"} glass of water.
-    - I am drinking 1{"entity":"NUMBER", "role": "glasses"} glass of water.
-    - Add [1]{"entity":"NUMBER", "role": "glasses"} glass of water to my water intake.
-    - 1{"entity":"NUMBER", "role": "glasses"} glass of water consumed.
-    - Add [1]{"entity":"NUMBER", "role":"glasses"} glass of water to my water intake
-    - I drank [1]{"entity":"NUMBER", "role":"glasses"} glass of water
-    - Add [2]{"entity":"NUMBER", "role":"glasses"} glasses of water to my water intake
-    - Add [1]{"entity":"NUMBER", "role": "glasses"} drink of water to my water intake
-    - I had [1]{"entity":"NUMBER", "role": "glasses"} glass of water
-    - I drank [1]{"entity":"NUMBER", "role": "glasses"} glass of water
-    - I am drinking 1{"entity":"NUMBER", "role": "glasses"} glass of water
-    - Add [1]{"entity":"NUMBER", "role": "glasses"} glass of water to my water intake
-    - 1{"entity":"NUMBER", "role": "glasses"} glass of water consumed
+    - Add [1]{"entity":"NUMBER"} glass of water to my water intake.
+    - I drank [1]{"entity":"NUMBER"} glass of water.
+    - Add [2]{"entity":"NUMBER"} glasses of water to my water intake.
+    - Add [1]{"entity":"NUMBER"} drink of water to my water intake.
+    - I had [1]{"entity":"NUMBER"} glass of water.
+    - I drank [1]{"entity":"NUMBER"} glass of water.
+    - I am drinking 1{"entity":"NUMBER"} glass of water.
+    - Add [1]{"entity":"NUMBER"} glass of water to my water intake.
+    - 1{"entity":"NUMBER"} glass of water consumed.
+    - Add [1]{"entity":"NUMBER"} glass of water to my water intake
+    - I drank [1]{"entity":"NUMBER"} glass of water
+    - Add [2]{"entity":"NUMBER"} glasses of water to my water intake
+    - Add [1]{"entity":"NUMBER"} drink of water to my water intake
+    - I had [1]{"entity":"NUMBER"} glass of water
+    - I drank [1]{"entity":"NUMBER"} glass of water
+    - I am drinking 1{"entity":"NUMBER"} glass of water
+    - Add [1]{"entity":"NUMBER"} glass of water to my water intake
+    - 1{"entity":"NUMBER"} glass of water consumed
 
 - intent: diet
   examples: |
@@ -1183,40 +1183,40 @@ nlu:
 
 - intent: nutrition_n_days
   examples: |
-    - What was my nutritional intake for the last [7]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What my nutrition intake has been in the last [3]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What my nutritional intake has been for the past [5]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What was my nutritional intake during the past [8]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What my dietary intake has been over the past [9]{"entity":"NUMBER", "role": "nutrition"} days?
-    - How much was my nutritional intake in the last [1]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What my nutrition intake has been over the past [4]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What was my nutrition intake for the last [2]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What was my nutritional intake during the last [6]{"entity":"NUMBER", "role": "nutrition"} days?
-    - How was my nutritional consumption during the last [12]{"entity":"NUMBER", "role": "nutrition"} days?
-    - How did I do with my diet over past [14]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What was my nutritional intake over the last [10]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What was my nutritional intake for the last [11]{"entity":"NUMBER", "role": "nutrition"} days
-    - What my nutrition intake has been in the last [21]{"entity":"NUMBER", "role": "nutrition"} days
-    - What my nutritional intake has been for the past [30]{"entity":"NUMBER", "role": "nutrition"} days
-    - What was my nutritional intake during the past [24]{"entity":"NUMBER", "role": "nutrition"} days
-    - What my dietary intake has been over the past [28]{"entity":"NUMBER", "role": "nutrition"} days
-    - How much was my nutritional intake in the last [35]{"entity":"NUMBER", "role": "nutrition"} days
-    - What my nutrition intake has been over the past [40]{"entity":"NUMBER", "role": "nutrition"} days
-    - What was my nutrition intake for the last [37]{"entity":"NUMBER", "role": "nutrition"} days
-    - What was my nutritional intake during the last [60]{"entity":"NUMBER", "role": "nutrition"} days
-    - How was my nutritional consumption during the last [45]{"entity":"NUMBER", "role": "nutrition"} days
-    - How did I do with my diet over past [52]{"entity":"NUMBER", "role": "nutrition"} days
-    - What was my nutritional intake over the last [69]{"entity":"NUMBER", "role": "nutrition"} days
-    - How was my nutritional consumption during the last [54]{"entity":"NUMBER", "role": "nutrition"} days
-    - How did I do with my diet over past [70]{"entity":"NUMBER", "role": "nutrition"} days
-    - What was my nutritional intake over the last [74]{"entity":"NUMBER", "role": "nutrition"} days
-    - What was my nutritional intake during the last [81]{"entity":"NUMBER", "role": "nutrition"} days?
-    - How was my nutritional consumption during the last [90]{"entity":"NUMBER", "role": "nutrition"} days?
-    - How was my nutritional consumption during the last [97]{"entity":"NUMBER", "role": "nutrition"} days?
-    - How did I do with my diet over past [104]{"entity":"NUMBER", "role": "nutrition"} days?
-    - What was my nutritional intake during the past [115]{"entity":"NUMBER", "role": "nutrition"} days
-    - What my dietary intake has been over the past [120]{"entity":"NUMBER", "role": "nutrition"} days
-    - How much was my nutritional intake in the last [133]{"entity":"NUMBER", "role": "nutrition"} days
+    - What was my nutritional intake for the last [7]{"entity":"NUMBER"} days?
+    - What my nutrition intake has been in the last [3]{"entity":"NUMBER"} days?
+    - What my nutritional intake has been for the past [5]{"entity":"NUMBER"} days?
+    - What was my nutritional intake during the past [8]{"entity":"NUMBER"} days?
+    - What my dietary intake has been over the past [9]{"entity":"NUMBER"} days?
+    - How much was my nutritional intake in the last [1]{"entity":"NUMBER"} days?
+    - What my nutrition intake has been over the past [4]{"entity":"NUMBER"} days?
+    - What was my nutrition intake for the last [2]{"entity":"NUMBER"} days?
+    - What was my nutritional intake during the last [6]{"entity":"NUMBER"} days?
+    - How was my nutritional consumption during the last [12]{"entity":"NUMBER"} days?
+    - How did I do with my diet over past [14]{"entity":"NUMBER"} days?
+    - What was my nutritional intake over the last [10]{"entity":"NUMBER"} days?
+    - What was my nutritional intake for the last [11]{"entity":"NUMBER"} days
+    - What my nutrition intake has been in the last [21]{"entity":"NUMBER"} days
+    - What my nutritional intake has been for the past [30]{"entity":"NUMBER"} days
+    - What was my nutritional intake during the past [24]{"entity":"NUMBER"} days
+    - What my dietary intake has been over the past [28]{"entity":"NUMBER"} days
+    - How much was my nutritional intake in the last [35]{"entity":"NUMBER"} days
+    - What my nutrition intake has been over the past [40]{"entity":"NUMBER"} days
+    - What was my nutrition intake for the last [37]{"entity":"NUMBER"} days
+    - What was my nutritional intake during the last [60]{"entity":"NUMBER"} days
+    - How was my nutritional consumption during the last [45]{"entity":"NUMBER"} days
+    - How did I do with my diet over past [52]{"entity":"NUMBER"} days
+    - What was my nutritional intake over the last [69]{"entity":"NUMBER"} days
+    - How was my nutritional consumption during the last [54]{"entity":"NUMBER"} days
+    - How did I do with my diet over past [70]{"entity":"NUMBER"} days
+    - What was my nutritional intake over the last [74]{"entity":"NUMBER"} days
+    - What was my nutritional intake during the last [81]{"entity":"NUMBER"} days?
+    - How was my nutritional consumption during the last [90]{"entity":"NUMBER"} days?
+    - How was my nutritional consumption during the last [97]{"entity":"NUMBER"} days?
+    - How did I do with my diet over past [104]{"entity":"NUMBER"} days?
+    - What was my nutritional intake during the past [115]{"entity":"NUMBER"} days
+    - What my dietary intake has been over the past [120]{"entity":"NUMBER"} days
+    - How much was my nutritional intake in the last [133]{"entity":"NUMBER"} days
 
 
 - intent: change_diet_plan
@@ -1286,36 +1286,36 @@ nlu:
 
 - intent: calories_intake
   examples: |
-    - I had a [breakfast]{"entity":"plan"} with [1000]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I ate [breakfast]{"entity":"plan"} with [450]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I [breakfasted]{"entity":"plan","value":"breakfast"} with [380]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I [breakfasted]{"entity":"plan","value":"breakfast"} with [740]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I had [breakfast]{"entity":"plan"} with [850]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I had a [dinner]{"entity":"plan"} with [1350]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I ate [dinner]{"entity":"plan"} with [670]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I [dined]{"entity":"plan","value":"dinner"} with [880]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I [dined]{"entity":"plan","value":"dinner"} with [560]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I had [dinner]{"entity":"plan"} with [850]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I had a [lunch]{"entity":"plan"} with [1300]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I ate [lunch]{"entity":"plan"} with [1000]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I [lunched]{"entity":"plan","value":"lunch"} with [990]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I [lunched]{"entity":"plan","value":"lunch"} with [560]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I had [lunch]{"entity":"plan"} with [1230]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I had a [snack]{"entity":"plan","value":"snacks"} with [180]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I had [snacks]{"entity":"plan","value":"snacks"} with [100]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I ate [snacks]{"entity":"plan"} with [230]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I ate a [snack]{"entity":"plan","value":"snacks"} with [80]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I ate a [snack]{"entity":"plan","value":"snacks"} with [190]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - I had [snacks]{"entity":"plan"} with [230]{"entity":"NUMBER", "role": "calories"} Kcal in it.
-    - Viki, add [470]{"entity":"NUMBER", "role": "calories"} to my today’s [breakfast]{"entity":"plan"} calorie intake.
-    - Viki, add [720]{"entity":"NUMBER", "role": "calories"} to my today’s [lunch]{"entity":"plan"} calorie intake.
-    - Viki, add [210]{"entity":"NUMBER", "role": "calories"} to my today’s [snacks]{"entity":"plan"} calorie intake.
-    - Viki, add [240]{"entity":"NUMBER", "role": "calories"} to my today’s [snack]{"entity":"plan","value":"snacks"} calorie intake.
-    - Viki, add [1350]{"entity":"NUMBER", "role": "calories"} to my today’s [dinner]{"entity":"plan"} calorie intake.
-    # - I ate a meal with [1100]{"entity":"NUMBER", "role": "calories"} K calories.
-    # - I consumed [1050]{"entity":"NUMBER", "role": "calories"} Kcal in dinner.
-    # - Viki, add [1000]{"entity":"NUMBER", "role": "calories"} to my caloric consumption today.
-    # - Viki, add [700]{"entity":"NUMBER", "role": "calories"} calories to today's consumption.
+    - I had a [breakfast]{"entity":"plan"} with [1000]{"entity":"NUMBER"} Kcal in it.
+    - I ate [breakfast]{"entity":"plan"} with [450]{"entity":"NUMBER"} Kcal in it.
+    - I [breakfasted]{"entity":"plan","value":"breakfast"} with [380]{"entity":"NUMBER"} Kcal in it.
+    - I [breakfasted]{"entity":"plan","value":"breakfast"} with [740]{"entity":"NUMBER"} Kcal in it.
+    - I had [breakfast]{"entity":"plan"} with [850]{"entity":"NUMBER"} Kcal in it.
+    - I had a [dinner]{"entity":"plan"} with [1350]{"entity":"NUMBER"} Kcal in it.
+    - I ate [dinner]{"entity":"plan"} with [670]{"entity":"NUMBER"} Kcal in it.
+    - I [dined]{"entity":"plan","value":"dinner"} with [880]{"entity":"NUMBER"} Kcal in it.
+    - I [dined]{"entity":"plan","value":"dinner"} with [560]{"entity":"NUMBER"} Kcal in it.
+    - I had [dinner]{"entity":"plan"} with [850]{"entity":"NUMBER"} Kcal in it.
+    - I had a [lunch]{"entity":"plan"} with [1300]{"entity":"NUMBER"} Kcal in it.
+    - I ate [lunch]{"entity":"plan"} with [1000]{"entity":"NUMBER"} Kcal in it.
+    - I [lunched]{"entity":"plan","value":"lunch"} with [990]{"entity":"NUMBER"} Kcal in it.
+    - I [lunched]{"entity":"plan","value":"lunch"} with [560]{"entity":"NUMBER"} Kcal in it.
+    - I had [lunch]{"entity":"plan"} with [1230]{"entity":"NUMBER"} Kcal in it.
+    - I had a [snack]{"entity":"plan","value":"snacks"} with [180]{"entity":"NUMBER"} Kcal in it.
+    - I had [snacks]{"entity":"plan"} with [100]{"entity":"NUMBER"} Kcal in it.
+    - I ate [snacks]{"entity":"plan"} with [230]{"entity":"NUMBER"} Kcal in it.
+    - I ate a [snack]{"entity":"plan","value":"snacks"} with [80]{"entity":"NUMBER"} Kcal in it.
+    - I ate a [snack]{"entity":"plan","value":"snacks"} with [190]{"entity":"NUMBER"} Kcal in it.
+    - I had [snacks]{"entity":"plan"} with [230]{"entity":"NUMBER"} Kcal in it.
+    - Viki, add [470]{"entity":"NUMBER"} to my today’s [breakfast]{"entity":"plan"} calorie intake.
+    - Viki, add [720]{"entity":"NUMBER"} to my today’s [lunch]{"entity":"plan"} calorie intake.
+    - Viki, add [210]{"entity":"NUMBER"} to my today’s [snacks]{"entity":"plan"} calorie intake.
+    - Viki, add [240]{"entity":"NUMBER"} to my today’s [snack]{"entity":"plan","value":"snacks"} calorie intake.
+    - Viki, add [1350]{"entity":"NUMBER"} to my today’s [dinner]{"entity":"plan"} calorie intake.
+    # - I ate a meal with [1100]{"entity":"NUMBER"} K calories.
+    # - I consumed [1050]{"entity":"NUMBER"} Kcal in dinner.
+    # - Viki, add [1000]{"entity":"NUMBER"} to my caloric consumption today.
+    # - Viki, add [700]{"entity":"NUMBER"} calories to today's consumption.
 
 - intent: calories_whole_day
   examples: |
@@ -1324,6 +1324,14 @@ nlu:
     - How many calories for me all day?
     - How many calories do I have all day?
     - How many calories are my total day?
+    - How much are my calorie for the whole day?
+    - How many calorie for me all day?
+    - How many calorie do I have all day?
+    - How many calorie are my total day?
+    - How much are my calorie for the whole day
+    - How many calorie for me all day
+    - How many calorie do I have all day
+    - How many calorie are my total day
     - How much is my calorie for the whole day
     - How much are my calories for the whole day
     - How many calories for me all day
@@ -1367,6 +1375,41 @@ nlu:
     - Cut out my calories for [dinner]{"entity":"plan"}.
     - Take away the calories from [dinner]{"entity":"plan"}.
     - Take away my calories from [dinner]{"entity":"plan"}.
+    - Remove my [breakfast]{"entity":"plan"} calorie
+    - Please remove my [breakfast]{"entity":"plan"} calories
+    - Remove my [breakfast]{"entity":"plan"} calories
+    - Please remove my [breakfast]{"entity":"plan"} calorie
+    - Cut out my calories for [breakfast]{"entity":"plan"}
+    - Take away the calories from [breakfast]{"entity":"plan"}
+    - Take away my calories from [breakfast]{"entity":"plan"}
+    - Remove my [lunch]{"entity":"plan"} calorie
+    - Please remove my [lunch]{"entity":"plan"} calories
+    - Remove my [lunch]{"entity":"plan"} calories
+    - Please remove my [lunch]{"entity":"plan"} calorie
+    - Cut out my calories for [lunch]{"entity":"plan"}
+    - Take away the calories from [lunch]{"entity":"plan"}
+    - Take away my calories from [lunch]{"entity":"plan"}
+    - Remove my [snacks]{"entity":"plan"} calorie
+    - Please remove my [snacks]{"entity":"plan"} calories
+    - Remove my [snacks]{"entity":"plan"} calories
+    - Please remove my [snacks]{"entity":"plan"} calorie
+    - Cut out my calories for [snacks]{"entity":"plan"}
+    - Take away the calories from [snacks]{"entity":"plan"}
+    - Take away my calories from [snacks]{"entity":"plan"}
+    - Remove my [snack]{"entity":"plan","value":"snacks"} calorie
+    - Please remove my [snack]{"entity":"plan","value":"snacks"} calories
+    - Remove my [snack]{"entity":"plan","value":"snacks"} calories
+    - Please remove my [snack]{"entity":"plan","value":"snacks"} calorie
+    - Cut out my calories for [snack]{"entity":"plan","value":"snacks"}
+    - Take away the calories from [snack]{"entity":"plan","value":"snacks"}
+    - Take away my calories from [snack]{"entity":"plan","value":"snacks"}
+    - Remove my [dinner]{"entity":"plan"} calorie
+    - Please remove my [dinner]{"entity":"plan"} calories
+    - Remove my [dinner]{"entity":"plan"} calories
+    - Please remove my [dinner]{"entity":"plan"} calorie
+    - Cut out my calories for [dinner]{"entity":"plan"}
+    - Take away the calories from [dinner]{"entity":"plan"}
+    - Take away my calories from [dinner]{"entity":"plan"}
 
 
 # - intent: height
