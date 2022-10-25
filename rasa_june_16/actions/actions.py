@@ -1312,11 +1312,10 @@ class forcasting:
     self.current_weight=None
     self.return_print=None
    
-  def data_preprocessing(self,range=None,unique_id=None,
-                         filename = "updated_fitbit_dataset.csv",sort=True):
+  def data_preprocessing(self,filename,range=None,unique_id=None,sort=True):
   # given the list if unique id and range i.e unique_id=['645724], range =1
   # else it will get all unique id's and store its dates and weights as weight_id, date_id
-    fitbit_df = pd.read_csv(filename)
+    fitbit_df = pd.read_csv(filename);
 
     df_data={}
     if not unique_id:
@@ -1432,9 +1431,9 @@ class forcasting:
       print ("error in forcasting : ",e)
       return None
 
-  def forcast_weight(self,id,time,sort=True):
+  def forcast_weight(self,id,time,sort=True,filename = "updated_fitbit_dataset.csv"):
     try:
-      df_train=self.data_preprocessing(range=1,unique_id=[id],sort=sort)
+      df_train=self.data_preprocessing(range=1,unique_id=[id],sort=sort,filename=filename)
       print('df_train:', df_train)
       #getting the user data 
       print(df_train.columns)
@@ -1568,7 +1567,8 @@ class action_QN_response(Action):
                 days = 30
             print(days)
             obj=forcasting()
-            data=obj.forcast_weight(user_id,days)
+            ## asign filename some value
+            data=obj.forcast_weight(user_id,days,filename=filename)
             dispatcher.utter_message(text = obj.return_print)
             ques_id = 0
         if ques_id != 0:
@@ -2605,7 +2605,7 @@ class action_list_questions(Action):
         return "action_list_questions"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         filename = "updated_fitbit_dataset.csv"
-        fitbit_df = pd.read_csv(filename)
+        fitbit_df = pd.read_csv(filename);
         user_ids = fitbit_df.iloc[:, 1]
 
         print(str((tracker.current_state())["sender_id"]))
