@@ -1316,7 +1316,7 @@ class forcasting:
                          filename = "updated_fitbit_dataset.csv",sort=True):
   # given the list if unique id and range i.e unique_id=['645724], range =1
   # else it will get all unique id's and store its dates and weights as weight_id, date_id
-    fitbit_df = pd.read_csv(filename);
+    fitbit_df = pd.read_csv(filename)
 
     df_data={}
     if not unique_id:
@@ -2605,7 +2605,7 @@ class action_list_questions(Action):
         return "action_list_questions"
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         filename = "updated_fitbit_dataset.csv"
-        fitbit_df = pd.read_csv(filename);
+        fitbit_df = pd.read_csv(filename)
         user_ids = fitbit_df.iloc[:, 1]
 
         print(str((tracker.current_state())["sender_id"]))
