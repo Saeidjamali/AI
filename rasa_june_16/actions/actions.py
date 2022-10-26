@@ -1319,10 +1319,14 @@ class forcasting:
 
     df_data={}
     if not unique_id:
+      print('unique_id was not present. Assigning unique_id from dataframe')
       unique_id=(fitbit_df['id'].unique())
 
     if (not range) or range>len(unique_id):
       range=len(unique_id)
+
+    print('unique_id is: ', unique_id)
+    print('range is: ', range)
 
     #unique_id=unique_id[:10]
     for i in unique_id[:range]:
@@ -1335,7 +1339,7 @@ class forcasting:
         df_data['WEIGHT'+str(i)]=(self.standard(fitbit_df.loc[id_list[0],'weight'].values))
       df_data['DATE'+str(i)]=fitbit_df.loc[id_list[0],'date'].values
 
-    #print('df_data:',df_data)
+    print('df_data:',df_data)
     df_data=pd.DataFrame(dict([ (k,pd.Series(v)) for k,v in df_data.items() ]))
     return df_data
 
