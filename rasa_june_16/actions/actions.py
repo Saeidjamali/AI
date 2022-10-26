@@ -1370,6 +1370,7 @@ class forcasting:
       df_train_temp = pd.DataFrame({"Date" :df_train.loc[:,columns[i_date]] ,
                          "Signal" :df_train.loc[:,columns[i_weight]]})
       df_train_temp=df_train_temp.dropna()
+      print('df_train_temp:',df_train_temp)
       df_train_temp['Date']= df_train_temp['Date'].apply(lambda x : datetime.datetime.strptime(str(x), "%Y-%m-%d"))
       return df_train_temp
     else:
@@ -1432,6 +1433,7 @@ class forcasting:
       #df_forecast.plot('Date' , ['Signal','Signal_Forecast'])
       #return (df_forecast['Signal_Forecast'][len(df_forecast['Signal_Forecast'])-Horizon+1]),((df_forecast['Signal_Forecast']).iloc[-1]),df_forecast
     except Exception as e:
+      self.return_print = 'Your weight can not be predicted for now because not enough historical weight data is available for prediction.'
       print ("error in forcasting : ",e)
       return None
 
@@ -1450,6 +1452,7 @@ class forcasting:
       print('model has trained')
       return self.forcast(df_train_temp,Horizon=time)
     except Exception as e:
+      self.return_print = 'Your weight can not be predicted for now because not enough data is available for prediction.'
       print ("error in forcast_weight : ",e)
 
 
