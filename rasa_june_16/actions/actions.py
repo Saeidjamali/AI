@@ -1567,7 +1567,7 @@ class action_QN_response(Action):
             if goal == 0:
                 ques_id=10
         if str(tracker.latest_message['intent'].get('name')) == "QN11":
-            days = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="predict"),None)
+            days = next(tracker.get_latest_entity_values(entity_type="NUMBER"),None)
             if days:
                 days = int(days)
             else:
@@ -2318,7 +2318,7 @@ class ActionNutritionNDays(Action): ## Under Process.
         date_today = datetime.datetime.combine(date_today, datetime.time.min)
         print('Today\'s Date:', date_today)
         user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES'}).sort('date', pymongo.DESCENDING))
-        days = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="nutrition"),None)
+        days = next(tracker.get_latest_entity_values(entity_type="NUMBER"),None)
         if days:
             days = int(days)
         else:
@@ -2503,7 +2503,7 @@ class ActionAddCalories(Action):
 
         plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
         if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
-            calories = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="calories"),None)
+            calories = next(tracker.get_latest_entity_values(entity_type="NUMBER"),None)
             if calories:
                 calories = int(calories)
                 print(calories)
@@ -2596,9 +2596,9 @@ class ActionWaterIntake(Action):
         user_db = get_mongo_database()
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
-        print(next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="glasses"), None))
+        print(next(tracker.get_latest_entity_values(entity_type="NUMBER"), None))
         measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
-        water_intake = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="glasses"), None)
+        water_intake = next(tracker.get_latest_entity_values(entity_type="NUMBER"), None)
         if water_intake:
             user_db.healthRecords.insert_one({"userId":user_id, 'type': 'DRINK', 'payload': {'glasses' : float(water_intake), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'),
                 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
