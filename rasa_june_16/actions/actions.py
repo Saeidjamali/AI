@@ -558,8 +558,10 @@ class action_change_weight(Action):
         value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="weight2"), None)
         print(value)
         if not value:
-            dispatcher.utter_message(text="Your weight seems wrong")
-            return[SlotSet("weight", None)]
+            value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="weight1"), None)
+            if not value:
+                dispatcher.utter_message(text="Your weight seems incorrect to me. I’m still learning please try saying it differently.")
+                return[SlotSet("weight", None)]
         if((tracker.get_slot('measuringUnit') == 'imperial')):
             if float(value) < 20:
                 dispatcher.utter_message(
@@ -604,10 +606,12 @@ class action_change_stressLevel(Action):
         print(value)
         stressLevel = {'1':'very low', '2':'low', '3':'average', '4':'high', '5':'very high'}
         if not value:
-            dispatcher.utter_message(text="Your stress Level seems incorrect to me. I’m still learning please try saying it differently.")
-            return[SlotSet("stressLevel", None)]
+            value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="stressLevel1"), None)
+            if not value:
+                dispatcher.utter_message(text="Your stress Level seems incorrect to me. I’m still learning please try saying it differently.")
+                return[SlotSet("stressLevel", None)]
         elif value not in ['1','2','3','4','5']:
-            dispatcher.utter_message(text="Your stress Level seems incorrect to me. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text="Your stress Level seems incorrect to me. Please type value between 1 and 5(inclusive).")
             return[SlotSet("stressLevel", None)]
         dispatcher.utter_message(text=f"OK! Seems like your stress Level is {value}({stressLevel.get(value,None)}).")
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.stressLevel': int(value)}})
@@ -626,8 +630,10 @@ class action_change_age(Action):
         print(slot_value)
 
         if not slot_value:
-            dispatcher.utter_message(text="I’m sorry I didn’t understand, I’m still learning please try saying it differently.")
-            return[SlotSet("age", None)]
+            slot_value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="age1"), None)
+            if not slot_value:
+                dispatcher.utter_message(text="Your age seems incorrect to me. I’m still learning please try saying it differently.")
+                return[SlotSet("age", None)]
 
         elif float(slot_value) < 1 or float(slot_value) > 150:
             dispatcher.utter_message(text=f"Your age seems incorrect to me, Please type between 1 and 150 years old.")
@@ -649,8 +655,10 @@ class action_change_measuringUnit(Action):
         print(slot_value)
 
         if not slot_value:
-            dispatcher.utter_message(text="Your measuring unit seems incorrect to me. I’m still learning please try saying your name differently.")
-            return [SlotSet("measuringUnit", slot_value)]
+            slot_value = next(tracker.get_latest_entity_values(entity_type="measurement", entity_role="measurement1"), None)
+            if slot_value:
+                dispatcher.utter_message(text="Your measuring unit seems incorrect to me. I’m still learning please try saying your name differently.")
+                return [SlotSet("measuringUnit", slot_value)]
 
         elif slot_value in ['imperial', 'metric']:
             dispatcher.utter_message(text=f"Noted! You have changed your measuring unit to {slot_value}.")
@@ -691,6 +699,12 @@ class action_change_eating(Action):
         # if slot measurment is not set, and the user is in change so set the measurmnt unit.
         print(slot_value)
 
+        if not slot_value:
+            slot_value = next(tracker.get_latest_entity_values(entity_type="eating", entity_role="eating1"), None)
+            if not slot_value:
+                dispatcher.utter_message(text="Your eating category seems incorrect to me. I’m still learning please try saying it differently.")
+                return [SlotSet("eating", None)]
+
         eating = {'1': 'You are a Vegan',
                   '2': 'You are a Vegetarian',
                   '3': 'You are a Non-vegetarian',
@@ -703,7 +717,7 @@ class action_change_eating(Action):
                   'vegetarian': 'VEGETARIAN',
                   'non-vegetarian': 'NON_VEGETARIAN',}
 
-        if (not slot_value) or (slot_value not in ['vegan', 'vegetarian', 'non-vegetarian']):
+        if slot_value not in ['vegan', 'vegetarian', 'non-vegetarian']:
             dispatcher.utter_message(text="Your eating category seems incorrect to me. I’m still learning please try saying it differently.")
             return [SlotSet("eating", None)]
 
@@ -720,8 +734,14 @@ class action_change_foodieLevel(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         user_id = str((tracker.current_state())["sender_id"])
         user_db = get_mongo_database()
-        slot_value = next(tracker.get_latest_entity_values(entity_type="Number", entity_role="likeFood"), None)
+        slot_value = next(tracker.get_latest_entity_values(entity_type="Number", entity_role="foodieLevel2"), None)
         print(slot_value)
+        if not slot_value:
+            slot_value = next(tracker.get_latest_entity_values(entity_type="Number", entity_role="foodieLevel1"), None)
+            if not slot_value:
+                dispatcher.utter_message(text="Seems like you have typed incorrect foodie Level(food likeness). I’m still learning please try saying it differently.")
+                return [SlotSet("likeFood", None)]
+
         likeFood = {'1': 'and you are not much of a foodie at all',
                     '2': 'and your food likeness rating is below average',
                     '3': 'and your food likeness rating is average', '4': 'and you love food',
@@ -730,12 +750,12 @@ class action_change_foodieLevel(Action):
                              '2': 'So, you are not much of a foodie...',
                              '3': 'It seems like you are not much of a foodie...',
                              '4': 'So, you love food...', '5': 'hmm great, so food is life for you... '}
-        if (not slot_value) or (slot_value not in ['1', '2', '3', '4', '5']):
-            dispatcher.utter_message(text="Seems like you have typed incorrect stress Level. I’m still learning please try saying it differently.")
+        if (slot_value not in ['1', '2', '3', '4', '5']):
+            dispatcher.utter_message(text="Seems like you have typed incorrect foodie Level(food likeness). Please type value between 1 and 5(inclusive).")
             return [SlotSet("likeFood", None)]
         #else
 
-        dispatcher.utter_message(text=f"Your foodlevel is set to {slot_value}, {message_displayed.get(slot_value,None)}")
+        dispatcher.utter_message(text=f"Your foodie level is set to {slot_value}, {message_displayed.get(slot_value,None)}")
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.likeFood': int(slot_value)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
         return [SlotSet("likeFood", likeFood.get(slot_value,None))]
@@ -756,8 +776,11 @@ class action_change_height(Action):
         print('inches:',inches)
 
         if not value:
-            dispatcher.utter_message(text="I’m sorry I didn’t understand, I’m still learning please try telling me your height differently.")
-            return[SlotSet("height1", None)]
+            height = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="height1"), None)
+            value = height
+            if not value:
+                dispatcher.utter_message(text="Your height seems incorrect to me. I’m still learning please try telling me your height differently.")
+                return[SlotSet("height1", None)]
         print(tracker.get_slot('measuringUnit'))
         if(tracker.get_slot('measuringUnit') == 'imperial'):
             if inches:
