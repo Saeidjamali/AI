@@ -1884,12 +1884,13 @@ class ActionGetShoppingList(Action):
             diet_type = 'low carb'
         if len(list(user_db.userMeals.find({'user_id':user_id, 'type':'MEAL_PLAN'})))>0:
             user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'MEAL_PLAN'}))
+            user_record_temp = user_db.users.find_one({"_id": ObjectId(user_id)})
             date_today = datetime.datetime.today()
             date_today = datetime.datetime.combine(date_today, datetime.time.min)
             day = ((date_today - user_meals[0]['day_created']).days + 1)
             day_number = 7 - day
             if day <= 7:
-                dispatcher.utter_message(text = f"You already are on a {user_db['users']['diet_type']} diet plan and currently on day number {day}\n\
+                dispatcher.utter_message(text = f"You already are on a {user_record_temp['diet_type']} diet plan and currently on day number {day}\n\
                     Say things like “give me a breakfast plan”. And I will be able to give you your meal plan.\n\
                     If you want to change the diet type then try typing something like \'change my diet type from keto to low-carb\' and I'll give you a new diet plan.")
                 return [SlotSet("diet_type", None)]
