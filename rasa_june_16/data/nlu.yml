@@ -117,9 +117,6 @@ nlu:
     - I am [259]{"entity":"NUMBER"} [centi-metre]{"entity":"unit","value":"cm"}
     - I am [206]{"entity":"NUMBER"} [centi-metres]{"entity":"unit","value":"cm"}
     - I am [87]{"entity":"NUMBER"} [CM]{"entity":"unit","value":"cm"}
-    - My height is [120]{"entity":"NUMBER"} [cm]{"entity":"unit","value":"cm"}
-    - My height is [130]{"entity":"NUMBER"} [CENTIMETRE]{"entity":"unit","value":"cm"}
-    - My height is [141]{"entity":"NUMBER"} [CENTIMETER]{"entity":"unit","value":"cm"}
     - [5]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} [7]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
     - [7]{"entity":"NUMBER"} [feets]{"entity":"unit","value":"feet"} [2]{"entity":"NUMBER", "role": "height2"} [INCHES]{"entity":"unit", "role": "inches","value":"inches"}
     - [8]{"entity":"NUMBER"} [feets]{"entity":"unit","value":"feet"} [9]{"entity":"NUMBER", "role": "height2"} [INCHES]{"entity":"unit", "role": "inches","value":"inches"}
@@ -128,9 +125,6 @@ nlu:
     - [6]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} [3]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
     - [5]{"entity":"NUMBER"} [FT]{"entity":"unit","value":"feet"} [4]{"entity":"NUMBER", "role": "height2"} [inche]{"entity":"unit", "role": "inches","value":"inches"}
     - I am [7]{"entity":"NUMBER"} [FEETS]{"entity":"unit","value":"feet"} [1]{"entity":"NUMBER", "role": "height2"} [inch]{"entity":"unit", "role": "inches","value":"inches"}
-    - My height is [5]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} [6]{"entity":"NUMBER", "role": "height2"} [INCHE]{"entity":"unit", "role": "inches","value":"inches"}
-    - My height is [5]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} [1]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
-    - My height is [4]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} and [6]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
     - I am [7]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} and [2]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
     - I am [5]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} and [9]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
     - [6]{"entity":"NUMBER"} [feet]{"entity":"unit","value":"feet"} and [5]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
@@ -138,16 +132,13 @@ nlu:
     - [50]{"entity":"NUMBER"} [kg]{"entity":"unit","value":"kg"}
     - [69]{"entity":"NUMBER"} [kilogram]{"entity":"unit","value":"kg"}
     - [75]{"entity":"NUMBER"} [KiloGram]{"entity":"unit","value":"kg"}
-    - my weight is [100]{"entity":"NUMBER"} [KILOGRAM]{"entity":"unit","value":"kg"}
     - its [105]{"entity":"NUMBER"} [KG]{"entity":"unit","value":"kg"}
     - its [125]{"entity":"NUMBER"} [Kilo]{"entity":"unit","value":"kg"}
     - [300]{"entity":"NUMBER"} [pounds]{"entity":"unit","value":"pound"}
     - [80]{"entity":"NUMBER"} [lb]{"entity":"unit","value":"pound"}
     - [90]{"entity":"NUMBER"} [LB]{"entity":"unit","value":"pound"}
-    - my weight is [135]{"entity":"NUMBER"} [Pounds]{"entity":"unit","value":"pound"}
     - its [90]{"entity":"NUMBER"} [POUND]{"entity":"unit","value":"pound"}
     - its [70]{"entity":"NUMBER"} [pound]{"entity":"unit","value":"pound"}
-    - My age is [28]{"entity":"NUMBER", "value":28} years old
     - I am [20]{"entity":"NUMBER", "value":20} years of age
     - [25]{"entity":"NUMBER", "value":25} years old
     - I am [27]{"entity":"NUMBER", "value":27} years old
@@ -310,6 +301,9 @@ nlu:
     - alter my weight to [93]{"entity":"NUMBER", "role": "weight2"} lbs
     - I want to ammend my weight to [148]{"entity":"NUMBER", "role": "weight2"} lbs
     - Please modify my weight to [167]{"entity":"NUMBER", "role": "weight2"} lb
+    - my weight is [100]{"entity":"NUMBER"} [KILOGRAM]{"entity":"unit","value":"kg"}
+    - my weight is [135]{"entity":"NUMBER"} [Pounds]{"entity":"unit","value":"pound"}
+    - my weight is [150]{"entity":"NUMBER"}
 
 - intent: change_stressLevel
   examples: |
@@ -384,6 +378,9 @@ nlu:
     - Please modify my height to [6]{"entity":"NUMBER", "role": "height2" } ft [0]{"entity":"NUMBER", "role": "inches2" } inches
     - kindly alter my height to [3]{"entity":"NUMBER", "role": "height2" } ft [11]{"entity":"NUMBER", "role": "inches2" } inches
     - I need to change my height to [7]{"entity":"NUMBER", "role": "height2" } ft [4]{"entity":"NUMBER", "role": "inches2" } inches
+    - My height is [5]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} [6]{"entity":"NUMBER", "role": "height2"} [INCHE]{"entity":"unit", "role": "inches","value":"inches"}
+    - My height is [5]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} [1]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
+    - My height is [4]{"entity":"NUMBER"} [ft]{"entity":"unit","value":"feet"} and [6]{"entity":"NUMBER", "role": "height2"} [inches]{"entity":"unit", "role": "inches","value":"inches"}
 
 - intent: change_age
   examples: |
@@ -419,6 +416,7 @@ nlu:
     - I want to alter my age [48]{"entity":"NUMBER", "role": "age2"} years old
     - I want to modify my age to [102]{"entity":"NUMBER", "role": "age2"} years old
     - I want to modify my age to [70]{"entity":"NUMBER", "role": "age2"} years old
+    - My age is [28]{"entity":"NUMBER", "value":28} years old
   
 - intent: change_measuringUnit
   examples: |

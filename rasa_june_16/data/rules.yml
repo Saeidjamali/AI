@@ -113,6 +113,11 @@ rules:
   - intent: change_measuringUnit
   - action: action_change_measuringUnit
 
+- rule: Inform measuringUnit
+  steps:
+  - intent: measurement_name
+  - action: action_change_measuringUnit
+
 - rule: Change in Stress
   steps:
   - intent: change_stressLevel
@@ -121,6 +126,11 @@ rules:
 - rule: Change in eating
   steps:
   - intent: change_eating
+  - action: action_change_eating
+
+- rule: Inform eating
+  steps:
+  - intent: inform_eating
   - action: action_change_eating
 
 - rule: Change in foodlevel

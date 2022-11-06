@@ -87,6 +87,9 @@ slots:
       - type: from_entity
         intent: inform
         entity: unit
+      - type: from_entity
+        intent: change_height
+        entity: unit
 
   height2:
     type: float
@@ -96,6 +99,11 @@ slots:
       intent: inform
       entity: NUMBER
       role: height2
+    - type: from_entity
+      intent: change_height
+      entity: NUMBER
+      role: height2
+
   weight:
     type: float
     influence_conversation: true
@@ -106,12 +114,25 @@ slots:
       conditions:
         - active_loop: simple_user_form
           requested_slot: weight
+    - type: from_entity
+      intent: change_weight
+      entity: NUMBER
+      conditions:
+        - active_loop: simple_user_form
+          requested_slot: weight
+
   age:
     type: float
     influence_conversation: true
     mappings:
       - type: from_entity
         intent: inform
+        entity: NUMBER
+        conditions:
+          - active_loop: simple_user_form
+            requested_slot: age
+      - type: from_entity
+        intent: change_age
         entity: NUMBER
         conditions:
           - active_loop: simple_user_form
