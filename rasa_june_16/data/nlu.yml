@@ -139,10 +139,25 @@ nlu:
     - [90]{"entity":"NUMBER"} [LB]{"entity":"unit","value":"pound"}
     - its [90]{"entity":"NUMBER"} [POUND]{"entity":"unit","value":"pound"}
     - its [70]{"entity":"NUMBER"} [pound]{"entity":"unit","value":"pound"}
+    - [50.73]{"entity":"NUMBER"} [kg]{"entity":"unit","value":"kg"}
+    - [69.18]{"entity":"NUMBER"} [kilogram]{"entity":"unit","value":"kg"}
+    - [75.25]{"entity":"NUMBER"} [KiloGram]{"entity":"unit","value":"kg"}
+    - its [105.02]{"entity":"NUMBER"} [KG]{"entity":"unit","value":"kg"}
+    - its [125.5]{"entity":"NUMBER"} [Kilo]{"entity":"unit","value":"kg"}
+    - [305.67]{"entity":"NUMBER"} [pounds]{"entity":"unit","value":"pound"}
+    - [80.89]{"entity":"NUMBER"} [lb]{"entity":"unit","value":"pound"}
+    - [90.04]{"entity":"NUMBER"} [LB]{"entity":"unit","value":"pound"}
+    - its [90.75]{"entity":"NUMBER"} [POUND]{"entity":"unit","value":"pound"}
+    - its [70.78]{"entity":"NUMBER"} [pound]{"entity":"unit","value":"pound"}
     - I am [20]{"entity":"NUMBER", "value":20} years of age
     - [25]{"entity":"NUMBER", "value":25} years old
     - I am [27]{"entity":"NUMBER", "value":27} years old
     - [32]{"entity":"NUMBER", "value":32}
+    - [68.2]{"entity":"NUMBER"}
+    - [79.49]{"entity":"NUMBER"}
+    - [45.80]{"entity":"NUMBER"}
+    - [97.5]{"entity":"NUMBER"}
+    - [57.04]{"entity":"NUMBER"}
     - [1]{"entity": "NUMBER", "value":1}
     - [2]{"entity": "NUMBER", "value":2}
     - [3]{"entity": "NUMBER", "value":3}
@@ -284,6 +299,7 @@ nlu:
     - Please modify my weight from [85]{"entity":"NUMBER", "role": "weight1"} to [79]{"entity":"NUMBER", "role": "weight2"}
     - Modify my weight from [107]{"entity":"NUMBER", "role": "weight1"} to [92]{"entity":"NUMBER", "role": "weight2"}
     - Change my weight to [50]{"entity":"NUMBER", "role": "weight2"} kg
+    - Change my weight to [80]{"entity":"NUMBER", "role": "weight2"}
     - I want to change my weight to [123]{"entity":"NUMBER", "role": "weight2"} kg
     - Please change my weight to [74]{"entity":"NUMBER", "role": "weight2"} kg
     - alter my weight to [115]{"entity":"NUMBER", "role": "weight2"} kg
@@ -304,6 +320,61 @@ nlu:
     - my weight is [100]{"entity":"NUMBER"} [KILOGRAM]{"entity":"unit","value":"kg"}
     - my weight is [135]{"entity":"NUMBER"} [Pounds]{"entity":"unit","value":"pound"}
     - my weight is [150]{"entity":"NUMBER"}
+    - my weight is [102.89]{"entity":"NUMBER"} [KILOGRAM]{"entity":"unit","value":"kg"}
+    - my weight is [135.5]{"entity":"NUMBER"} [Pounds]{"entity":"unit","value":"pound"}
+    - I want to change my weight to [210]{"entity":"NUMBER", "role": "weight2"}
+    - Please change my weight to [58]{"entity":"NUMBER", "role": "weight2"}
+    - alter my weight to [76]{"entity":"NUMBER", "role": "weight2"}
+    - I want to ammend my weight to [84]{"entity":"NUMBER", "role": "weight2"}
+    - Please modify my weight to [179]{"entity":"NUMBER", "role": "weight2"}
+    - Change my weight to [91]{"entity":"NUMBER", "role": "weight2"}
+    - I want to change my weight to [135]{"entity":"NUMBER", "role": "weight2"}
+    - Please change my weight to [273]{"entity":"NUMBER", "role": "weight2"}
+    - alter my weight to [79]{"entity":"NUMBER", "role": "weight2"}
+    - I want to ammend my weight to [188]{"entity":"NUMBER", "role": "weight2"}
+    - Please modify my weight to [204]{"entity":"NUMBER", "role": "weight2"}
+    - Change my weight to [45]{"entity":"NUMBER", "role": "weight2"}
+    - I want to change my weight to [113]{"entity":"NUMBER", "role": "weight2"}
+    - Please change my weight to [245]{"entity":"NUMBER", "role": "weight2"}
+    - alter my weight to [67]{"entity":"NUMBER", "role": "weight2"}
+    - I want to ammend my weight to [197]{"entity":"NUMBER", "role": "weight2"}
+    - Please modify my weight to [153]{"entity":"NUMBER", "role": "weight2"}
+    - Change my weight to [50.23]{"entity":"NUMBER", "role": "weight2"} kg
+    - Change my weight to [80.15]{"entity":"NUMBER", "role": "weight2"}
+    - I want to change my weight to [123.46]{"entity":"NUMBER", "role": "weight2"} kg
+    - Please change my weight to [74.07]{"entity":"NUMBER", "role": "weight2"} kg
+    - alter my weight to [115.89]{"entity":"NUMBER", "role": "weight2"} kg
+    - I want to ammend my weight to [85.1]{"entity":"NUMBER", "role": "weight2"} kg
+    - Please modify my weight to [98.93]{"entity":"NUMBER", "role": "weight2"} kg
+    - Change my weight to [62.60]{"entity":"NUMBER", "role": "weight2"} pounds
+    - I want to change my weight to [129.8]{"entity":"NUMBER", "role": "weight2"} pounds
+    - Please change my weight to [274.18]{"entity":"NUMBER", "role": "weight2"} pounds
+    - alter my weight to [93.49]{"entity":"NUMBER", "role": "weight2"} pounds
+    - I want to ammend my weight to [148.17]{"entity":"NUMBER", "role": "weight2"} pounds
+    - Please modify my weight to [167.92]{"entity":"NUMBER", "role": "weight2"} pounds
+    - Change my weight to [62.86]{"entity":"NUMBER", "role": "weight2"} lb
+    - I want to change my weight to [129.4]{"entity":"NUMBER", "role": "weight2"} lbs
+    - Please change my weight to [274.32]{"entity":"NUMBER", "role": "weight2"} lb
+    - alter my weight to [93.79]{"entity":"NUMBER", "role": "weight2"} lbs
+    - I want to ammend my weight to [148.35]{"entity":"NUMBER", "role": "weight2"} lbs
+    - Please modify my weight to [167.9]{"entity":"NUMBER", "role": "weight2"} lb
+    - I want to change my weight to [210.2]{"entity":"NUMBER", "role": "weight2"}
+    - Please change my weight to [58.69]{"entity":"NUMBER", "role": "weight2"}
+    - alter my weight to [76.45]{"entity":"NUMBER", "role": "weight2"}
+    - I want to ammend my weight to [84.28]{"entity":"NUMBER", "role": "weight2"}
+    - Please modify my weight to [179.19]{"entity":"NUMBER", "role": "weight2"}
+    - Change my weight to [91.46]{"entity":"NUMBER", "role": "weight2"}
+    - I want to change my weight to [135.37]{"entity":"NUMBER", "role": "weight2"}
+    - Please change my weight to [273.28]{"entity":"NUMBER", "role": "weight2"}
+    - alter my weight to [79.47]{"entity":"NUMBER", "role": "weight2"}
+    - I want to ammend my weight to [188.5]{"entity":"NUMBER", "role": "weight2"}
+    - Please modify my weight to [204.23]{"entity":"NUMBER", "role": "weight2"}
+    - Change my weight to [45.07]{"entity":"NUMBER", "role": "weight2"}
+    - I want to change my weight to [113.6]{"entity":"NUMBER", "role": "weight2"}
+    - Please change my weight to [245.12]{"entity":"NUMBER", "role": "weight2"}
+    - alter my weight to [67.89]{"entity":"NUMBER", "role": "weight2"}
+    - I want to ammend my weight to [197.62]{"entity":"NUMBER", "role": "weight2"}
+    - Please modify my weight to [153.86]{"entity":"NUMBER", "role": "weight2"}
 
 - intent: change_stressLevel
   examples: |
@@ -1310,6 +1381,11 @@ nlu:
     - Viki, add [210]{"entity":"NUMBER"} to my today’s [snacks]{"entity":"plan"} calorie intake.
     - Viki, add [240]{"entity":"NUMBER"} to my today’s [snack]{"entity":"plan","value":"snacks"} calorie intake.
     - Viki, add [1350]{"entity":"NUMBER"} to my today’s [dinner]{"entity":"plan"} calorie intake.
+    - Add [520]{"entity":"NUMBER"} to my today’s [breakfast]{"entity":"plan"} calorie intake.
+    - Add [840]{"entity":"NUMBER"} to my today’s [lunch]{"entity":"plan"} calorie intake.
+    - Add [190]{"entity":"NUMBER"} to my today’s [snacks]{"entity":"plan"} calorie intake.
+    - Add [270]{"entity":"NUMBER"} to my today’s [snack]{"entity":"plan","value":"snacks"} calorie intake.
+    - Add [1030]{"entity":"NUMBER"} to my today’s [dinner]{"entity":"plan"} calorie intake.
     # - I ate a meal with [1100]{"entity":"NUMBER"} K calories.
     # - I consumed [1050]{"entity":"NUMBER"} Kcal in dinner.
     # - Viki, add [1000]{"entity":"NUMBER"} to my caloric consumption today.
@@ -1326,6 +1402,24 @@ nlu:
     - How many calorie for me all day?
     - How many calorie do I have all day?
     - How many calorie are my total day?
+    - What's my calorie intake for today?
+    - What's my calorie intake for the whole day?
+    - What's my calories intake for today?
+    - What's my calories intake for the whole day?
+    - What was my calorie intake for the whole day?
+    - What was my calorie intake for today?
+    - What was my calories intake for the whole day?
+    - What was my calories intake for today?
+    - What's my calorie for today?
+    - What's my calorie for the whole day?
+    - What's my calories for today?
+    - What's my calories for the whole day?
+    - What was my calorie for the whole day?
+    - What was my calorie for today?
+    - What was my calories for the whole day?
+    - What was my calories for today?
+    - What was my caloric intake for the whole day?
+    - What was my caloric intake for today?
     - How much are my calorie for the whole day
     - How many calorie for me all day
     - How many calorie do I have all day
@@ -1335,6 +1429,22 @@ nlu:
     - How many calories for me all day
     - How many calories do I have all day
     - How many calories are my total day
+    - What's my calorie intake for today
+    - What's my calorie for today
+    - What's my calorie intake for the whole day
+    - What's my calorie for the whole day
+    - What's my calories intake for today
+    - What's my calories intake for the whole day
+    - What was my calorie intake for the whole day
+    - What was my calorie for the whole day
+    - What was my calorie intake for today
+    - What was my calorie for today
+    - What was my calories intake for the whole day
+    - What was my calories intake for today
+    - What was my calories for the whole day
+    - What was my calories for today
+    - What was my caloric intake for the whole day
+    - What was my caloric intake for today
 
 - intent: remove_calories
   examples: |

@@ -554,7 +554,10 @@ class action_change_weight(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         user_id = str((tracker.current_state())["sender_id"])
         user_db = get_mongo_database()
-        measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
+        user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
+        measurement = user_record['userInfo']['measureType']
+        print(measurement)
+        # measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
         value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="weight2"), None)
         if not value:
             value = next(tracker.get_latest_entity_values(entity_type="NUMBER"), None)
@@ -562,9 +565,11 @@ class action_change_weight(Action):
             value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="weight1"), None)
         print(value)
         if not value:
-            dispatcher.utter_message(text="Your weight seems wrong")
-            return[SlotSet("weight", None)]
-        if((tracker.get_slot('measuringUnit') == 'imperial')):
+            value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="weight1"), None)
+            if not value:
+                dispatcher.utter_message(text="Your weight seems incorrect to me. I’m still learning please try saying it differently.")
+                return[SlotSet("weight", None)]
+        if((measurement == 'IMPERIAL')):
             if float(value) < 20:
                 dispatcher.utter_message(
                     text="Your weight seems incorrect to me, typically human weight is between 20 to 640 pounds.")
@@ -575,7 +580,7 @@ class action_change_weight(Action):
                 return[SlotSet("weight", None)]
             else:
                 value = value + " pounds"
-        elif((tracker.get_slot('measuringUnit') == 'metric')):
+        elif((measurement == 'METRIC')):
             if float(value) < 20:
                 dispatcher.utter_message(
                     text="Your weight seems incorrect to me, typically human weight is between 20 to 290 kgs")
@@ -593,7 +598,7 @@ class action_change_weight(Action):
             weight = weight_initial.split(' ')[0]
             user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.weight': float(weight)}})
             user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-            user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')})
+            user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
             return[SlotSet('weight', value)]
 
 class action_change_stressLevel(Action):
@@ -603,20 +608,25 @@ class action_change_stressLevel(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         user_id = str((tracker.current_state())["sender_id"])
         user_db = get_mongo_database()
-        measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
+        user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
+        measurement = user_record['userInfo']['measureType']
+        # measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
+        print(measurement)
         value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="stressLevel2"), None)
         print(value)
         stressLevel = {'1':'very low', '2':'low', '3':'average', '4':'high', '5':'very high'}
         if not value:
-            dispatcher.utter_message(text="Your stress Level seems incorrect to me. I’m still learning please try saying it differently.")
-            return[SlotSet("stressLevel", None)]
+            value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="stressLevel1"), None)
+            if not value:
+                dispatcher.utter_message(text="Your stress Level seems incorrect to me. I’m still learning please try saying it differently.")
+                return[SlotSet("stressLevel", None)]
         elif value not in ['1','2','3','4','5']:
-            dispatcher.utter_message(text="Your stress Level seems incorrect to me. I’m still learning please try saying it differently.")
+            dispatcher.utter_message(text="Your stress Level seems incorrect to me. Please type value between 1 and 5(inclusive).")
             return[SlotSet("stressLevel", None)]
         dispatcher.utter_message(text=f"OK! Seems like your stress Level is {value}({stressLevel.get(value,None)}).")
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.stressLevel': int(value)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': int(value), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'),  'createdAt': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': int(value), 'measureType': measurement}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')),  'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
         return[SlotSet("stressLevel", stressLevel.get(value,None))]
 
 class action_change_age(Action):
@@ -632,8 +642,10 @@ class action_change_age(Action):
         print(slot_value)
 
         if not slot_value:
-            dispatcher.utter_message(text="I’m sorry I didn’t understand, I’m still learning please try saying it differently.")
-            return[SlotSet("age", None)]
+            slot_value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="age1"), None)
+            if not slot_value:
+                dispatcher.utter_message(text="Your age seems incorrect to me. I’m still learning please try saying it differently.")
+                return[SlotSet("age", None)]
 
         elif float(slot_value) < 1 or float(slot_value) > 150:
             dispatcher.utter_message(text=f"Your age seems incorrect to me, Please type between 1 and 150 years old.")
@@ -655,13 +667,18 @@ class action_change_measuringUnit(Action):
             slot_value = next(tracker.get_latest_entity_values(entity_type="measurement"), None)
         # if slot measurment is not set, and the user is in change so set the measurmnt unit.
         print(slot_value)
-
+        measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
         if not slot_value:
-            dispatcher.utter_message(text="Your measuring unit seems incorrect to me. I’m still learning please try saying your name differently.")
-            return [SlotSet("measuringUnit", slot_value)]
+            slot_value = next(tracker.get_latest_entity_values(entity_type="measurement", entity_role="measurement1"), None)
+            if slot_value:
+                dispatcher.utter_message(text="Your measuring unit seems incorrect to me. I’m still learning please try saying your name differently.")
+                return [SlotSet("measuringUnit", slot_value)]
 
         elif slot_value in ['imperial', 'metric']:
+            user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.measureType': measurement.get((str(next(tracker.get_latest_entity_values(entity_type="measurement", entity_role="measurement1"), None))), None)}})
+            user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
             dispatcher.utter_message(text=f"Noted! You have changed your measuring unit to {slot_value}.")
+
             return [SlotSet("measuringUnit", slot_value)]
 
         # old_measuring_unit = tracker.get_slot('measuringUnit')
@@ -701,6 +718,12 @@ class action_change_eating(Action):
         # if slot measurment is not set, and the user is in change so set the measurmnt unit.
         print(slot_value)
 
+        if not slot_value:
+            slot_value = next(tracker.get_latest_entity_values(entity_type="eating", entity_role="eating1"), None)
+            if not slot_value:
+                dispatcher.utter_message(text="Your eating category seems incorrect to me. I’m still learning please try saying it differently.")
+                return [SlotSet("eating", None)]
+
         eating = {'1': 'You are a Vegan',
                   '2': 'You are a Vegetarian',
                   '3': 'You are a Non-vegetarian',
@@ -713,7 +736,7 @@ class action_change_eating(Action):
                   'vegetarian': 'VEGETARIAN',
                   'non-vegetarian': 'NON_VEGETARIAN',}
 
-        if (not slot_value) or (slot_value not in ['vegan', 'vegetarian', 'non-vegetarian']):
+        if slot_value not in ['vegan', 'vegetarian', 'non-vegetarian']:
             dispatcher.utter_message(text="Your eating category seems incorrect to me. I’m still learning please try saying it differently.")
             return [SlotSet("eating", None)]
 
@@ -730,8 +753,14 @@ class action_change_foodieLevel(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         user_id = str((tracker.current_state())["sender_id"])
         user_db = get_mongo_database()
-        slot_value = next(tracker.get_latest_entity_values(entity_type="Number", entity_role="likeFood"), None)
+        slot_value = next(tracker.get_latest_entity_values(entity_type="Number", entity_role="foodieLevel2"), None)
         print(slot_value)
+        if not slot_value:
+            slot_value = next(tracker.get_latest_entity_values(entity_type="Number", entity_role="foodieLevel1"), None)
+            if not slot_value:
+                dispatcher.utter_message(text="Seems like you have typed incorrect foodie Level(food likeness). I’m still learning please try saying it differently.")
+                return [SlotSet("likeFood", None)]
+
         likeFood = {'1': 'and you are not much of a foodie at all',
                     '2': 'and your food likeness rating is below average',
                     '3': 'and your food likeness rating is average', '4': 'and you love food',
@@ -740,12 +769,12 @@ class action_change_foodieLevel(Action):
                              '2': 'So, you are not much of a foodie...',
                              '3': 'It seems like you are not much of a foodie...',
                              '4': 'So, you love food...', '5': 'hmm great, so food is life for you... '}
-        if (not slot_value) or (slot_value not in ['1', '2', '3', '4', '5']):
-            dispatcher.utter_message(text="Seems like you have typed incorrect stress Level. I’m still learning please try saying it differently.")
+        if (slot_value not in ['1', '2', '3', '4', '5']):
+            dispatcher.utter_message(text="Seems like you have typed incorrect foodie Level(food likeness). Please type value between 1 and 5(inclusive).")
             return [SlotSet("likeFood", None)]
         #else
 
-        dispatcher.utter_message(text=f"Your foodlevel is set to {slot_value}, {message_displayed.get(slot_value,None)}")
+        dispatcher.utter_message(text=f"Your foodie level is set to {slot_value}, {message_displayed.get(slot_value,None)}")
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.likeFood': int(slot_value)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
         return [SlotSet("likeFood", likeFood.get(slot_value,None))]
@@ -757,7 +786,10 @@ class action_change_height(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         user_id = str((tracker.current_state())["sender_id"])
         user_db = get_mongo_database()
-        measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
+        user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
+        measurement = user_record['userInfo']['measureType']
+        # measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
+        print(measurement)
 
         height = next(tracker.get_latest_entity_values(entity_type="NUMBER"), None)
         if height is not None:
@@ -771,10 +803,13 @@ class action_change_height(Action):
         print('inches:',inches)
 
         if not value:
-            dispatcher.utter_message(text="I’m sorry I didn’t understand, I’m still learning please try telling me your height differently.")
-            return[SlotSet("height1", None)]
-        print(tracker.get_slot('measuringUnit'))
-        if(tracker.get_slot('measuringUnit') == 'imperial'):
+            height = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="height1"), None)
+            value = height
+            if not value:
+                dispatcher.utter_message(text="Your height seems incorrect to me. I’m still learning please try telling me your height differently.")
+                return[SlotSet("height1", None)]
+        # print(tracker.get_slot('measuringUnit'))
+        if(measurement == 'IMPERIAL'):
             if inches:
                 if (float(value) > 9 or float(value) < 1):
                     dispatcher.utter_message(text="Your height seems incorrect to me, typically human height is between 1 to 9 feets in imperial measurement system.\n I’m still learning please try telling me your height differently.")
@@ -794,7 +829,7 @@ class action_change_height(Action):
                         height = height_initial.split(' ')[0]
                     user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.height': float(height)}})
                     user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
                     return [SlotSet("height1", value), SlotSet("height2", 0)]
             else:
                 if float(value) < 1:
@@ -817,7 +852,7 @@ class action_change_height(Action):
                         height = height_initial.split(' ')[0]
                     user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.height': float(height)}})
                     user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                    user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
                     return [SlotSet("height1", value), SlotSet("height2", 0)]
         else:
             if float(value) < 80:
@@ -837,7 +872,7 @@ class action_change_height(Action):
                 height = height_initial.split(' ')[0]
                 user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.height': float(height)}})
                 user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-                user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
 
                 return [SlotSet("height1", value), SlotSet("height2", 0)]
 
@@ -901,9 +936,9 @@ class action_store_db(Action): ## custom action function for storing user inform
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.likeFood': likeFood.get((str(tracker.get_slot('likeFood'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.goal': goal.get((str(tracker.get_slot('userGoal'))), None)}})
         user_db.users.update_one({"_id": ObjectId(user_id)}, {'$set': {'userInfo.updatedAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'))}})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
-        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'WEIGHT', 'payload': {'weight' : float(weight), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'HEIGHT', 'payload': {'height' : float(height), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+        user_db.healthRecords.insert_one({"userId":user_id, 'type': 'STRESS_LEVEL', 'payload': {'stressLevel': stressLevel.get((str(tracker.get_slot('stressLevel'))), None), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
         #dispatcher.utter_message(text = f"your data is stored in the database.")
         print((user_db.users.find_one({"_id": ObjectId(user_id)})))
         # mydict = { "user_id": str(tracker.current_state()["sender_id"]), "name": tracker.get_slot('name'), "measuringUnit": tracker.get_slot('measuringUnit'), 
@@ -1331,6 +1366,8 @@ class forcasting:
   # given the list if unique id and range i.e unique_id=['645724], range =1
   # else it will get all unique id's and store its dates and weights as weight_id, date_id
     fitbit_df = pd.read_csv(filename)
+    fitbit_df.dropna(inplace = True,subset=['weight'])
+    fitbit_df.reset_index(drop=True, inplace=True)
 
     df_data={}
     if not unique_id:
@@ -1582,7 +1619,7 @@ class action_QN_response(Action):
             if goal == 0:
                 ques_id=10
         if str(tracker.latest_message['intent'].get('name')) == "QN11":
-            days = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="predict"),None)
+            days = next(tracker.get_latest_entity_values(entity_type="NUMBER"),None)
             if days:
                 days = int(days)
             else:
@@ -1881,7 +1918,7 @@ class ActionGetShoppingList(Action):
             day = ((date_today - user_meals[0]['day_created']).days + 1)
             day_number = 7 - day
             if day <= 7:
-                dispatcher.utter_message(text = f"You already are on a {user_meals['diet_type']} diet plan and currently on day number {day}\n\
+                dispatcher.utter_message(text = f"You already are on a diet plan and currently on day number {day}\n\
                     Say things like “give me a breakfast plan”. And I will be able to give you your meal plan.\n\
                     If you want to change the diet type then try typing something like \'change my diet type from keto to low-carb\' and I'll give you a new diet plan.")
                 return [SlotSet("diet_type", None)]
@@ -2001,7 +2038,7 @@ class ActionGivePlan(Action):
                     print('Health record was present while giving meal plan')
                     return []
                 else:
-                    user_db.healthRecords.insert_one({"user_id":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                    user_db.healthRecords.insert_one({"user_id":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
                     print('Health record was not present while giving meal plan')
                     return []
         else:
@@ -2333,7 +2370,7 @@ class ActionNutritionNDays(Action): ## Under Process.
         date_today = datetime.datetime.combine(date_today, datetime.time.min)
         print('Today\'s Date:', date_today)
         user_meals = list(user_db.userMeals.find({"user_id": user_id, 'type':'CALORIES'}).sort('date', pymongo.DESCENDING))
-        days = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="nutrition"),None)
+        days = next(tracker.get_latest_entity_values(entity_type="NUMBER"),None)
         if days:
             days = int(days)
         else:
@@ -2518,7 +2555,7 @@ class ActionAddCalories(Action):
 
         plan = next(tracker.get_latest_entity_values(entity_type="plan"),None)
         if plan in ['breakfast', 'lunch', 'snacks', 'dinner']:
-            calories = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="calories"),None)
+            calories = next(tracker.get_latest_entity_values(entity_type="NUMBER"),None)
             if calories:
                 calories = int(calories)
                 print(calories)
@@ -2540,7 +2577,7 @@ class ActionAddCalories(Action):
                         dispatcher.utter_message(text = f"Sure, {calories} calorie added for {plan}.")
                         return []
                     else:
-                        user_db.healthRecords.insert_one({"user_id":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
+                        user_db.healthRecords.insert_one({"user_id":user_id, 'type': 'CALORIES_IN', 'payload': {'calories' : int(calories), 'date': date_today}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
                         dispatcher.utter_message(text = f"Sure, {calories} calorie added for {plan}.")
                         return []
             else:
@@ -2611,11 +2648,11 @@ class ActionWaterIntake(Action):
         user_db = get_mongo_database()
         print(str((tracker.current_state())["sender_id"]))
         user_id = str((tracker.current_state())["sender_id"])
-        print(next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="glasses"), None))
+        print(next(tracker.get_latest_entity_values(entity_type="NUMBER"), None))
         measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
-        water_intake = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="glasses"), None)
+        water_intake = next(tracker.get_latest_entity_values(entity_type="NUMBER"), None)
         if water_intake:
-            user_db.healthRecords.insert_one({"userId":user_id, 'type': 'DRINK', 'payload': {'glasses' : float(water_intake), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds'),
+            user_db.healthRecords.insert_one({"userId":user_id, 'type': 'DRINK', 'payload': {'glasses' : float(water_intake), 'measureType': measurement.get((str(tracker.get_slot('measuringUnit'))), None)}, 'timestamp': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')),
                 'createdAt': parser.parse(datetime.datetime.utcnow().replace(tzinfo=datetime.timezone.utc).isoformat(timespec='milliseconds')), '_class' : 'com.intellithing.common.entity.HealthRecord'})
             dispatcher.utter_message(text = "Water glasses count updated.")
             return []
