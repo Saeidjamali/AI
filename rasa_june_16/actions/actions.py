@@ -559,6 +559,10 @@ class action_change_weight(Action):
         print(measurement)
         # measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
         value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="weight2"), None)
+        if not value:
+            value = next(tracker.get_latest_entity_values(entity_type="NUMBER"), None)
+        if not value:
+            value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="weight1"), None)
         print(value)
         if not value:
             value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="weight1"), None)
@@ -632,7 +636,9 @@ class action_change_age(Action):
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker,domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         user_id = str((tracker.current_state())["sender_id"])
         user_db = get_mongo_database()
-        slot_value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="age2"), None)
+        slot_value = next(tracker.get_latest_entity_values(entity_type="NUMBER"), None)
+        if slot_value is None:
+            slot_value = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="age2"), None)
         print(slot_value)
 
         if not slot_value:
@@ -657,6 +663,8 @@ class action_change_measuringUnit(Action):
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         slot_value = next(tracker.get_latest_entity_values(entity_type="measurement", entity_role="measurement2"), None)
+        if slot_value is None:
+            slot_value = next(tracker.get_latest_entity_values(entity_type="measurement"), None)
         # if slot measurment is not set, and the user is in change so set the measurmnt unit.
         print(slot_value)
         measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
@@ -705,6 +713,8 @@ class action_change_eating(Action):
         user_id = str((tracker.current_state())["sender_id"])
         user_db = get_mongo_database()
         slot_value = next(tracker.get_latest_entity_values(entity_type="eating", entity_role="eating2"), None)
+        if slot_value is None:
+            slot_value = next(tracker.get_latest_entity_values(entity_type="eating"), None)
         # if slot measurment is not set, and the user is in change so set the measurmnt unit.
         print(slot_value)
 
@@ -781,8 +791,13 @@ class action_change_height(Action):
         # measurement = {'metric': "METRIC",'imperial': "IMPERIAL"}
         print(measurement)
 
-        height = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="height2"), None)
-        inches = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="inches2"), None)
+        height = next(tracker.get_latest_entity_values(entity_type="NUMBER"), None)
+        if height is not None:
+            # only 1 height given
+            inches = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="height2"), None)
+        else:
+            height = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="height2"), None)
+            inches = next(tracker.get_latest_entity_values(entity_type="NUMBER", entity_role="inches2"), None)
         value = height
         print(value)
         print('inches:',inches)

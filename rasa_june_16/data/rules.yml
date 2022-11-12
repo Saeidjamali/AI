@@ -94,36 +94,64 @@ rules:
 #   - active_loop: simple_user_form
 
 - rule: Change in height
+  condition:
+  - active_loop: null
   steps:
   - intent: change_height
   - action: action_change_height
 
 - rule: Change in Weight
+  condition:
+  - active_loop: null
   steps:
   - intent: change_weight
   - action: action_change_weight
 
 - rule: Change in age
+  condition:
+  - active_loop: null
   steps:
   - intent: change_age
   - action: action_change_age
 
 - rule: Change in measuringUnit
+  condition:
+  - active_loop: null
   steps:
   - intent: change_measuringUnit
   - action: action_change_measuringUnit
 
+- rule: Inform measuringUnit
+  condition:
+  - active_loop: null
+  steps:
+  - intent: measurement_name
+  - action: action_change_measuringUnit
+
 - rule: Change in Stress
+  condition:
+  - active_loop: null
   steps:
   - intent: change_stressLevel
   - action: action_change_stressLevel
 
 - rule: Change in eating
+  condition:
+  - active_loop: null
   steps:
   - intent: change_eating
   - action: action_change_eating
 
+- rule: Inform eating
+  condition:
+  - active_loop: null
+  steps:
+  - intent: inform_eating
+  - action: action_change_eating
+
 - rule: Change in foodlevel
+  condition:
+  - active_loop: null
   steps:
   - intent: change_foodieLevel
   - action: action_change_foodieLevel
