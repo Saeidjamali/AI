@@ -20,6 +20,7 @@ nlu:
     - Hi Viki
     - Hey Viki
     - Greetings Viki
+    - Viki
 
 
 - intent: goodbye
