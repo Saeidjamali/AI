@@ -2675,8 +2675,8 @@ class action_list_questions(Action):
 
 
         if user_id not in user_ids.values:
-            dispatcher.utter_message(text = "Currently there is no historical data available about you at the moment. \n\
-                Keep updating your data on daily basis to get answers to questions like:\n\
+            dispatcher.utter_message(text = "Currently there is not much historical data available about you. \n\
+                Keep updating your weight, calories, and water intake on daily basis to get more accurate answers to questions like:\n\
                 Ask me to predict your weight.\n\
                 If you are not achieving your goal ask me questions such as:\n\
                 Why am I not losing weight?\n\
