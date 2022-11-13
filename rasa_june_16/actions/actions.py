@@ -1583,7 +1583,7 @@ class action_QN_response(Action):
 
 
         if user_id not in user_ids.values:
-            dispatcher.utter_message(text = "There is no historical data available about you at the moment.")
+            dispatcher.utter_message(text = "There is no historical data available about you at the moment. Connect a wearable, preferably intellithing watch")
             return []
         days=30
         user_main_goal = user_db.users.find_one({'_id': ObjectId(user_id), 'userInfo.goal':{'$exists': True}})
