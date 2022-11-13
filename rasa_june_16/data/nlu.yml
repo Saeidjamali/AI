@@ -830,6 +830,12 @@ nlu:
     - What are the bad practices in my life
     - What are the bad habits in me
     - What are the poor habits of my life
+    - find a bad habit in my life
+    - find bad habits in my life
+    - find bad patterns in my lifestyle
+    - find my poor patterns
+    - find bad patterns of behaviour
+    - find poor patterns of behavior 
 
 - intent: QN8
   examples: |
@@ -904,6 +910,29 @@ nlu:
     - I am considering a diet.
     - I think I should go on a diet. 
     - I feel like I should start a diet.
+    - can you give me a diet plan?
+    - can you give me a diet
+    - Can you help me start a diet
+    - I want to start a diet
+    - I want to go on a diet.
+    - I should start a diet
+    - Let's go on a diet
+    - Help me with a diet
+    - I want diet
+    - I need a diet plan
+    - I need a diet
+    - I need diet.
+    - Diet would be lovely
+    - Give me a diet
+    - Give me a diet plan
+    - I can do with a diet.
+    - I feel I should start a diet.
+    - Diet plan should help. 
+    - Give me diet.
+    - Diet plan should help.
+    - Diet is what I need. 
+    - viki, give me a diet
+    - let's do a diet.
 
 - intent: diet_type
   examples: |
@@ -962,6 +991,10 @@ nlu:
     - [High-protein]{"entity":"diet", "value":"high-protein"}
     - [high-protien]{"entity":"diet", "value":"high-protein"}
     - [High-Protein]{"entity":"diet", "value":"high-protein"}
+    - [High Protein]{"entity":"diet", "value":"high-protein"}
+    - [Low carb]{"entity":"diet", "value":"low-carb"}
+    - [high Protein]{"entity":"diet", "value":"high-protein"}
+    - [low carb]{"entity":"diet", "value":"low-carb"}
 
 - intent: plan
   examples: |
@@ -1308,7 +1341,9 @@ nlu:
     - I would like to modify my diet plan from [keto]{"entity":"diet", "role": "diet1"} to [Low-Carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
     - I want to alter my diet from [high-protein]{"entity":"diet", "role": "diet1"} to [Low-Carbs]{"entity":"diet", "role": "diet2", "value":"low-carb"}
     - Change my diet plan to [low-carb]{"entity":"diet", "role": "diet2"}
+    - Can you change my diet plan to [low-carb]{"entity":"diet", "role": "diet2"}
     - modify my diet plan to [high-protein]{"entity":"diet", "role": "diet2"}
+    - could you modify my diet plan to [high-protein]{"entity":"diet", "role": "diet2"}
     - please change my diet plan to [keto]{"entity":"diet", "role": "diet2"}
     - I want to change my diet plan to [high-protien]{"entity":"diet", "role": "diet2", "value":"high-protein"}
     - I want to modify my diet plan to [Keto]{"entity":"diet", "role": "diet2", "value":"keto"}
