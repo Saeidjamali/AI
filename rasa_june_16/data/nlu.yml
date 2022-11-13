@@ -933,6 +933,8 @@ nlu:
     - Diet is what I need. 
     - viki, give me a diet
     - let's do a diet.
+    - lets do a diet
+    - lets go on a diet
 
 - intent: diet_type
   examples: |
