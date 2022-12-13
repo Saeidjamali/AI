@@ -62,7 +62,7 @@ def print_database():
 			user_main_goal = user_db.users.find_one({'_id': ObjectId(user_id), 'userInfo.goal':{'$exists': True}})
 			user_health = user_db.healthRecords.find({'userId': user_id, 'timestamp':{"$gte": timestamp,"$lt":timestamp + datetime.timedelta(days=1)}})
 			user_sleep = user_db.sleepDailyData.find({'userId':ObjectId(user_id), 'date':{"$gte": timestamp,"$lt":timestamp+ datetime.timedelta(days=1)}})
-			user_meal = user_db.userMeals.find({'user_id':user_id, 'day_created':{"$gte": timestamp,"$lt":timestamp + datetime.timedelta(days=1) }})
+			user_meal = user_db.userMeals.find({'user_id':user_id, 'type' : 'CALORIES', 'date':{"$gte": timestamp,"$lt":timestamp + datetime.timedelta(days=1) }})
 			single_record[0][0]=user_id
 			single_record[0][1]=timestamp.strftime('%Y-%m-%d')
 			target = randrange(2)
@@ -138,7 +138,7 @@ def print_database():
 		data_for_model_df=pd.DataFrame(data_for_model,columns=['id','date','total_steps','calories','calories_in','sleep_hours','target','Class','weight'])
 		df = pd.read_csv('updated_fitbit_dataset.csv')
 		df = pd.concat([df,data_for_model_df])
-		df = df.drop_duplicates()
+		df = df.drop_duplicates(subset=['id','date'], keep='last')
 		df.to_csv('updated_fitbit_dataset.csv',index=False)
 
 	else:
