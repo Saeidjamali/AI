@@ -306,7 +306,7 @@ responses:
   utter_goodbye:
   - text: Bye
   utter_iamabot:
-  - text: I am a bot, powered by Rasa.
+  - text: I am an AI, powered by intellithing.
   utter_ask_diseases:
   - text: Do you have any diseases?
   utter_ask_likeFood:
