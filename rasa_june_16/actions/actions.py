@@ -111,6 +111,7 @@ class action_validate_user(Action):
         print(user_record["_id"])
         if 'profileComplete' not in user_record:
             print('not in')
+            dispatcher.utter_message(template="utter_welcome")
             return [FollowupAction("simple_user_form")]
         else:
             dispatcher.utter_message(text=f"Hi! How can I help? Ask me questions or ask me to list the questions I can answer. ")
@@ -2698,6 +2699,14 @@ class ActionDefaultFallback(Action):
     def name(self) -> Text:
         return "action_default_fallback"
     def run(self, dispatcher, tracker, domain):
+
+        # If user enters something we do not understand check whether user needs to finish the form first
+        user_id = str((tracker.current_state())["sender_id"])[:24]
+        user_db = get_mongo_database()
+        user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
+        if user_record is None or 'profileComplete' not in user_record:
+            dispatcher.utter_message(template="utter_welcome")
+            return [FollowupAction("simple_user_form")]
 
         ## Telling the user that the last message intent was not clear.
  
