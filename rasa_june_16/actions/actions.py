@@ -2706,7 +2706,7 @@ class ActionDefaultFallback(Action):
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
         if user_record is None or 'profileComplete' not in user_record:
             dispatcher.utter_message(template="utter_welcome")
-            return [FollowupAction("simple_user_form")]
+            return [UserUtteranceReverted(), FollowupAction("simple_user_form")]
 
         ## Telling the user that the last message intent was not clear.
  
