@@ -24,7 +24,7 @@ nlu:
 
 
 - intent: sleep
-  example: |
+  examples: |
     - sleep
     - Monitor my sleep
     - monitor sleep
