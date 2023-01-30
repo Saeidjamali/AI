@@ -5,6 +5,7 @@ session_config:
 intents:
 - greet
 - goodbye
+- sleep
 - measurement_name
 - medical_condition_intent
 - name_intent
@@ -67,6 +68,7 @@ entities:
 - ORG
 - diet
 - plan
+- sleep
 
 slots:
   height1:
@@ -371,6 +373,8 @@ responses:
   #             I will then troubleshoot it for you."
   utter_identity:
     - text: "My name is Viki, your virtual health and fitness assistant."
+  utter_sleep:
+    - text: "I'm not trained to answer this question at this time. Ask my creators to train me further :)"
   utter_viki_meaning:
     - text: "Viki is short for Virtual Interactive Kinetic Intelligence. I am an MVP in beta testing."
   utter_gender_check:
