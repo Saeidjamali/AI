@@ -23,6 +23,26 @@ nlu:
     - Viki
 
 
+- intent: sleep
+  example: |
+    - sleep
+    - Monitor my sleep
+    - monitor sleep
+    - deep sleep
+    - light sleep
+    - awake sleep time
+    - I had a good sleep
+    - I am sleeping poorly
+    - My [Sleeping]{"entity":"sleep"} habit is bad
+    - My [sleeping]{"entity":"sleep"} habit is good
+    - Sleep
+    - I [slept]{"entity":"sleep"} well
+    - I am ["waking"]{"entity":"sleep"} up
+    - I am ["woke"]{"entity":"sleep"} up
+    - I feel ["sleepy"]{"entity":"sleep"} today
+
+
+
 - intent: goodbye
   examples: |
     - cu
@@ -35,6 +55,8 @@ nlu:
     - see you around
     - bye bye
     - see you later
+
+
 #- intent: Number_value
 #  examples: |
 #    -
