@@ -320,7 +320,7 @@ responses:
   utter_ask_measuringUnit:
   - text: What is your preferred measurement unit, 1) Imperial or 2) Metric.
   utter_ask_name:
-  - text: "Hey, What's your name?"
+  - text: "What's your name?"
   utter_ask_height:
   - text: how tall are you?
   utter_ask_gender:
