@@ -148,3 +148,4 @@ zipp==3.6.0
 pyaf==4.0
 rasa[spacy]
 python-dotenv==0.20.0
+openai==0.26.5
