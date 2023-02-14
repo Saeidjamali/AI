@@ -19,6 +19,7 @@ import ast
 pd.options.mode.chained_assignment = None
 from time import sleep
 from random import randint
+import openai
 
 import smtplib
 from email.mime.text import MIMEText
@@ -37,6 +38,10 @@ logger = logging.getLogger(__name__)
 #def weight_function():
 
 load_dotenv(find_dotenv())
+
+openai.organization = "org-YA8t4byUQsn5OyU8X1HVsC0G"    # intellithing
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
 MONGODB_URL = os.getenv('MONGODB_URL')
 
 
@@ -2709,8 +2714,20 @@ class ActionDefaultFallback(Action):
             return [UserUtteranceReverted(), FollowupAction("simple_user_form")]
 
         ## Telling the user that the last message intent was not clear.
+        last_utterance = tracker.latest_message["text"]
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=last_utterance + "\nA:",
+            temperature=0,
+            max_tokens=100,
+            top_p=1,
+            frequency_penalty=0.0,
+            presence_penalty=0.0,
+            stop=["\n"],
+            best_of=1
+        )
  
-        message = "I’m sorry I didn’t understand, I’m still learning please try rephrasing your sentence."
+        message = response.choices[0]["text"]
         dispatcher.utter_message(text=message)
         # undo last user interaction
         return [UserUtteranceReverted()]
