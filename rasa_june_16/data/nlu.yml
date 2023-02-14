@@ -115,7 +115,7 @@ nlu:
     - I'm [Christopher]{"entity":"name"}
     - I'm [Daniel]{"entity":"name"}
     - I'm [Matthew]{"entity":"name"}
-    -  I'm [Anthony]{"entity":"name"}
+    - I'm [Anthony]{"entity":"name"}
     - I'm [Mark]{"entity":"name"}
     - [Lily]{"entity":"name"}
     - [Harry]{"entity":"name"}
