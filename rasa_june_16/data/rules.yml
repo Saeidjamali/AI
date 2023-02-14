@@ -185,11 +185,6 @@ rules:
   steps:
   - intent: intellithing_meaning
   - action: utter_intellithing_meaning
-
-- rule: sleep_path
-  steps:
-  - intent: sleep
-  - action: utter_sleep
   
 - rule: viki_creator_path
   steps:
