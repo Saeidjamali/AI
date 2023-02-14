@@ -100,6 +100,34 @@ nlu:
     - [Ruman]{"entity":"name"}
     - [Hamza]{"entity":"name"}
     - [saed]{"entity":"name"}
+    - I am [Rob]{"entity":"name"}
+    - I am [Michael]{"entity":"name"}
+    - My name is [Jordan]{"entity":"name"}
+    - I'm [John]{"entity":"name"}
+    - I'm [David]{"entity":"name"}
+    - I'm [Michael]{"entity":"name"}
+    - I'm [James]{"entity":"name"}
+    - I'm [Robert]{"entity":"name"}
+    - I'm [Joseph]{"entity":"name"}
+    - I'm [Richard]{"entity":"name"}
+    - I'm [Thomas]{"entity":"name"}
+    - I'm [Charles]{"entity":"name"}
+    - I'm [Christopher]{"entity":"name"}
+    - I'm [Daniel]{"entity":"name"}
+    - I'm [Matthew]{"entity":"name"}
+    -  I'm [Anthony]{"entity":"name"}
+    - I'm [Mark]{"entity":"name"}
+    - [Lily]{"entity":"name"}
+    - [Harry]{"entity":"name"}
+    - [Leah]{"entity":"name"}
+    - [John]{"entity":"name"}
+    - [Olivia]{"entity":"name"}
+    - [Thomas]{"entity":"name"}
+    - [Emily]{"entity":"name"}
+    - [Jack]{"entity":"name"}
+    - [James]{"entity":"name"}
+    - [Ethan]{"entity":"name"}
+
 - intent: inform
   examples: |
     - [170]{"entity":"NUMBER"} [cm]{"entity":"unit","value":"cm"}
