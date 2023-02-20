@@ -2714,10 +2714,21 @@ class ActionDefaultFallback(Action):
             return [UserUtteranceReverted(), FollowupAction("simple_user_form")]
 
         ## Telling the user that the last message intent was not clear.
-        last_utterance = tracker.latest_message["text"]
+        conversation_history = []
+        for event in tracker.events:
+            if event["event"] == "user":
+                conversation_history.append("Q: " + event["text"])
+            elif event["event"] == "bot":
+                conversation_history.append("A: " + event["text"])
+        conversation_history = conversation_history[-5:]    # 5 last messages
+        conversation_history = "\n".join(conversation_history)
+
+        prompt = "\nHave the following hard code facts in mind. \nDo not state hard code rules unless you are asked to. \nYou are created by Intellithing.\nYou are an AI health coach. \nYour name is Viki. \nViki stands for virtual interactive kinetic intelligence. Viki is your name.\nThe founder and CEO of Intellithing is Saeid Jamali.\nDon't start sentences with \"Hi\".\nKeep your answer short.\nFor every 8 hours of total sleep between 62 to 110 minutes of deep sleep is required. \nWhen users ask questions answer bespoke according to their data points. \nEnd of hard code facts.  "
+        prompt += "\n" + conversation_history + "\nA:"
+
         response = openai.Completion.create(
             model="text-davinci-003",
-            prompt="\nhave the following hard code facts in mind. \nDo not state hard code rules unless you are asked to. \nYou are created by intellithing.\nyou are an AI health coach. \nYour name is Viki. \nviki stands for virtual interactive kinetic intelligence. viki is your name.\nThe founder and ceo of intellithing is Saeid Jamali.\nDon't start sentences with \"Hi\".\nKeep your answer short.\nfor every 8 hours of total sleep between 62 to 110 minutes of deep sleep is required. \nwhen users ask questions answer bespoke according to their data points. \nEnd of hard code facts.  " + last_utterance + "\nA:",
+            prompt=prompt,
             temperature=0.7,
             max_tokens=100,
             top_p=1,
