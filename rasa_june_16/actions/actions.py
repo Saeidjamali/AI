@@ -2706,7 +2706,7 @@ class ActionDefaultFallback(Action):
     def run(self, dispatcher, tracker, domain):
 
         # If user enters something we do not understand check whether user needs to finish the form first
-        user_id = str((tracker.current_state())["sender_id"])[:24]
+        user_id = str((tracker.current_state())["sender_id"])
         user_db = get_mongo_database()
         user_record = user_db.users.find_one({"_id": ObjectId(user_id)})
         if user_record is None or 'profileComplete' not in user_record:
