@@ -2723,8 +2723,46 @@ class ActionDefaultFallback(Action):
         conversation_history = conversation_history[-5:]    # 5 last messages
         conversation_history = "\n".join(conversation_history)
 
+        user_info_dict = dict(user_record["userInfo"])
+        if user_info_dict["measureType"] == "METRIC":
+            user_info_dict["weight_str"] = str(user_info_dict["weight"]) + " kg"
+            user_info_dict["height_str"] = str(user_info_dict["height"]) + " cm"
+        else:
+            user_info_dict["weight_str"] = str(user_info_dict["weight"]) + " pounds"
+            user_info_dict["height_str"] = str(user_info_dict["height"]) + " feets"
+        eating_dict = {
+            "VEGAN": "vegan",
+            "VEGETARIAN": "vegetarian",
+            "NON_VEGETARIAN": "high-protien, dairy-free"
+        }
+        user_info_dict["eating_str"] = eating_dict.get(user_info_dict["eating"], "any")
+        goal_dict = {
+            "LOSE_WEIGHT": "lose weight",
+            "MAINTAIN_WEIGHT": "maintain weight",
+            "GAIN_WEIGHT": "gain weight",
+        }
+        user_info_dict["goal_str"] = goal_dict.get(user_info_dict["goal"], "any")
+        stressLevel_dict = {1: "very low", 2: "low", 3: "average", 4: "high", 5: "very high"}
+        user_info_dict["stressLevel_str"] = stressLevel_dict.get(user_info_dict["stressLevel"], "unknown")
+        user_info = "My age is {age} years. My gender is {gender}. My weight is {weight_str}. My height is {height_str}. I am eating {eating_str}. I am trying to {goal_str}. My stress level is {stressLevel_str}.".format(**user_info_dict)
+
+        fitbit_df = pd.read_csv("updated_fitbit_dataset.csv")
+        try:
+            user_df = fitbit_df.groupby("id").get_group(user_id)
+            week_ago = (datetime.date.today() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
+            user_df = user_df[user_df["date"] > week_ago]
+            fitbit_dict = dict(user_df.mean().round())
+            fitbit_info = "During last week I walked {total_steps} steps, ate {calories_in} calories and slept {sleep_hours} hours.".format(**fitbit_dict)
+        except KeyError:
+            fitbit_info = ""
+
         prompt = "\nHave the following hard code facts in mind. \nDo not state hard code rules unless you are asked to. \nYou are created by Intellithing.\nYou are an AI health coach. \nYour name is Viki. \nViki stands for virtual interactive kinetic intelligence. Viki is your name.\nThe founder and CEO of Intellithing is Saeid Jamali.\nDon't start sentences with \"Hi\".\nKeep your answer short.\nFor every 8 hours of total sleep between 62 to 110 minutes of deep sleep is required. \nWhen users ask questions answer bespoke according to their data points. \nEnd of hard code facts.  "
+        prompt += "\n" + user_info + "\n"
+        prompt += "\n" + fitbit_info + "\n"
         prompt += "\n" + conversation_history + "\nA:"
+
+        print("=========================================================")
+        print(prompt)
 
         response = openai.Completion.create(
             model="text-davinci-003",
@@ -2737,8 +2775,13 @@ class ActionDefaultFallback(Action):
             stop=["\n"],
             best_of=1
         )
+
  
         message = response.choices[0]["text"]
+
+        print(message)
+        print("=========================================================")
+
         dispatcher.utter_message(text=message)
         # undo last user interaction
         return [UserUtteranceReverted()]
