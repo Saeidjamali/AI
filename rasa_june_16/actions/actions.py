@@ -2752,7 +2752,7 @@ class ActionDefaultFallback(Action):
             week_ago = (datetime.date.today() - datetime.timedelta(days=7)).strftime("%Y-%m-%d")
             user_df = user_df[user_df["date"] > week_ago]
             fitbit_dict = dict(user_df.mean().round())
-            fitbit_info = "During last week I walked {total_steps} steps, ate {calories_in} calories and slept {sleep_hours} hours.".format(**fitbit_dict)
+            fitbit_info = "During last week I walked {total_steps} steps, ate {calories_in} calories and slept {sleep_hours} hours per day.".format(**fitbit_dict)
         except KeyError:
             fitbit_info = ""
 
